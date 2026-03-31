@@ -25,6 +25,8 @@ export function rankProposals(frontier: ProposalFrontier, scorer: Scorer): Ranke
   const currentRawD = scorer.computeRawDuality(currentSequence);
   const currentPhi = scorer.coherence(currentSequence);
 
+  // [DETERMINISM BOUNDARY] Candidate order is preserved from the frontier.
+  // No explicit tie-breaking occurs here; candidates are mapped in their original order.
   return candidates.map(proposal => {
     const candidate = proposal.sequence;
     const candidateScore = scorer.telicScore(candidate);

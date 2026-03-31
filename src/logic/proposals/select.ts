@@ -7,32 +7,48 @@
  * allowing for stochastic acceptance of lower-scoring candidates based on 
  * the current simulation temperature.
  */
-import { RankedProposal, ProposalSelection } from '../../types';
+import { 
+  RankedProposal, 
+  DeterministicSelectionInput, 
+  DeterministicSelectionResult 
+} from '../../types';
+import { resolveTie } from '../selection/tiebreak';
+import { checkEligibility } from '../selection/eligibility';
 
 /**
  * [PROPOSAL SELECTION / TIE-BREAK BEHAVIOR]
  * Chooses the winning proposal from the ranked candidate set.
  * Implements the simulated annealing / Metropolis-Hastings criterion.
+ * 
+ * @param input The deterministic selection input containing ranked candidates and context.
+ * @param rng The random number generator for stochastic selection.
+ * @returns A deterministic selection result.
  */
 export function selectProposal(
-  ranked: RankedProposal[],
-  currentTemp: number,
+  input: DeterministicSelectionInput,
   rng: { next: () => number }
-): ProposalSelection {
-  const randomIdx = Math.floor(rng.next() * ranked.length);
-  const proposal = ranked[randomIdx];
-  const deltaScore = proposal.deltaScore;
+): DeterministicSelectionResult {
+  const { ranked, currentTemp, tieBreakContext } = input;
 
-  // Metropolis-Hastings criterion
-  const passCriterion = deltaScore > 0 || Math.log(rng.next()) < deltaScore / (currentTemp + 1e-6);
-  
-  // A proposal is "accepted" as a meaningful change if it passes the criterion 
-  // AND it's not a 'none' proposal.
-  const accepted = passCriterion && proposal.type !== 'none';
+  // [PHASE 2: ORCHESTRATION]
+  // 1. [CANDIDATE ELIGIBILITY FILTERING]
+  // Currently, we consider all ranked candidates as eligible for the selection pool.
+  // In future iterations, this might filter by score thresholds or validity.
+  const eligible = ranked; 
+
+  // 2. [TIE-RESOLUTION / CANDIDATE SELECTION]
+  // We pick a candidate from the eligible pool. 
+  // Currently, this is a random pick from the entire set (implicit tie-break).
+  const selected = resolveTie(eligible, tieBreakContext, rng);
+
+  // 3. [ACCEPTANCE CHECK (ELIGIBILITY FOR STATE TRANSITION)]
+  // We determine if the selected candidate is accepted as the next state.
+  const accepted = checkEligibility(selected, currentTemp, rng);
 
   return {
-    selected: proposal,
-    accepted: accepted,
-    method: 'metropolis-hastings'
+    selected,
+    accepted,
+    method: 'metropolis-hastings',
+    tieBreakApplied: eligible.length > 1
   };
 }

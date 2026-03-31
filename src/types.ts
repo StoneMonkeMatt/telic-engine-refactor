@@ -114,6 +114,13 @@ export interface SimulationStep {
   
   // Phase 5: Bridge Trace
   bridgeEvents?: BridgeEvent[];
+
+  // Phase 2: Deterministic Selection
+  selectionMetadata?: {
+    tieBreakApplied: boolean;
+    originalIndex?: number;
+    stableIndex?: number;
+  };
 }
 
 export interface ProposalStats {
@@ -436,6 +443,31 @@ export interface ProposalSelection {
   selected: RankedProposal;
   accepted: boolean;
   method: string;
+}
+
+export interface TieBreakContext {
+  seed: number;
+  step: number;
+  currentSequence: string[];
+}
+
+export interface DeterministicSelectionInput {
+  ranked: RankedProposal[];
+  currentTemp: number;
+  tieBreakContext: TieBreakContext;
+}
+
+export interface DeterministicSelectionResult extends ProposalSelection {
+  tieBreakApplied: boolean;
+  originalIndex?: number;
+  stableIndex?: number;
+}
+
+export interface ReproducibilityMetadata {
+  seed: number;
+  engineVersion: string;
+  params: TelosParams;
+  initialSequence: string[];
 }
 
 export interface DebugTraceEntry {

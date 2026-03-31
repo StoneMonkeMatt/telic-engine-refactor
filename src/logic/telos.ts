@@ -1,10 +1,11 @@
 import { Codex } from './codex';
-import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats, TelosParams, ProposalFrontier, RankedProposal, ProposalSelection } from '../types';
+import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats, TelosParams } from '../types';
 import { SeededRandom } from './random';
 import { isKernel, AgentContext } from './proposals/agents';
 import { buildProposalFrontier } from './proposals/frontier';
 import { rankProposals } from './proposals/rank';
 import { selectProposal } from './proposals/select';
+import { createTieBreakContext } from './benchmarks/reproducibility';
 
 export class Telos {
   private codex: Codex;
@@ -29,6 +30,8 @@ export class Telos {
       ...params
     };
 
+    // [SEED-DEPENDENT BEHAVIOR]
+    // RNG initialization determines the determinism of the entire simulation.
     if (this.params.seed !== undefined) {
       const seeded = new SeededRandom(this.params.seed);
       this.rng = { next: () => seeded.next() };
@@ -323,8 +326,11 @@ export class Telos {
     inventoryChanged: boolean,
     orderChanged: boolean,
     scoreBreakdown: any,
+    selectionMetadata: SimulationStep['selectionMetadata'],
     metrics: Partial<SimulationStep>
   } {
+    // [DETERMINISM BOUNDARY] 
+    // Orchestration of proposal generation, ranking, and selection.
     // 1. [CANDIDATE FRONTIER BUILDING]
     const frontier = buildProposalFrontier(seq, step, {
       ...this.getAgentContext(),
@@ -335,9 +341,20 @@ export class Telos {
     const ranked = rankProposals(frontier, this);
     
     // 3. [PROPOSAL SELECTION]
-    const selection = selectProposal(ranked, currentTemp, this.rng);
+    const selection = selectProposal({
+      ranked,
+      currentTemp,
+      tieBreakContext: createTieBreakContext(this.params.seed || 0, step, seq)
+    }, this.rng);
     const proposal = selection.selected;
     const accepted = selection.accepted;
+    
+    // [PHASE 2: SELECTION METADATA]
+    const selectionMetadata = {
+      tieBreakApplied: selection.tieBreakApplied,
+      originalIndex: selection.originalIndex,
+      stableIndex: selection.stableIndex
+    };
     
     // 4. [STATE EVOLUTION]
     const nextSeq = accepted ? proposal.sequence : seq;
@@ -410,6 +427,7 @@ export class Telos {
       inventoryChanged,
       orderChanged,
       scoreBreakdown,
+      selectionMetadata,
       metrics: {
         kernelPurity,
         bridgeActivationRate,
@@ -463,7 +481,8 @@ export class Telos {
       invariantLeakageFlag: false,
       consensusScore: initialScoreBreakdown.total,
       fracturePoints: [],
-      bridgeEvents: this.getBridgeEvents(current, 'System', 'init', 0, 0, 0, true)
+      bridgeEvents: this.getBridgeEvents(current, 'System', 'init', 0, 0, 0, true),
+      selectionMetadata: { tieBreakApplied: false }
     }];
 
     let observerEmerged = false;
@@ -518,6 +537,7 @@ export class Telos {
         inventoryChanged,
         orderChanged,
         scoreBreakdown,
+        selectionMetadata,
         metrics
       } = this.evolveStep(current, t, dHist, currentTemp, prevSmoothedDuality, prevStep);
       
@@ -557,6 +577,7 @@ export class Telos {
         deltaScore,
         inventoryChanged,
         orderChanged,
+        selectionMetadata,
         scoreInfo: scoreBreakdown.info,
         scoreCoherence: scoreBreakdown.coherence,
         scoreEnergy: scoreBreakdown.energy,
