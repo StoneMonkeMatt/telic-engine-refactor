@@ -8,6 +8,7 @@ import { transformToCompassRunRecord } from '../logic/export';
 import { distillTextToSymbols } from '../services/aiService';
 
 export function useSimulation() {
+  // --- 1. State Declarations ---
   const [narrative, setNarrative] = useState<string[]>(["🌪️", "🐋", "🎯", "⚓", "💀"]);
   const [params, setParams] = useState<TelosParams>({
     alpha: 0.5, beta: 0.1, gamma: 0.3, delta: 0.2, lambda: 0.618,
@@ -24,59 +25,131 @@ export function useSimulation() {
   const [isDistilling, setIsDistilling] = useState(false);
   const [distillStatus, setDistillStatus] = useState("");
 
+  // --- 2. Derived Values ---
   const codex = useMemo(() => new Codex(), []);
 
-  const addToHistory = useCallback((p: TelosParams, n: string[], res: SimulationResults) => {
-    setHistory(prev => {
-      const newEntry = {
-        id: `run-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        timestamp: Date.now(),
-        seed: p.seed!,
-        params: { ...p },
-        narrative: [...n],
-        summary: {
-          telic: res.history[res.history.length - 1].telicScore,
-          duality: res.history[res.history.length - 1].duality
-        }
-      };
-      // Keep last 10 runs
-      return [newEntry, ...prev].slice(0, 10);
-    });
+  const chartData = useMemo<ChartDataPoint[]>(() => {
+    if (!results) return [];
+    return results.history.map(h => ({
+      step: h.step,
+      telic: parseFloat(h.telicScore.toFixed(4)),
+      duality: parseFloat(h.duality.toFixed(4)),
+      curvature: parseFloat(h.telicCurvature.toFixed(4)),
+      length: h.sequence.length
+    }));
+  }, [results]);
+
+  // --- 3. Internal Helpers ---
+  const addToHistory = useCallback((params: TelosParams, narrative: string[], results: SimulationResults) => {
+    const lastStep = results.history[results.history.length - 1];
+    
+    const newEntry: SimulationRun = {
+      id: `run-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      timestamp: Date.now(),
+      seed: params.seed!,
+      params: { ...params },
+      narrative: [...narrative],
+      summary: {
+        telic: lastStep.telicScore,
+        duality: lastStep.duality
+      }
+    };
+
+    setHistory(prev => [newEntry, ...prev].slice(0, 10));
   }, []);
 
+  const executeSimulation = useCallback((
+    targetNarrative: string[],
+    targetParams: TelosParams,
+    targetSteps: number,
+    options: {
+      shouldAddToHistory?: boolean;
+      originalText?: string;
+      startAtEnd?: boolean;
+      autoPlay?: boolean;
+    } = {}
+  ) => {
+    const { 
+      shouldAddToHistory = true, 
+      originalText, 
+      startAtEnd = false, 
+      autoPlay = true 
+    } = options;
+
+    const telos = new Telos(codex, targetParams);
+    const simResults = telos.run(targetNarrative, targetSteps);
+    
+    const finalResults: SimulationResults = { 
+      ...simResults, 
+      seed: targetParams.seed,
+      originalText 
+    };
+
+    setResults(finalResults);
+    setMetrics(Metrics.compute(targetNarrative, simResults, codex));
+    
+    const initialStep = startAtEnd ? simResults.history.length - 1 : 0;
+    setCurrentStepIdx(initialStep);
+    setIsPlaying(autoPlay);
+
+    if (shouldAddToHistory) {
+      addToHistory(targetParams, targetNarrative, simResults);
+    }
+
+    return simResults;
+  }, [codex, addToHistory]);
+
+  // --- 4. Simulation Execution Actions ---
   const runSimulation = useCallback(() => {
     let currentSeed = params.seed;
     if (autoRandomize) {
       currentSeed = Math.floor(Math.random() * 1000000);
       setParams(prev => ({ ...prev, seed: currentSeed }));
     }
-    const nextParams = { ...params, seed: currentSeed, steps: simSteps };
-    const telos = new Telos(codex, nextParams);
-    const simResults = telos.run(narrative, simSteps);
-    setResults({ ...simResults, seed: currentSeed });
-    setMetrics(Metrics.compute(narrative, simResults, codex));
-    setCurrentStepIdx(0);
-    setIsPlaying(true);
-    addToHistory(nextParams, narrative, simResults);
-  }, [codex, narrative, params, simSteps, autoRandomize, addToHistory]);
+    const nextParams = { ...params, seed: currentSeed };
+    executeSimulation(narrative, nextParams, simSteps);
+  }, [narrative, params, simSteps, autoRandomize, executeSimulation]);
 
-  const stepForward = useCallback(() => {
-    if (results && currentStepIdx < results.history.length - 1) {
-      setCurrentStepIdx(prev => prev + 1);
-    }
-  }, [results, currentStepIdx]);
+  const handleRandomize = useCallback(() => {
+    const allGlyphs = codex.symbols.symbols.map(s => s.glyph);
+    const length = 3 + Math.floor(Math.random() * 5);
+    const randomSeq = Array.from({ length }, () => allGlyphs[Math.floor(Math.random() * allGlyphs.length)]);
+    const currentSeed = autoRandomize ? Math.floor(Math.random() * 1000000) : params.seed;
+    const nextParams = { ...params, seed: currentSeed };
+    
+    setNarrative(randomSeq);
+    setParams(nextParams);
+    
+    executeSimulation(randomSeq, nextParams, simSteps);
+  }, [codex, params, simSteps, autoRandomize, executeSimulation]);
 
-  const stepBack = useCallback(() => {
-    if (currentStepIdx > 0) setCurrentStepIdx(prev => prev - 1);
-  }, [currentStepIdx]);
+  const handleHardReset = useCallback(() => {
+    const defaultNarrative = ["🌪️", "🐋", "🎯", "⚓", "💀"];
+    const currentSeed = autoRandomize ? Math.floor(Math.random() * 1000000) : params.seed;
+    const defaultParams: TelosParams = {
+      alpha: 0.5, beta: 0.1, gamma: 0.3, delta: 0.2, lambda: 0.618,
+      eta: 0.3, epsilon: 0.05, threshold: 0.8, temperature: 1.0,
+      maxSequenceLength: 10, architectureMode: 'stratified', seed: currentSeed
+    };
+    
+    setNarrative(defaultNarrative);
+    setParams(defaultParams);
+    
+    executeSimulation(defaultNarrative, defaultParams, simSteps, { startAtEnd: true, autoPlay: false });
+  }, [simSteps, autoRandomize, params.seed, executeSimulation]);
 
-  const togglePlay = useCallback(() => {
-    setIsPlaying(prev => !prev);
+  const restoreFromHistory = useCallback((entry: SimulationRun) => {
+    setParams(entry.params);
+    setNarrative(entry.narrative);
+    setAutoRandomize(false); // Disable auto-randomize when restoring a specific run
+    
+    executeSimulation(entry.narrative, entry.params, simSteps, { shouldAddToHistory: false, startAtEnd: true, autoPlay: false });
+  }, [simSteps, executeSimulation]);
+
+  const setSeed = useCallback((seed: number) => {
+    setParams(prev => ({ ...prev, seed }));
+    setAutoRandomize(false);
   }, []);
-
-  const resetSimulation = useCallback(() => {
-    runSimulation();
-  }, [runSimulation]);
 
   const handleExport = useCallback(() => {
     if (!results) return;
@@ -96,37 +169,25 @@ export function useSimulation() {
     a.click();
   }, [results, params, metrics, narrative]);
 
+  // --- 5. Playback Actions ---
   useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying && results) {
-      interval = setInterval(() => {
-        setCurrentStepIdx(prev => {
-          if (prev >= results.history.length - 1) {
-            setIsPlaying(false);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 100);
-    }
+    if (!isPlaying || !results) return;
+
+    const interval = setInterval(() => {
+      setCurrentStepIdx(prev => {
+        const isAtEnd = prev >= results.history.length - 1;
+        if (isAtEnd) {
+          setIsPlaying(false);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 100);
+
     return () => clearInterval(interval);
   }, [isPlaying, results]);
 
-  useEffect(() => {
-    runSimulation();
-  }, []);
-
-  const chartData = useMemo<ChartDataPoint[]>(() => {
-    if (!results) return [];
-    return results.history.map(h => ({
-      step: h.step,
-      telic: parseFloat(h.telicScore.toFixed(4)),
-      duality: parseFloat(h.duality.toFixed(4)),
-      curvature: parseFloat(h.telicCurvature.toFixed(4)),
-      length: h.sequence.length
-    }));
-  }, [results]);
-
+  // --- 6. Narrative Editing Actions ---
   const clearNarrative = useCallback(() => {
     setNarrative([]);
     setResults(null);
@@ -134,49 +195,6 @@ export function useSimulation() {
     setCurrentStepIdx(0);
     setIsPlaying(false);
   }, []);
-
-  const handleRandomize = useCallback(() => {
-    const allGlyphs = codex.symbols.symbols.map(s => s.glyph);
-    const length = 3 + Math.floor(Math.random() * 5);
-    const randomSeq = Array.from({ length }, () => allGlyphs[Math.floor(Math.random() * allGlyphs.length)]);
-    const currentSeed = autoRandomize ? Math.floor(Math.random() * 1000000) : params.seed;
-    const nextParams = { ...params, seed: currentSeed };
-    
-    setNarrative(randomSeq);
-    setParams(nextParams);
-    
-    const telos = new Telos(codex, nextParams);
-    const simResults = telos.run(randomSeq, simSteps);
-    setResults({ ...simResults, seed: currentSeed });
-    setMetrics(Metrics.compute(randomSeq, simResults, codex));
-    setCurrentStepIdx(0);
-    setIsPlaying(true);
-    addToHistory(nextParams, randomSeq, simResults);
-  }, [codex, params, simSteps, autoRandomize, addToHistory]);
-
-  const handleHardReset = useCallback(() => {
-    const defaultNarrative = ["🌪️", "🐋", "🎯", "⚓", "💀"];
-    const currentSeed = autoRandomize ? Math.floor(Math.random() * 1000000) : params.seed;
-    const defaultParams: TelosParams = {
-      alpha: 0.5, beta: 0.1, gamma: 0.3, delta: 0.2, lambda: 0.618,
-      eta: 0.3, epsilon: 0.05, threshold: 0.8, temperature: 1.0,
-      maxSequenceLength: 10, architectureMode: 'stratified', seed: currentSeed
-    };
-    
-    setNarrative(defaultNarrative);
-    setParams(defaultParams);
-    setResults(null);
-    setMetrics(null);
-    setCurrentStepIdx(0);
-    setIsPlaying(false);
-    
-    const telos = new Telos(codex, defaultParams);
-    const simResults = telos.run(defaultNarrative, simSteps);
-    setResults({ ...simResults, seed: currentSeed });
-    setMetrics(Metrics.compute(defaultNarrative, simResults, codex));
-    setCurrentStepIdx(simResults.history.length - 1);
-    addToHistory(defaultParams, defaultNarrative, simResults);
-  }, [codex, simSteps, autoRandomize, params.seed, addToHistory]);
 
   const addSymbol = useCallback((glyph: string) => {
     if (narrative.length < params.maxSequenceLength) {
@@ -192,24 +210,7 @@ export function useSimulation() {
     });
   }, []);
 
-  const restoreFromHistory = useCallback((entry: any) => {
-    setParams(entry.params);
-    setNarrative(entry.narrative);
-    setAutoRandomize(false); // Disable auto-randomize when restoring a specific run
-    
-    const telos = new Telos(codex, entry.params);
-    const simResults = telos.run(entry.narrative, simSteps);
-    setResults({ ...simResults, seed: entry.seed });
-    setMetrics(Metrics.compute(entry.narrative, simResults, codex));
-    setCurrentStepIdx(simResults.history.length - 1);
-    setIsPlaying(false);
-  }, [codex, simSteps]);
-
-  const setSeed = useCallback((seed: number) => {
-    setParams(prev => ({ ...prev, seed }));
-    setAutoRandomize(false);
-  }, []);
-
+  // --- 7. Distillation Actions ---
   const runDistillationFromText = useCallback(async (inputText: string, aiConfig: AIConfig, steps: number) => {
     if (!inputText.trim()) return;
     if (!aiConfig.apiKey) {
@@ -237,17 +238,8 @@ export function useSimulation() {
         // Allow UI to update before heavy simulation
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        const telos = new Telos(codex, nextParams);
-        const simResults = telos.run(symbols, steps);
-        const resultsWithText = { ...simResults, originalText: inputText, seed: currentSeed };
-        
-        // Reset step index BEFORE setting results to ensure playback starts at 0
-        setCurrentStepIdx(0);
-        setResults(resultsWithText);
-        setMetrics(Metrics.compute(symbols, simResults, codex));
-        setIsPlaying(true); // Auto-play after distillation
+        executeSimulation(symbols, nextParams, steps, { originalText: inputText });
         setDistillStatus(""); // Clear status on success
-        addToHistory(nextParams, symbols, simResults);
       } else {
         setDistillStatus("No symbols found. Try a different passage.");
         setTimeout(() => setDistillStatus(""), 3000);
@@ -259,17 +251,24 @@ export function useSimulation() {
     } finally {
       setIsDistilling(false);
     }
-  }, [codex, params, autoRandomize, addToHistory]);
+  }, [codex, params, autoRandomize, executeSimulation]);
 
+  // --- 8. Lifecycle Effects ---
+  // Bootstrap: Run initial simulation on mount
+  useEffect(() => {
+    runSimulation();
+  }, []);
+
+  // --- 9. Returned API ---
   return {
     codex,
     narrative, params, results, metrics, simSteps, currentStepIdx, isPlaying,
     chartData, history, isDistilling, distillStatus,
-    setNarrative, setParams, setSimSteps,
-    setResults, setMetrics, setCurrentStepIdx, setIsPlaying,
-    runSimulation, stepForward, stepBack, togglePlay, resetSimulation, handleExport,
+    setParams, setSimSteps,
+    setCurrentStepIdx, setIsPlaying,
+    runSimulation, handleExport,
     clearNarrative, handleRandomize, handleHardReset, addSymbol, removeSymbol,
-    autoRandomize, setAutoRandomize, restoreFromHistory, addToHistory, setSeed,
+    autoRandomize, setAutoRandomize, restoreFromHistory, setSeed,
     runDistillationFromText
   };
 }
