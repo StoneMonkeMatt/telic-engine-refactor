@@ -1,6 +1,10 @@
 import { Codex } from './codex';
-import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats, TelosParams } from '../types';
+import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats, TelosParams, ProposalFrontier, RankedProposal, ProposalSelection } from '../types';
 import { SeededRandom } from './random';
+import { isKernel, AgentContext } from './proposals/agents';
+import { buildProposalFrontier } from './proposals/frontier';
+import { rankProposals } from './proposals/rank';
+import { selectProposal } from './proposals/select';
 
 export class Telos {
   private codex: Codex;
@@ -226,58 +230,17 @@ export class Telos {
     return seqA.join('|') !== seqB.join('|');
   }
 
-  /**
-   * Task 6: Add proposal diagnostics
-   */
-  private generateProposals(seq: string[]): { type: string, sequence: string[] }[] {
-    const proposals: { type: string, sequence: string[] }[] = [{ type: 'none', sequence: [...seq] }];
-
-    // Insert
-    if (seq.length < this.params.maxSequenceLength) {
-      const next = [...seq];
-      const pos = Math.floor(this.rng.next() * (seq.length + 1));
-      const allGlyphs = this.codex.symbols.symbols.map(s => s.glyph);
-      next.splice(pos, 0, allGlyphs[Math.floor(this.rng.next() * allGlyphs.length)]);
-      proposals.push({ type: 'insert', sequence: next });
-    }
-
-    // Delete
-    if (seq.length > 1) {
-      const next = [...seq];
-      const pos = Math.floor(this.rng.next() * seq.length);
-      next.splice(pos, 1);
-      proposals.push({ type: 'delete', sequence: next });
-    }
-
-    // Combine
-    if (seq.length >= 2) {
-      const pos = Math.floor(this.rng.next() * (seq.length - 1));
-      const combined = this.codex.combine(seq[pos], seq[pos + 1]);
-      const next = [...seq.slice(0, pos), combined, ...seq.slice(pos + 2)];
-      proposals.push({ type: 'combine', sequence: next });
-    }
-
-    // Swap
-    if (seq.length >= 2) {
-      const next = [...seq];
-      const idx1 = Math.floor(this.rng.next() * seq.length);
-      let idx2 = Math.floor(this.rng.next() * seq.length);
-      while (idx1 === idx2) idx2 = Math.floor(this.rng.next() * seq.length);
-      [next[idx1], next[idx2]] = [next[idx2], next[idx1]];
-      proposals.push({ type: 'swap', sequence: next });
-    }
-
-    return proposals;
-  }
-
-  private isKernel(glyph: string): boolean {
-    const kernelGlyphs = ["⚓", "🐋", "⛓️", "💀", "🕯️", "🕳️", "🌪️", "🧘", "🦁", "🌿", "🎯", "👁️"];
-    return kernelGlyphs.includes(glyph);
+  private getAgentContext(): AgentContext {
+    return {
+      codex: this.codex,
+      rng: this.rng,
+      maxSequenceLength: this.params.maxSequenceLength
+    };
   }
 
   private computeKernelPurity(seq: string[]): number {
     if (seq.length === 0) return 0;
-    const kernelCount = seq.filter(s => this.isKernel(s)).length;
+    const kernelCount = seq.filter(s => isKernel(s)).length;
     return kernelCount / seq.length;
   }
 
@@ -345,63 +308,10 @@ export class Telos {
     return events;
   }
 
+
   /**
-   * Phase 2: Structural Multi-Agent Proposals
+   * [ORCHESTRATION / SIMULATION LOOP]
    */
-  private generateStratifiedProposals(seq: string[]): { type: string, sequence: string[], agent: string }[] {
-    const proposals: { type: string, sequence: string[], agent: string }[] = [
-      { type: 'none', sequence: [...seq], agent: 'System' }
-    ];
-
-    const allGlyphs = this.codex.symbols.symbols.map(s => s.glyph);
-    const kernelGlyphs = allGlyphs.filter(g => this.isKernel(g));
-    const peripheryGlyphs = allGlyphs.filter(g => !this.isKernel(g));
-
-    // 1. Preserver / Anchor (Kernel focus)
-    if (seq.length < this.params.maxSequenceLength) {
-      const next = [...seq];
-      const pos = Math.floor(this.rng.next() * (seq.length + 1));
-      next.splice(pos, 0, kernelGlyphs[Math.floor(this.rng.next() * kernelGlyphs.length)]);
-      proposals.push({ type: 'insert', sequence: next, agent: 'Preserver' });
-    }
-    if (seq.length > 1) {
-      // Delete non-kernel
-      const nonKernelIndices = seq.map((s, i) => this.isKernel(s) ? -1 : i).filter(i => i !== -1);
-      if (nonKernelIndices.length > 0) {
-        const next = [...seq];
-        const pos = nonKernelIndices[Math.floor(this.rng.next() * nonKernelIndices.length)];
-        next.splice(pos, 1);
-        proposals.push({ type: 'delete', sequence: next, agent: 'Preserver' });
-      }
-    }
-
-    // 2. Catalyst / Pilot (Navigation/Bridges focus)
-    if (seq.length >= 2) {
-      // Swap to find better transitions
-      const next = [...seq];
-      const idx1 = Math.floor(this.rng.next() * seq.length);
-      const idx2 = Math.floor(this.rng.next() * seq.length);
-      [next[idx1], next[idx2]] = [next[idx2], next[idx1]];
-      proposals.push({ type: 'swap', sequence: next, agent: 'Catalyst' });
-    }
-
-    // 3. Synthesizer / Weaver (Periphery/Complex focus)
-    if (seq.length < this.params.maxSequenceLength) {
-      const next = [...seq];
-      const pos = Math.floor(this.rng.next() * (seq.length + 1));
-      next.splice(pos, 0, peripheryGlyphs[Math.floor(this.rng.next() * peripheryGlyphs.length)]);
-      proposals.push({ type: 'insert', sequence: next, agent: 'Synthesizer' });
-    }
-    if (seq.length >= 2) {
-      const pos = Math.floor(this.rng.next() * (seq.length - 1));
-      const combined = this.codex.combine(seq[pos], seq[pos + 1]);
-      const next = [...seq.slice(0, pos), combined, ...seq.slice(pos + 2)];
-      proposals.push({ type: 'combine', sequence: next, agent: 'Synthesizer' });
-    }
-
-    return proposals;
-  }
-
   public evolveStep(seq: string[], step: number, dHist: number[], currentTemp: number, prevSmoothedDuality: number, prevStep?: SimulationStep): { 
     nextSeq: string[], 
     dNew: number, 
@@ -415,79 +325,49 @@ export class Telos {
     scoreBreakdown: any,
     metrics: Partial<SimulationStep>
   } {
-    let proposals: { type: string, sequence: string[], agent?: string }[];
-    
-    if (this.params.architectureMode === 'stratified') {
-      proposals = this.generateStratifiedProposals(seq);
-    } else {
-      proposals = this.generateProposals(seq).map(p => ({ ...p, agent: 'Flat' }));
-    }
+    // 1. [CANDIDATE FRONTIER BUILDING]
+    const frontier = buildProposalFrontier(seq, step, {
+      ...this.getAgentContext(),
+      architectureMode: this.params.architectureMode
+    });
 
-    const currentScore = this.telicScore(seq);
-    const currentRawD = this.computeRawDuality(seq);
-    const currentPhi = this.coherence(seq);
+    // 2. [CANDIDATE RANKING / EVALUATION]
+    const ranked = rankProposals(frontier, this);
     
-    const randomIdx = Math.floor(this.rng.next() * proposals.length);
-    const proposal = proposals[randomIdx];
-    const candidate = proposal.sequence;
-    const candidateScore = this.telicScore(candidate);
-    const candidateRawD = this.computeRawDuality(candidate);
-    const candidatePhi = this.coherence(candidate);
+    // 3. [PROPOSAL SELECTION]
+    const selection = selectProposal(ranked, currentTemp, this.rng);
+    const proposal = selection.selected;
+    const accepted = selection.accepted;
     
-    // Base delta
-    let deltaScore = candidateScore - currentScore;
-    
-    // Task 2: Penalize harmful inserts
-    if (candidate.length > seq.length) {
-      const dualityLoss = Math.max(0, currentRawD - candidateRawD);
-      const coherenceLoss = Math.max(0, currentPhi - candidatePhi);
-      const qualityPenalty = (dualityLoss * 0.5) + (coherenceLoss * 0.3);
-      deltaScore -= qualityPenalty;
-    }
-
-    // Task 4: Encourage stabilization
-    if (proposal.type === 'none') {
-      deltaScore += 0.01;
-    } else if (proposal.type === 'swap') {
-      deltaScore += 0.005;
-    }
-    
-    let nextSeq: string[];
-    let tScore: number;
-    let accepted = false;
-
-    if (deltaScore > 0 || Math.log(this.rng.next()) < deltaScore / (currentTemp + 1e-6)) {
-      nextSeq = candidate;
-      tScore = candidateScore;
-      accepted = proposal.type !== 'none';
-    } else {
-      nextSeq = seq;
-      tScore = currentScore;
-      accepted = false;
-    }
-
+    // 4. [STATE EVOLUTION]
+    const nextSeq = accepted ? proposal.sequence : seq;
+    const tScore = accepted ? proposal.score : this.telicScore(seq);
     const rawD = this.computeRawDuality(nextSeq);
     const dNew = this.updateDuality(prevSmoothedDuality, nextSeq);
 
+    // 5. [METRICS & INSTRUMENTATION]
     const inventoryChanged = this.isInventoryChanged(nextSeq, seq);
     const orderChanged = this.isOrderChanged(nextSeq, seq);
     const scoreBreakdown = this.computeTelicScore(nextSeq);
 
     // Phase 5 Metrics for Bridge Summary
     const currentKernelPurity = this.computeKernelPurity(seq);
-    const candidateKernelPurity = this.computeKernelPurity(candidate);
+    const candidateKernelPurity = this.computeKernelPurity(proposal.sequence);
     const kernelPurityChange = candidateKernelPurity - currentKernelPurity;
     const kernelDivergenceChange = (1.0 - candidateKernelPurity) - (1.0 - currentKernelPurity);
     const leakageStayedFalse = candidateKernelPurity >= 0.3; // Threshold for leakage
 
     // Phase 5: Bridge Events Trace
-    const deltaCoherence = candidatePhi - currentPhi;
-    const deltaDuality = candidateRawD - currentRawD;
+    const currentRawD = this.computeRawDuality(seq);
+    const currentPhi = this.coherence(seq);
+    const deltaCoherence = proposal.coherence - currentPhi;
+    const deltaDuality = proposal.rawDuality - currentRawD;
+    
     const bridgeEvents = this.getBridgeEvents(
       nextSeq, 
       proposal.agent || 'Flat', 
       proposal.type, 
-      deltaScore, 
+      proposal.deltaScore, 
       deltaCoherence, 
       deltaDuality, 
       accepted,
@@ -526,7 +406,7 @@ export class Telos {
       tScore, 
       proposalType: proposal.type, 
       accepted, 
-      deltaScore, 
+      deltaScore: proposal.deltaScore, 
       inventoryChanged,
       orderChanged,
       scoreBreakdown,
@@ -544,6 +424,9 @@ export class Telos {
     };
   }
 
+  /**
+   * [ORCHESTRATION / SIMULATION LOOP]
+   */
   public run(initialSeq: string[], steps: number = 30): SimulationResults {
     let current = [...initialSeq];
     const initialRawD = this.computeRawDuality(current);

@@ -413,6 +413,31 @@ export interface EventLogEntry {
 
 export type ProposalType = "init" | "none" | "insert" | "delete" | "swap" | "combine";
 
+export interface ProposalCandidate {
+  type: ProposalType;
+  sequence: string[];
+  agent: string;
+}
+
+export interface ProposalFrontier {
+  step: number;
+  currentSequence: string[];
+  candidates: ProposalCandidate[];
+}
+
+export interface RankedProposal extends ProposalCandidate {
+  score: number;
+  rawDuality: number;
+  coherence: number;
+  deltaScore: number;
+}
+
+export interface ProposalSelection {
+  selected: RankedProposal;
+  accepted: boolean;
+  method: string;
+}
+
 export interface DebugTraceEntry {
   step: number;
   sequence: string[];
