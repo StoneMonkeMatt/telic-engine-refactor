@@ -70,9 +70,65 @@ export const Part11DevelopmentNotes: React.FC = () => {
                       <p>{note.primaryGoal}</p>
                     </div>
 
+                    {note.phases && (
+                      <div className="space-y-4 pt-2 border-t border-white/5">
+                        <h4 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Implementation Phases</h4>
+                        <div className="space-y-6">
+                          {note.phases.map((phase, pIdx) => (
+                            <div key={pIdx} className="space-y-2 p-3 bg-white/5 rounded-lg border border-white/5">
+                              <div className="flex items-center justify-between">
+                                <h5 className="text-[10px] font-bold text-white/80 uppercase tracking-wider">{phase.title}</h5>
+                              </div>
+                              <p className="text-[11px] text-white/60 italic">{phase.goal}</p>
+                              
+                              <div className="grid grid-cols-1 gap-3 mt-2">
+                                <div className="space-y-1">
+                                  <span className="text-[9px] font-bold text-cyan-400/60 uppercase tracking-tighter">Files</span>
+                                  <div className="flex flex-wrap gap-1">
+                                    {phase.files.map((f, fIdx) => (
+                                      <span key={fIdx} className="px-1.5 py-0.5 bg-black/20 rounded text-[9px] font-mono text-white/40 border border-white/5">{f}</span>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {phase.constraints && (
+                                  <div className="space-y-1">
+                                    <span className="text-[9px] font-bold text-amber-400/60 uppercase tracking-tighter">Constraints</span>
+                                    <ul className="list-disc list-inside text-[10px] text-white/40 space-y-0.5 ml-1">
+                                      {phase.constraints.map((c, cIdx) => (
+                                        <li key={cIdx}>{c}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+
+                                {phase.successCriteria && (
+                                  <div className="space-y-1">
+                                    <span className="text-[9px] font-bold text-emerald-400/60 uppercase tracking-tighter">Success Criteria</span>
+                                    <ul className="list-disc list-inside text-[10px] text-white/40 space-y-0.5 ml-1">
+                                      {phase.successCriteria.map((s, sIdx) => (
+                                        <li key={sIdx}>{s}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="space-y-1">
                       <h4 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Notes</h4>
-                      <p className="italic opacity-80 text-[10px]">This entry is a development note and not a canonical schema requirement.</p>
+                      {note.notes ? (
+                        <div className="space-y-2">
+                          <p className="text-[10px] text-white/60 leading-relaxed italic">{note.notes}</p>
+                          <p className="italic opacity-40 text-[9px]">This entry is a development note and not a canonical schema requirement.</p>
+                        </div>
+                      ) : (
+                        <p className="italic opacity-80 text-[10px]">This entry is a development note and not a canonical schema requirement.</p>
+                      )}
                     </div>
 
                   </div>
