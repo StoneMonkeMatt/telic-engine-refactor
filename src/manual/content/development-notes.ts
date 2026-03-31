@@ -5,7 +5,7 @@ export const DEVELOPMENT_NOTES = [
   {
     date: "2026-03-31",
     title: "Phased Refactor: Proposal Intelligence & Reproducibility",
-    status: "Active implementation roadmap for externalizing proposal logic and hardening the engine.",
+    status: "Active roadmap for externalizing proposal intelligence and hardening deterministic engine behavior.",
     filesToAdapt: [
       { file: "src/logic/telos.ts", changes: "Orchestration only; removal of proposal/ranking/selection logic." },
       { file: "src/types.ts", changes: "New interfaces for proposal frontier, candidate sets, and benchmark metadata." },
@@ -33,12 +33,13 @@ export const DEVELOPMENT_NOTES = [
         constraints: [
           "Do not change canonical schema or exported run format unless required.",
           "Do not change user-facing UI behavior during the first extraction.",
-          "Treat this phase as an internal architectural refactor."
+          "Treat this phase as an internal architectural refactor.",
+          "Avoid introducing speculative schema changes during Phases 1–2 unless required by the extracted proposal pipeline."
         ],
         successCriteria: [
           "telos.ts becomes thinner and more orchestration-focused.",
           "Proposal generation is externalized into a frontier/ranking/selection pipeline.",
-          "Current runs remain behaviorally comparable under the same seed."
+          "Current runs remain materially comparable under the same seed, parameters, and initial narrative, subject to internal refactor boundaries."
         ]
       },
       {
@@ -49,6 +50,11 @@ export const DEVELOPMENT_NOTES = [
           "src/logic/selection/eligibility.ts",
           "src/logic/benchmarks/reproducibility.ts",
           "src/types.ts"
+        ],
+        successCriteria: [
+          "Candidate selection is stable under the same seed and inputs.",
+          "Tie-break behavior is explicit and reproducible.",
+          "Reproducibility metadata is available without altering canonical export requirements unless later adopted."
         ]
       },
       {
@@ -60,6 +66,10 @@ export const DEVELOPMENT_NOTES = [
           "src/logic/analysis/invariantDiagnostics.ts",
           "src/logic/benchmarks/probes.ts",
           "src/logic/benchmarks/initialStates.ts"
+        ],
+        successCriteria: [
+          "Proposal consideration and selection outcomes can be inspected post-run.",
+          "Diagnostic modules explain proposal rejection, bridge activation, and invariant preservation in a structured way."
         ]
       },
       {
@@ -67,6 +77,10 @@ export const DEVELOPMENT_NOTES = [
         goal: "Deterministic prep path and cached distillation preparation.",
         files: [
           "src/services/aiService.ts"
+        ],
+        successCriteria: [
+          "Distillation preparation can be executed deterministically where supported.",
+          "Cached preparation paths reduce unnecessary variance and duplicate work."
         ]
       }
     ],
