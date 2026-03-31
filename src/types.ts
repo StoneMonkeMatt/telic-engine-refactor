@@ -1,3 +1,19 @@
+export interface TelosParams {
+  alpha: number;
+  beta: number;
+  gamma: number;
+  delta: number;
+  lambda: number;
+  eta: number;
+  epsilon: number;
+  threshold: number;
+  observerPersistence?: number;
+  temperature: number;
+  maxSequenceLength: number;
+  architectureMode: 'stratified' | 'flat';
+  seed?: number;
+}
+
 export interface Symbol {
   glyph: string;
   meaning: string;
@@ -135,6 +151,18 @@ export interface BridgeSummary {
   families: Record<string, BridgeFamilyStats>;
 }
 
+export interface SimulationRun {
+  id: string;
+  timestamp: number;
+  seed: number;
+  params: TelosParams;
+  narrative: string[];
+  summary: {
+    telic: number;
+    duality: number;
+  };
+}
+
 export interface SimulationResults {
   history: SimulationStep[];
   observerEmerged: boolean;
@@ -159,6 +187,14 @@ export interface AIConfig {
   apiKey: string;
   model: string;
   rememberKey: boolean;
+}
+
+export interface ChartDataPoint {
+  step: number;
+  telic: number;
+  duality: number;
+  curvature: number;
+  length: number;
 }
 
 export interface MetricsData {

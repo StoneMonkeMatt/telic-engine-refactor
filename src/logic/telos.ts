@@ -1,22 +1,6 @@
 import { Codex } from './codex';
-import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats } from '../types';
+import { SimulationResults, SimulationStep, BridgeEvent, BridgeSummary, BridgeFamilyStats, TelosParams } from '../types';
 import { SeededRandom } from './random';
-
-export interface TelosParams {
-  alpha: number;
-  beta: number;
-  gamma: number;
-  delta: number;
-  lambda: number;
-  eta: number;
-  epsilon: number;
-  threshold: number;
-  observerPersistence?: number;
-  temperature: number;
-  maxSequenceLength: number;
-  architectureMode: 'stratified' | 'flat';
-  seed?: number;
-}
 
 export class Telos {
   private codex: Codex;

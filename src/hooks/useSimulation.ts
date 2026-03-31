@@ -1,10 +1,11 @@
 // src/hooks/useSimulation.ts
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import { Telos, TelosParams } from '../logic/telos';
+import { Telos } from '../logic/telos';
 import { Metrics } from '../logic/metrics';
 import { Codex } from '../logic/codex';
-import { SimulationResults, MetricsData } from '../types';
+import { SimulationResults, MetricsData, SimulationRun, AIConfig, ChartDataPoint, TelosParams } from '../types';
 import { transformToCompassRunRecord } from '../logic/export';
+import { distillTextToSymbols } from '../services/aiService';
 
 export function useSimulation() {
   const [narrative, setNarrative] = useState<string[]>(["🌪️", "🐋", "🎯", "⚓", "💀"]);
@@ -19,24 +20,16 @@ export function useSimulation() {
   const [simSteps, setSimSteps] = useState(60);
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [history, setHistory] = useState<Array<{
-    id: string;
-    timestamp: number;
-    seed: number;
-    params: TelosParams;
-    narrative: string[];
-    summary: {
-      telic: number;
-      duality: number;
-    }
-  }>>([]);
+  const [history, setHistory] = useState<SimulationRun[]>([]);
+  const [isDistilling, setIsDistilling] = useState(false);
+  const [distillStatus, setDistillStatus] = useState("");
 
   const codex = useMemo(() => new Codex(), []);
 
   const addToHistory = useCallback((p: TelosParams, n: string[], res: SimulationResults) => {
     setHistory(prev => {
       const newEntry = {
-        id: `run-${Date.now()}`,
+        id: `run-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         timestamp: Date.now(),
         seed: p.seed!,
         params: { ...p },
@@ -123,7 +116,7 @@ export function useSimulation() {
     runSimulation();
   }, []);
 
-  const chartData = useMemo(() => {
+  const chartData = useMemo<ChartDataPoint[]>(() => {
     if (!results) return [];
     return results.history.map(h => ({
       step: h.step,
@@ -217,13 +210,66 @@ export function useSimulation() {
     setAutoRandomize(false);
   }, []);
 
+  const runDistillationFromText = useCallback(async (inputText: string, aiConfig: AIConfig, steps: number) => {
+    if (!inputText.trim()) return;
+    if (!aiConfig.apiKey) {
+      setDistillStatus("Add your API key to enable AI features");
+      setTimeout(() => setDistillStatus(""), 3000);
+      return;
+    }
+
+    setIsDistilling(true);
+    setDistillStatus(`Distilling semantic essence via ${aiConfig.provider}...`);
+    setResults(null);
+    setCurrentStepIdx(0);
+    setIsPlaying(false);
+    
+    const currentSeed = autoRandomize ? Math.floor(Math.random() * 1000000) : params.seed;
+    const nextParams = { ...params, seed: currentSeed };
+    setParams(nextParams);
+    
+    try {
+      const symbols = await distillTextToSymbols(inputText, codex.symbols.symbols, aiConfig);
+      if (symbols.length > 0) {
+        setNarrative(symbols);
+        setDistillStatus("Running Telos simulation...");
+        
+        // Allow UI to update before heavy simulation
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        const telos = new Telos(codex, nextParams);
+        const simResults = telos.run(symbols, steps);
+        const resultsWithText = { ...simResults, originalText: inputText, seed: currentSeed };
+        
+        // Reset step index BEFORE setting results to ensure playback starts at 0
+        setCurrentStepIdx(0);
+        setResults(resultsWithText);
+        setMetrics(Metrics.compute(symbols, simResults, codex));
+        setIsPlaying(true); // Auto-play after distillation
+        setDistillStatus(""); // Clear status on success
+        addToHistory(nextParams, symbols, simResults);
+      } else {
+        setDistillStatus("No symbols found. Try a different passage.");
+        setTimeout(() => setDistillStatus(""), 3000);
+      }
+    } catch (error: any) {
+      console.error("Distillation error:", error);
+      setDistillStatus(error.message || "Error during distillation.");
+      setTimeout(() => setDistillStatus(""), 5000);
+    } finally {
+      setIsDistilling(false);
+    }
+  }, [codex, params, autoRandomize, addToHistory]);
+
   return {
     codex,
     narrative, params, results, metrics, simSteps, currentStepIdx, isPlaying,
-    chartData, history, setNarrative, setParams, setSimSteps,
+    chartData, history, isDistilling, distillStatus,
+    setNarrative, setParams, setSimSteps,
     setResults, setMetrics, setCurrentStepIdx, setIsPlaying,
     runSimulation, stepForward, stepBack, togglePlay, resetSimulation, handleExport,
     clearNarrative, handleRandomize, handleHardReset, addSymbol, removeSymbol,
-    autoRandomize, setAutoRandomize, restoreFromHistory, addToHistory, setSeed
+    autoRandomize, setAutoRandomize, restoreFromHistory, addToHistory, setSeed,
+    runDistillationFromText
   };
 }

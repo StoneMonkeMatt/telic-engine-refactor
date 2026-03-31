@@ -1,15 +1,11 @@
 // src/hooks/useUIState.ts
 import { useState, useEffect } from 'react';
-import { AIConfig, AIProvider } from '../types';
+import { AIConfig } from '../types';
 
 export function useUIState() {
   const [activeTab, setActiveTab] = useState<'simulation' | 'ontology' | 'metrics' | 'theory' | 'vision' | 'innovations' | 'manual' | 'agents' | 'history'>('simulation');
   const [searchQuery, setSearchQuery] = useState('');
   const [inputText, setInputText] = useState("");
-  const [isDistilling, setIsDistilling] = useState(false);
-  const [distillStatus, setDistillStatus] = useState("");
-  const [openDomain, setOpenDomain] = useState<string | null>(null);
-  const [openField, setOpenField] = useState<string | null>(null);
   const [ontologyOpenDomain, setOntologyOpenDomain] = useState<string | null>(null);
   const [ontologyOpenField, setOntologyOpenField] = useState<string | null>(null);
   const [isAiConfigOpen, setIsAiConfigOpen] = useState(false);
@@ -38,10 +34,6 @@ export function useUIState() {
     activeTab, setActiveTab,
     searchQuery, setSearchQuery,
     inputText, setInputText,
-    isDistilling, setIsDistilling,
-    distillStatus, setDistillStatus,
-    openDomain, setOpenDomain,
-    openField, setOpenField,
     ontologyOpenDomain, setOntologyOpenDomain,
     ontologyOpenField, setOntologyOpenField,
     isAiConfigOpen, setIsAiConfigOpen,
