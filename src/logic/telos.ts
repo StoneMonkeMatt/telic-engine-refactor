@@ -6,6 +6,9 @@ import { buildProposalFrontier } from './proposals/frontier';
 import { rankProposals } from './proposals/rank';
 import { selectProposal } from './proposals/select';
 import { createTieBreakContext } from './benchmarks/reproducibility';
+import { createProposalDiagnostic, summarizeFrontier, getTopCandidates } from './analysis/proposalDiagnostics';
+import { createBridgeDiagnostic, summarizeBridgeActivity } from './analysis/bridgeDiagnostics';
+import { createInvariantDiagnostic, analyzeKernelPreservation } from './analysis/invariantDiagnostics';
 
 export class Telos {
   private codex: Codex;
@@ -327,6 +330,7 @@ export class Telos {
     orderChanged: boolean,
     scoreBreakdown: any,
     selectionMetadata: SimulationStep['selectionMetadata'],
+    diagnostics: SimulationStep['diagnostics'],
     metrics: Partial<SimulationStep>
   } {
     // [DETERMINISM BOUNDARY] 
@@ -353,7 +357,8 @@ export class Telos {
     const selectionMetadata = {
       tieBreakApplied: selection.tieBreakApplied,
       originalIndex: selection.originalIndex,
-      stableIndex: selection.stableIndex
+      stableIndex: selection.stableIndex,
+      reasoning: selection.reasoning
     };
     
     // 4. [STATE EVOLUTION]
@@ -416,6 +421,43 @@ export class Telos {
       }
     }
 
+    // [PHASE 3: DIAGNOSTICS]
+    // We capture a diagnostic entry for the selected proposal.
+    const diagnostics = {
+      proposals: [
+        {
+          ...createProposalDiagnostic(step, proposal, accepted),
+          tieBreak: selection.reasoning
+        }
+      ],
+      bridges: bridgeEvents.map(e => createBridgeDiagnostic(
+        step,
+        e.bridgeKey,
+        1.0, // Strength is binary for now
+        e.deltaScore,
+        e.deltaCoherence
+      )),
+      invariants: [
+        createInvariantDiagnostic(
+          step,
+          'kernel-purity',
+          kernelPurity < 0.3 ? 'violated' : (kernelPurity < 0.4 ? 'warned' : 'preserved'),
+          kernelPurity,
+          0.3
+        )
+      ],
+      summary: {
+        frontier: summarizeFrontier(frontier),
+        topCandidates: getTopCandidates(ranked, 3).map(c => ({
+          type: c.type,
+          agent: c.agent,
+          score: c.score
+        })),
+        bridgeActivity: summarizeBridgeActivity(bridgeEvents),
+        kernelPreservation: analyzeKernelPreservation(currentKernelPurity, candidateKernelPurity, 0.3)
+      }
+    };
+
     return { 
       nextSeq, 
       dNew, 
@@ -428,6 +470,7 @@ export class Telos {
       orderChanged,
       scoreBreakdown,
       selectionMetadata,
+      diagnostics,
       metrics: {
         kernelPurity,
         bridgeActivationRate,
@@ -440,7 +483,7 @@ export class Telos {
         fracturePoints
       }
     };
-  }
+}
 
   /**
    * [ORCHESTRATION / SIMULATION LOOP]
@@ -482,7 +525,8 @@ export class Telos {
       consensusScore: initialScoreBreakdown.total,
       fracturePoints: [],
       bridgeEvents: this.getBridgeEvents(current, 'System', 'init', 0, 0, 0, true),
-      selectionMetadata: { tieBreakApplied: false }
+      selectionMetadata: { tieBreakApplied: false },
+      diagnostics: { proposals: [], bridges: [], invariants: [] }
     }];
 
     let observerEmerged = false;
@@ -538,6 +582,7 @@ export class Telos {
         orderChanged,
         scoreBreakdown,
         selectionMetadata,
+        diagnostics,
         metrics
       } = this.evolveStep(current, t, dHist, currentTemp, prevSmoothedDuality, prevStep);
       
@@ -578,6 +623,7 @@ export class Telos {
         inventoryChanged,
         orderChanged,
         selectionMetadata,
+        diagnostics,
         scoreInfo: scoreBreakdown.info,
         scoreCoherence: scoreBreakdown.coherence,
         scoreEnergy: scoreBreakdown.energy,
@@ -630,6 +676,7 @@ export class Telos {
     // Task 5: Improve plateau semantics without changing scoring
     const postMetrics = this.computePostRunMetrics(history);
     const bridgeSummary = this.computeBridgeSummary(history);
+    const diagnostics = this.computeRunDiagnostics(history);
 
     return { 
       history, 
@@ -638,8 +685,31 @@ export class Telos {
       iterationsRun: history.length - 1,
       proposalStats,
       bridgeSummary,
+      diagnostics,
       ...postMetrics
     } as SimulationResults;
+  }
+
+  private computeRunDiagnostics(history: SimulationStep[]) {
+    let totalProposals = 0;
+    let totalBridges = 0;
+    let stabilitySum = 0;
+
+    history.forEach(step => {
+      if (step.diagnostics) {
+        totalProposals += step.diagnostics.proposals?.length || 0;
+        totalBridges += step.diagnostics.bridges?.length || 0;
+        
+        const kernelPurity = step.kernelPurity || 0;
+        stabilitySum += kernelPurity;
+      }
+    });
+
+    return {
+      totalProposals,
+      totalBridges,
+      stabilityScore: history.length > 0 ? stabilitySum / history.length : 0
+    };
   }
 
   private computePostRunMetrics(history: SimulationStep[]) {

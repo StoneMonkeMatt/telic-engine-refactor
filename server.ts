@@ -13,7 +13,7 @@ async function startServer() {
 
   // Proxy route for AI providers (except Gemini which is client-side)
   app.post("/api/proxy", async (req, res) => {
-    const { provider, apiKey, model, prompt, responseFormat } = req.body;
+    const { provider, apiKey, model, prompt, responseFormat, seed } = req.body;
 
     const keyToUse = apiKey || process.env[`${provider.toUpperCase()}_API_KEY`];
 
@@ -37,7 +37,8 @@ async function startServer() {
         body = {
           model: model || (provider === 'openai' ? "gpt-4o" : provider === 'grok' ? "grok-2-latest" : "deepseek-chat"),
           messages: [{ role: "user", content: prompt }],
-          temperature: 0.2
+          temperature: 0.2,
+          seed: seed
         };
         
         if (responseFormat === 'json_object') {

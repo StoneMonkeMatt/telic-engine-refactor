@@ -112,6 +112,34 @@ export const Part11DevelopmentNotes: React.FC = () => {
                                     </ul>
                                   </div>
                                 )}
+
+                                {phase.completionNote && (
+                                  <div className="space-y-2 mt-2 p-2 bg-emerald-500/5 border border-emerald-500/20 rounded">
+                                    <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-tighter">Phase Completion Note</span>
+                                    <div className="space-y-2">
+                                      <div className="space-y-1">
+                                        <span className="text-[8px] font-bold text-emerald-400/60 uppercase tracking-tighter">Achieved</span>
+                                        <ul className="list-disc list-inside text-[10px] text-white/60 space-y-0.5 ml-1">
+                                          {phase.completionNote.achieved.map((a, aIdx) => (
+                                            <li key={aIdx}>{a}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                      <div className="space-y-1">
+                                        <span className="text-[8px] font-bold text-amber-400/60 uppercase tracking-tighter">Deferred</span>
+                                        <ul className="list-disc list-inside text-[10px] text-white/60 space-y-0.5 ml-1">
+                                          {phase.completionNote.deferred.map((d, dIdx) => (
+                                            <li key={dIdx}>{d}</li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                      <div className="space-y-1">
+                                        <span className="text-[8px] font-bold text-cyan-400/60 uppercase tracking-tighter">Phase 3 Implications</span>
+                                        <p className="text-[10px] text-white/60 leading-relaxed italic">{phase.completionNote.phase3Implications}</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ))}

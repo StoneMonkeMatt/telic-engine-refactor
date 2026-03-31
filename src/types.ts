@@ -120,6 +120,20 @@ export interface SimulationStep {
     tieBreakApplied: boolean;
     originalIndex?: number;
     stableIndex?: number;
+    reasoning?: TieBreakReasoning;
+  };
+
+  // Phase 3: Diagnostics
+  diagnostics?: {
+    proposals?: ProposalDiagnostic[];
+    bridges?: BridgeDiagnostic[];
+    invariants?: InvariantDiagnostic[];
+    summary?: {
+      frontier?: any;
+      topCandidates?: any[];
+      bridgeActivity?: any;
+      kernelPreservation?: any;
+    };
   };
 }
 
@@ -215,6 +229,12 @@ export interface SimulationResults {
   lastMeaningfulAcceptedStep: number;
   proposalStats: ProposalStats;
   bridgeSummary: BridgeSummary;
+  aiDiagnostics?: AIDiagnostic[];
+  diagnostics?: {
+    totalProposals: number;
+    totalBridges: number;
+    stabilityScore: number;
+  };
 }
 
 export type AIProvider = 'gemini' | 'openai' | 'anthropic' | 'grok' | 'deepseek';
@@ -224,6 +244,24 @@ export interface AIConfig {
   apiKey: string;
   model: string;
   rememberKey: boolean;
+  seed?: number;
+}
+
+export interface AIDiagnostic {
+  provider: AIProvider;
+  model: string;
+  prompt: string;
+  response: string;
+  latency: number;
+  timestamp: number;
+  success: boolean;
+  error?: string;
+  seed?: number;
+}
+
+export interface DistillationResult {
+  symbols: string[];
+  diagnostic?: AIDiagnostic;
 }
 
 export interface ChartDataPoint {
@@ -461,6 +499,42 @@ export interface DeterministicSelectionResult extends ProposalSelection {
   tieBreakApplied: boolean;
   originalIndex?: number;
   stableIndex?: number;
+  reasoning?: TieBreakReasoning;
+}
+
+export interface TieBreakReasoning {
+  strategy: string;
+  winnerIndex: number;
+  poolSize: number;
+  stableSortKey?: string;
+  notes?: string;
+}
+
+export interface ProposalDiagnostic {
+  step: number;
+  candidateType: ProposalType;
+  agent: string;
+  score: number;
+  deltaScore: number;
+  accepted: boolean;
+  tieBreak?: TieBreakReasoning;
+  rejectionReason?: string;
+}
+
+export interface BridgeDiagnostic {
+  step: number;
+  bridgeKey: string;
+  activationStrength: number;
+  deltaTelic: number;
+  deltaCoherence: number;
+}
+
+export interface InvariantDiagnostic {
+  step: number;
+  invariantId: string;
+  status: 'preserved' | 'violated' | 'warned';
+  currentValue: number;
+  threshold: number;
 }
 
 export interface ReproducibilityMetadata {

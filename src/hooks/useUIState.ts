@@ -18,7 +18,7 @@ export function useUIState() {
         return { ...parsed, apiKey: '' };
       } catch (e) { console.error(e); }
     }
-    return { provider: 'gemini', apiKey: '', model: '', rememberKey: false };
+    return { provider: 'gemini', apiKey: '', model: '', rememberKey: false, seed: undefined };
   });
 
   useEffect(() => {

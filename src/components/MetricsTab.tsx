@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   Target, Zap, Shield, BarChart3, Compass as CompassIcon, 
   Eye, Activity, RefreshCw, TrendingUp, Pause, Edit3, Move, 
-  CheckCircle2, Workflow, Layers 
+  CheckCircle2, Workflow, Layers, Cpu
 } from 'lucide-react';
 import { MetricCard } from '../manual/components';
 import { MetricsData, SimulationResults, BridgeFamilyStats, TelosParams } from '../types';
@@ -385,6 +385,51 @@ export const MetricsTab: React.FC<MetricsTabProps> = ({
                 })}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+      {results?.aiDiagnostics && results.aiDiagnostics.length > 0 && (
+        <div className="mt-16 space-y-8 pb-12">
+          <div className="flex items-center gap-4 text-cyan-400">
+            <Cpu className="w-6 h-6" />
+            <h4 className="font-bold uppercase text-xs tracking-[0.4em]">AI Distillation Trace</h4>
+          </div>
+          <div className="space-y-4">
+            {results.aiDiagnostics.map((diag, idx) => (
+              <div key={idx} className="glass-panel p-6 space-y-4">
+                <div className="flex items-center justify-between border-b border-white/5 pb-3">
+                  <div className="flex items-center gap-3">
+                    <span className={cn(
+                      "px-2 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest",
+                      diag.success ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"
+                    )}>
+                      {diag.success ? "Success" : "Failed"}
+                    </span>
+                    <span className="text-[10px] font-mono text-white/40">{diag.provider} / {diag.model}</span>
+                  </div>
+                  <div className="flex items-center gap-4 text-[9px] font-mono text-white/20">
+                    <span>Latency: {diag.latency}ms</span>
+                    <span>Seed: {diag.seed || 'N/A'}</span>
+                    <span>{new Date(diag.timestamp).toLocaleTimeString()}</span>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="text-[9px] font-bold uppercase tracking-widest text-white/40">Prompt Extract</h5>
+                    <div className="bg-black/20 rounded p-3 text-[10px] font-mono text-white/60 max-h-[150px] overflow-y-auto custom-scrollbar whitespace-pre-wrap">
+                      {diag.prompt.split('INPUT TEXT:')[1]?.trim() || diag.prompt}
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="text-[9px] font-bold uppercase tracking-widest text-white/40">AI Response</h5>
+                    <div className="bg-black/20 rounded p-3 text-[10px] font-mono text-cyan-400/80 max-h-[150px] overflow-y-auto custom-scrollbar">
+                      {diag.response || diag.error || "No response recorded"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

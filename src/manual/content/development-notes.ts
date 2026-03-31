@@ -55,7 +55,19 @@ export const DEVELOPMENT_NOTES = [
           "Candidate selection is stable under the same seed and inputs.",
           "Tie-break behavior is explicit and reproducible.",
           "Reproducibility metadata is available without altering canonical export requirements unless later adopted."
-        ]
+        ],
+        completionNote: {
+          achieved: [
+            "Modularized selection logic into dedicated eligibility and tie-break files.",
+            "Introduced reproducibility metadata capture in the core engine loop.",
+            "Refactored proposal selection to accept deterministic context (seed, sequence hash)."
+          ],
+          deferred: [
+            "Actual implementation of stable, non-random tie-breaking policies (currently still uses random selection).",
+            "Integration of benchmark mode into the simulation hook or UI."
+          ],
+          phase3Implications: "Phase 3 now has a clean, isolated target: replacing the random placeholder in tiebreak.ts with a stable policy using the provided context, without needing to touch the engine orchestration again."
+        }
       },
       {
         title: "Phase 3: Diagnostics & Benchmark Probes",

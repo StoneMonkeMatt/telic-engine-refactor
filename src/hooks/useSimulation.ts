@@ -230,15 +230,26 @@ export function useSimulation() {
     setParams(nextParams);
     
     try {
-      const symbols = await distillTextToSymbols(inputText, codex.symbols.symbols, aiConfig);
-      if (symbols.length > 0) {
-        setNarrative(symbols);
+      const distillationConfig = { ...aiConfig, seed: currentSeed };
+      const result = await distillTextToSymbols(inputText, codex.symbols.symbols, distillationConfig);
+      
+      if (result.symbols.length > 0) {
+        setNarrative(result.symbols);
         setDistillStatus("Running Telos simulation...");
         
         // Allow UI to update before heavy simulation
         await new Promise(resolve => setTimeout(resolve, 100));
         
-        executeSimulation(symbols, nextParams, steps, { originalText: inputText });
+        const simResults = executeSimulation(result.symbols, nextParams, steps, { originalText: inputText });
+        
+        // Attach AI diagnostic if available
+        if (result.diagnostic && simResults) {
+          setResults(prev => prev ? {
+            ...prev,
+            aiDiagnostics: [result.diagnostic!, ...(prev.aiDiagnostics || [])]
+          } : null);
+        }
+        
         setDistillStatus(""); // Clear status on success
       } else {
         setDistillStatus("No symbols found. Try a different passage.");

@@ -1,11 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { Symbol, AIConfig } from "../types";
+import { Symbol, AIConfig, DistillationResult, AIDiagnostic } from "../types";
 
 export async function distillTextToSymbols(
   text: string, 
   availableSymbols: Symbol[], 
   config: AIConfig
-): Promise<string[]> {
+): Promise<DistillationResult> {
+  const startTime = Date.now();
   const validGlyphs = new Set(availableSymbols.map(s => s.glyph));
   const symbolMap = availableSymbols.map(s => `${s.glyph}: ${s.meaning}`).join(', ');
   
@@ -25,6 +26,18 @@ INSTRUCTIONS:
 INPUT TEXT:
 ${text.substring(0, 100000)}`;
 
+  const createDiagnostic = (response: string, success: boolean, error?: string): AIDiagnostic => ({
+    provider: config.provider,
+    model: config.model || (config.provider === 'gemini' ? "gemini-3-flash-preview" : ""),
+    prompt: prompt,
+    response: response,
+    latency: Date.now() - startTime,
+    timestamp: Date.now(),
+    success: success,
+    error: error,
+    seed: config.seed
+  });
+
   if (config.provider === 'gemini') {
     const apiKey = config.apiKey || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : undefined);
     
@@ -32,124 +45,145 @@ ${text.substring(0, 100000)}`;
       throw new Error("Gemini API Key is required. Please provide it in settings or ensure GEMINI_API_KEY is set in the environment.");
     }
 
-    const ai = new GoogleGenAI({ apiKey });
-    const response = await ai.models.generateContent({
-      model: config.model || "gemini-3-flash-preview",
-      contents: [{
-        role: "user",
-        parts: [{ text: prompt }]
-      }],
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.ARRAY,
-          items: { type: Type.STRING }
-        },
-        temperature: 0.2,
-      }
-    });
-
     try {
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: config.model || "gemini-3-flash-preview",
+        contents: [{
+          role: "user",
+          parts: [{ text: prompt }]
+        }],
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.ARRAY,
+            items: { type: Type.STRING }
+          },
+          temperature: 0.2,
+          seed: config.seed
+        }
+      });
+
       const result = JSON.parse(response.text);
-      return Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
-    } catch (e) {
+      const symbols = Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
+      return {
+        symbols,
+        diagnostic: createDiagnostic(response.text, true)
+      };
+    } catch (e: any) {
       console.error("Failed to parse Gemini response:", e);
-      return [];
+      return {
+        symbols: [],
+        diagnostic: createDiagnostic("", false, e.message)
+      };
     }
   }
 
   // Generic OpenAI-compatible fetch for OpenAI, Grok, DeepSeek via local proxy
   if (config.provider === 'openai' || config.provider === 'grok' || config.provider === 'deepseek') {
-    const response = await fetch("/api/proxy", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        provider: config.provider,
-        apiKey: config.apiKey,
-        model: config.model,
-        prompt: prompt,
-        responseFormat: 'json_object'
-      })
-    });
-
-    if (!response.ok) {
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const err = await response.json();
-        throw new Error(err.error?.message || `${config.provider} request failed: ${response.statusText}`);
-      } else {
-        const text = await response.text();
-        console.error(`${config.provider} non-JSON error:`, text);
-        throw new Error(`${config.provider} proxy error: ${response.statusText}. The server might not be configured correctly for Vercel.`);
-      }
-    }
-
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      const text = await response.text();
-      console.error(`${config.provider} unexpected response:`, text);
-      throw new Error(`${config.provider} returned an unexpected response format. Check your server configuration.`);
-    }
-
-    const data = await response.json();
     try {
+      const response = await fetch("/api/proxy", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          provider: config.provider,
+          apiKey: config.apiKey,
+          model: config.model,
+          prompt: prompt,
+          responseFormat: 'json_object',
+          seed: config.seed
+        })
+      });
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        let errorMessage = "";
+        if (contentType && contentType.includes("application/json")) {
+          const err = await response.json();
+          errorMessage = err.error?.message || `${config.provider} request failed: ${response.statusText}`;
+        } else {
+          const text = await response.text();
+          console.error(`${config.provider} non-JSON error:`, text);
+          errorMessage = `${config.provider} proxy error: ${response.statusText}. The server might not be configured correctly for Vercel.`;
+        }
+        return {
+          symbols: [],
+          diagnostic: createDiagnostic("", false, errorMessage)
+        };
+      }
+
+      const data = await response.json();
       const content = data.choices[0].message.content;
       const parsed = JSON.parse(content);
       const result = Array.isArray(parsed) ? parsed : (parsed.symbols || parsed.glyphs || Object.values(parsed)[0]);
-      return Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
-    } catch (e) {
+      const symbols = Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
+      
+      return {
+        symbols,
+        diagnostic: createDiagnostic(content, true)
+      };
+    } catch (e: any) {
       console.error(`Failed to parse ${config.provider} response:`, e);
-      return [];
+      return {
+        symbols: [],
+        diagnostic: createDiagnostic("", false, e.message)
+      };
     }
   }
 
   if (config.provider === 'anthropic') {
-    const response = await fetch("/api/proxy", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        provider: 'anthropic',
-        apiKey: config.apiKey,
-        model: config.model,
-        prompt: prompt,
-        responseFormat: 'json_object'
-      })
-    });
-
-    if (!response.ok) {
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("application/json")) {
-        const err = await response.json();
-        throw new Error(err.error?.message || "Anthropic request failed");
-      } else {
-        const text = await response.text();
-        console.error("Anthropic non-JSON error:", text);
-        throw new Error(`Anthropic proxy error: ${response.statusText}. The server might not be configured correctly for Vercel.`);
-      }
-    }
-
-    const contentType = response.headers.get("content-type");
-    if (!contentType || !contentType.includes("application/json")) {
-      const text = await response.text();
-      console.error("Anthropic unexpected response:", text);
-      throw new Error("Anthropic returned an unexpected response format. Check your server configuration.");
-    }
-
-    const data = await response.json();
     try {
+      const response = await fetch("/api/proxy", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          provider: 'anthropic',
+          apiKey: config.apiKey,
+          model: config.model,
+          prompt: prompt,
+          responseFormat: 'json_object'
+        })
+      });
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        let errorMessage = "";
+        if (contentType && contentType.includes("application/json")) {
+          const err = await response.json();
+          errorMessage = err.error?.message || "Anthropic request failed";
+        } else {
+          const text = await response.text();
+          console.error("Anthropic non-JSON error:", text);
+          errorMessage = `Anthropic proxy error: ${response.statusText}. The server might not be configured correctly for Vercel.`;
+        }
+        return {
+          symbols: [],
+          diagnostic: createDiagnostic("", false, errorMessage)
+        };
+      }
+
+      const data = await response.json();
       const content = data.content[0].text;
       const match = content.match(/\[.*\]/s);
       const result = JSON.parse(match ? match[0] : content);
-      return Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
-    } catch (e) {
+      const symbols = Array.isArray(result) ? result.filter(glyph => validGlyphs.has(glyph)) : [];
+      
+      return {
+        symbols,
+        diagnostic: createDiagnostic(content, true)
+      };
+    } catch (e: any) {
       console.error("Failed to parse Anthropic response:", e);
-      return [];
+      return {
+        symbols: [],
+        diagnostic: createDiagnostic("", false, e.message)
+      };
     }
   }
 
-  return [];
+  return { symbols: [] };
 }

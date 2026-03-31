@@ -32,14 +32,17 @@ export function selectProposal(
 
   // [PHASE 2: ORCHESTRATION]
   // 1. [CANDIDATE ELIGIBILITY FILTERING]
-  // Currently, we consider all ranked candidates as eligible for the selection pool.
-  // In future iterations, this might filter by score thresholds or validity.
-  const eligible = ranked; 
+  // We identify the best score in the ranked set.
+  const maxScore = Math.max(...ranked.map(c => c.score));
+  
+  // We only consider candidates that have the maximum score as eligible for tie-breaking.
+  // This ensures that we always favor the highest-scoring proposals.
+  const eligible = ranked.filter(c => c.score === maxScore); 
 
   // 2. [TIE-RESOLUTION / CANDIDATE SELECTION]
-  // We pick a candidate from the eligible pool. 
-  // Currently, this is a random pick from the entire set (implicit tie-break).
-  const selected = resolveTie(eligible, tieBreakContext, rng);
+  // We pick a candidate from the eligible pool (the tied best candidates) 
+  // using a stable deterministic policy.
+  const { selected, reasoning } = resolveTie(eligible, tieBreakContext);
 
   // 3. [ACCEPTANCE CHECK (ELIGIBILITY FOR STATE TRANSITION)]
   // We determine if the selected candidate is accepted as the next state.
@@ -49,6 +52,7 @@ export function selectProposal(
     selected,
     accepted,
     method: 'metropolis-hastings',
-    tieBreakApplied: eligible.length > 1
+    tieBreakApplied: eligible.length > 1,
+    reasoning
   };
 }
