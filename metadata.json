@@ -1,0 +1,5 @@
+{
+  "name": "The Compass V1 (Build Manual) - Baseline v2",
+  "description": "Canonical Baseline Configuration v1 for The Compass simulation.\n\nFeatures:\n- Curated emergence\n- Fixed physics\n- Static ontology\n- Single-sequence evolution\n- Canonical reset sequence\n- Canonical default parameters\n\nThis baseline serves as the stable reference for all future comparative analysis and research.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,22 @@
+export type JsonSchema = {
+  $schema?: string;
+  $id?: string;
+  title?: string;
+  description?: string;
+  type?: string | string[];
+  properties?: Record<string, JsonSchema>;
+  required?: string[];
+  additionalProperties?: boolean;
+  items?: JsonSchema | JsonSchema[];
+  enum?: (string | number | boolean | null)[];
+  anyOf?: JsonSchema[];
+  oneOf?: JsonSchema[];
+  allOf?: JsonSchema[];
+  const?: string | number | boolean | null;
+  minimum?: number;
+  exclusiveMinimum?: number;
+  maximum?: number;
+  exclusiveMaximum?: number;
+  minLength?: number;
+  format?: string;
+};
