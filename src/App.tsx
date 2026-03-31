@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useMemo, lazy, Suspense } from 'react';
+import { useMemo, lazy, Suspense } from 'react';
 import { 
-  Zap, Compass as CompassIcon,
+  Zap,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SimulationTab } from './components/SimulationTab';
@@ -21,6 +21,7 @@ import { AIConfigPanel } from './components/AIConfigPanel';
 import { QuickSymbolsPanel } from './components/QuickSymbolsPanel';
 import { useSimulation } from './hooks/useSimulation';
 import { useUIState } from './hooks/useUIState';
+import { useFilteredOntologyFields } from './hooks/useFilteredOntologyFields';
 import { cn } from './lib/utils';
 import { OntologyField } from './types';
 
@@ -28,11 +29,11 @@ import { OntologyField } from './types';
 export default function App() {
   const {
     codex, narrative, params, results, metrics, simSteps, currentStepIdx, isPlaying,
-    chartData, setNarrative, setParams, setSimSteps,
-    setResults, setMetrics, setCurrentStepIdx, setIsPlaying,
-    runSimulation, stepForward, stepBack, togglePlay, resetSimulation, handleExport,
+    chartData, setParams, setSimSteps,
+    setCurrentStepIdx, setIsPlaying,
+    runSimulation, handleExport,
     clearNarrative, handleRandomize, handleHardReset, addSymbol, removeSymbol,
-    autoRandomize, setAutoRandomize, history, restoreFromHistory, addToHistory, setSeed,
+    autoRandomize, setAutoRandomize, history, restoreFromHistory, setSeed,
     isDistilling, distillStatus, runDistillationFromText
   } = useSimulation();
 
@@ -47,36 +48,90 @@ export default function App() {
     aiConfig, setAiConfig,
   } = useUIState();
 
-  const filteredOntologyFields = useMemo(() => {
-    if (!searchQuery) return codex.symbols.ontology_fields;
-    const q = searchQuery.toLowerCase();
-    
-    return codex.symbols.ontology_fields?.map(field => {
-      const fieldMatches = field.name.toLowerCase().includes(q) || field.description.toLowerCase().includes(q);
-      
-      const filteredDomains = field.domains.filter(domain => {
-        const domainMatches = domain.toLowerCase().includes(q);
-        if (domainMatches) return true;
-        
-        const glyphs = codex.symbols.domains[domain] as string[] || [];
-        return glyphs.some(glyph => {
-          const s = codex.getSymbol(glyph);
-          return s && (s.glyph.toLowerCase().includes(q) || s.meaning.toLowerCase().includes(q));
-        });
-      });
-      
-      if (fieldMatches || filteredDomains.length > 0) {
-        return {
-          ...field,
-          domains: fieldMatches ? field.domains : filteredDomains
-        };
-      }
-      return null;
-    }).filter((f): f is OntologyField => f !== null);
-  }, [searchQuery, codex]);
+  const filteredOntologyFields = useFilteredOntologyFields(codex, searchQuery);
 
   const handleDistill = async () => {
     await runDistillationFromText(inputText, aiConfig, simSteps);
+  };
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'simulation':
+        return (
+          <SimulationTab
+            simulationState={{
+              codex,
+              narrative,
+              params,
+              results,
+              metrics,
+              simSteps,
+              currentStepIdx,
+              isPlaying,
+              chartData
+            }}
+            inputState={{
+              inputText,
+              isDistilling,
+              distillStatus
+            }}
+            simulationActions={{
+              clearNarrative,
+              handleRandomize,
+              removeSymbol,
+              runSimulation,
+              setCurrentStepIdx,
+              setIsPlaying,
+              handleExport,
+              setInputText,
+              handleDistill
+            }}
+          />
+        );
+      case 'history':
+        return (
+          <HistoryTab
+            history={history}
+            restoreFromHistory={restoreFromHistory}
+            setActiveTab={setActiveTab}
+          />
+        );
+      case 'ontology':
+        return (
+          <OntologyTab
+            codex={codex}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            ontologyOpenField={ontologyOpenField}
+            setOntologyOpenField={setOntologyOpenField}
+            ontologyOpenDomain={ontologyOpenDomain}
+            setOntologyOpenDomain={setOntologyOpenDomain}
+            isBridgesOpen={isBridgesOpen}
+            setIsBridgesOpen={setIsBridgesOpen}
+            filteredOntologyFields={filteredOntologyFields}
+          />
+        );
+      case 'metrics':
+        return metrics ? (
+          <MetricsTab
+            metrics={metrics}
+            results={results}
+            params={params}
+          />
+        ) : null;
+      case 'agents':
+        return <AgentsTab params={params} />;
+      case 'manual':
+        return (
+          <ManualTab 
+            searchQuery={searchQuery} 
+            setSearchQuery={setSearchQuery} 
+            aiConfig={aiConfig} 
+          />
+        );
+      default:
+        return null;
+    }
   };
 
   return (
@@ -159,73 +214,7 @@ export default function App() {
                 <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-cyan-500/50">Initializing Module...</p>
               </div>
             }>
-              {activeTab === 'simulation' && (
-                <SimulationTab
-                  codex={codex}
-                  narrative={narrative}
-                  params={params}
-                  results={results}
-                  metrics={metrics}
-                  simSteps={simSteps}
-                  currentStepIdx={currentStepIdx}
-                  isPlaying={isPlaying}
-                  chartData={chartData}
-                  inputText={inputText}
-                  isDistilling={isDistilling}
-                  distillStatus={distillStatus}
-                  clearNarrative={clearNarrative}
-                  handleRandomize={handleRandomize}
-                  removeSymbol={removeSymbol}
-                  runSimulation={runSimulation}
-                  setCurrentStepIdx={setCurrentStepIdx}
-                  setIsPlaying={setIsPlaying}
-                  handleExport={handleExport}
-                  setInputText={setInputText}
-                  handleDistill={handleDistill}
-                />
-              )}
-
-              {activeTab === 'history' && (
-                <HistoryTab
-                  history={history}
-                  restoreFromHistory={restoreFromHistory}
-                  setActiveTab={setActiveTab}
-                />
-              )}
-
-              {activeTab === 'ontology' && (
-                <OntologyTab
-                  codex={codex}
-                  searchQuery={searchQuery}
-                  setSearchQuery={setSearchQuery}
-                  ontologyOpenField={ontologyOpenField}
-                  setOntologyOpenField={setOntologyOpenField}
-                  ontologyOpenDomain={ontologyOpenDomain}
-                  setOntologyOpenDomain={setOntologyOpenDomain}
-                  isBridgesOpen={isBridgesOpen}
-                  setIsBridgesOpen={setIsBridgesOpen}
-                  filteredOntologyFields={filteredOntologyFields}
-                />
-              )}
-
-              {activeTab === 'metrics' && metrics && (
-                <MetricsTab
-                  metrics={metrics}
-                  results={results}
-                  params={params}
-                />
-              )}
-
-              {activeTab === 'agents' && (
-                <AgentsTab params={params} />
-              )}
-              {activeTab === 'manual' && (
-                <ManualTab 
-                  searchQuery={searchQuery} 
-                  setSearchQuery={setSearchQuery} 
-                  aiConfig={aiConfig} 
-                />
-              )}
+              {renderTabContent()}
             </Suspense>
           </div>
         </div>

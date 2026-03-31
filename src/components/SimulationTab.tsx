@@ -4,60 +4,53 @@ import {
   Compass as CompassIcon, RefreshCw, Zap, Brain, FileText
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { SimulationResults, MetricsData, TelosParams, ChartDataPoint } from '../types';
-import { Codex } from '../logic/codex';
+import { SimulationState, InputState, SimulationActions } from '../types';
 import { EvolutionTimelineCard } from './simulation/EvolutionTimelineCard';
 import { TelicEvolutionChart } from './simulation/TelicEvolutionChart';
 import { CompressionDynamicsChart } from './simulation/CompressionDynamicsChart';
 import { CompressionHistoryTable } from './simulation/CompressionHistoryTable';
 
 interface SimulationTabProps {
-  codex: Codex;
-  narrative: string[];
-  params: TelosParams;
-  results: SimulationResults | null;
-  metrics: MetricsData | null;
-  simSteps: number;
-  currentStepIdx: number;
-  isPlaying: boolean;
-  chartData: ChartDataPoint[];
-  inputText: string;
-  isDistilling: boolean;
-  distillStatus: string;
-  clearNarrative: () => void;
-  handleRandomize: () => void;
-  removeSymbol: (index: number) => void;
-  runSimulation: () => void;
-  setCurrentStepIdx: (idx: number) => void;
-  setIsPlaying: (playing: boolean) => void;
-  handleExport: () => void;
-  setInputText: (text: string) => void;
-  handleDistill: () => void;
+  simulationState: SimulationState;
+  inputState: InputState;
+  simulationActions: SimulationActions;
 }
 
 export const SimulationTab: React.FC<SimulationTabProps> = ({
-  codex,
-  narrative,
-  params,
-  results,
-  metrics,
-  simSteps,
-  currentStepIdx,
-  isPlaying,
-  chartData,
-  inputText,
-  isDistilling,
-  distillStatus,
-  clearNarrative,
-  handleRandomize,
-  removeSymbol,
-  runSimulation,
-  setCurrentStepIdx,
-  setIsPlaying,
-  handleExport,
-  setInputText,
-  handleDistill
+  simulationState,
+  inputState,
+  simulationActions
 }) => {
+  const {
+    codex,
+    narrative,
+    params,
+    results,
+    metrics,
+    simSteps,
+    currentStepIdx,
+    isPlaying,
+    chartData
+  } = simulationState;
+
+  const {
+    inputText,
+    isDistilling,
+    distillStatus
+  } = inputState;
+
+  const {
+    clearNarrative,
+    handleRandomize,
+    removeSymbol,
+    runSimulation,
+    setCurrentStepIdx,
+    setIsPlaying,
+    handleExport,
+    setInputText,
+    handleDistill
+  } = simulationActions;
+
   return (
     <div className="space-y-6">
       {/* Narrative Input Block */}

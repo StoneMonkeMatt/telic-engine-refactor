@@ -163,6 +163,36 @@ export interface SimulationRun {
   };
 }
 
+export interface SimulationState {
+  codex: any; // Using any for now to avoid circular dependency with Codex class if it becomes an issue, but ideally it's Codex
+  narrative: string[];
+  params: TelosParams;
+  results: SimulationResults | null;
+  metrics: MetricsData | null;
+  simSteps: number;
+  currentStepIdx: number;
+  isPlaying: boolean;
+  chartData: ChartDataPoint[];
+}
+
+export interface InputState {
+  inputText: string;
+  isDistilling: boolean;
+  distillStatus: string;
+}
+
+export interface SimulationActions {
+  clearNarrative: () => void;
+  handleRandomize: () => void;
+  removeSymbol: (index: number) => void;
+  runSimulation: () => void;
+  setCurrentStepIdx: (idx: number) => void;
+  setIsPlaying: (playing: boolean) => void;
+  handleExport: () => void;
+  setInputText: (text: string) => void;
+  handleDistill: () => void;
+}
+
 export interface SimulationResults {
   history: SimulationStep[];
   observerEmerged: boolean;
