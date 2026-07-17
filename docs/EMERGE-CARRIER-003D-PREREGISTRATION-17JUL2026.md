@@ -146,18 +146,20 @@ The active rotation sweep is inadmissible unless all gates pass:
    `df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6`;
 3. the Carrier-003C generated runner reproduces SHA-256  
    `b4d0ff5407735b2f01c7c0dd1d15a27b8dcb93342359cb787147741858764c0a`;
-4. the Carrier-003D runner assembler has SHA-256  
-   `4ca605da517a95c57e35fd710aca0c6a01dd9da4ea446849bb52afb7eff8c2ce`;
-5. the Carrier-003D aggregate assembler has SHA-256  
-   `02b0dd023db6a4ba91d85fe8f346bbb5b7def2d6154fc1532922e3163970c5b9`;
-6. repository type-checking passes after deterministic assembly;
-7. the pure duality projection still reproduces the native engine update exactly;
-8. Carrier-001 and the frozen capsule selector reproduce;
-9. activation-off real and sham schedules reproduce the active Carrier-003C reference exactly;
-10. all fourteen shams preserve multiset, duration and terminal anchor and are unique non-identity schedules;
-11. an independently executed rotation-7 reference is reproduced exactly by rotation 7 inside the sweep;
-12. the real-history projection receipt is identical across all fourteen rotations;
-13. all fourteen sham projection receipts are distinct.
+4. the committed Carrier-003D runner assembler has Git blob SHA  
+   `dca6a31d4271b40982f29cf985dd9fd490ae73cd`;
+5. the committed Carrier-003D aggregate assembler has Git blob SHA  
+   `da8d8c4ab94e4f2a985d347cb8fd7e29ad9af6a3`;
+6. the committed pure duality projection has Git blob SHA  
+   `2e92f8018678c5f838fbfe717a58c7605a83bf7c`;
+7. repository type-checking passes after deterministic assembly;
+8. the pure duality projection still reproduces the native engine update exactly;
+9. Carrier-001 and the frozen capsule selector reproduce;
+10. activation-off real and sham schedules reproduce the active Carrier-003C reference exactly;
+11. all fourteen shams preserve multiset, duration and terminal anchor and are unique non-identity schedules;
+12. an independently executed rotation-7 reference is reproduced exactly by rotation 7 inside the sweep;
+13. the real-history projection receipt is identical across all fourteen rotations;
+14. all fourteen sham projection receipts are distinct.
 
 Any failed gate stops interpretation.
 
