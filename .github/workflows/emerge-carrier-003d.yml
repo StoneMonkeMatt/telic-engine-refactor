@@ -50,7 +50,7 @@ jobs:
       - name: Verify Carrier-003D committed source receipts
         run: |
           test "$(git hash-object .github/scripts/emerge-carrier-003d-runner.ts)" = 'dca6a31d4271b40982f29cf985dd9fd490ae73cd'
-          test "$(git hash-object .github/scripts/emerge-carrier-003d-aggregate.ts)" = 'da8d8c4ab94e4f2a985d347cb8fd7e29ad9af6a3'
+          test "$(git hash-object .github/scripts/emerge-carrier-003d-aggregate.ts)" = '9c18198e2639d85aec13c863d18bda3dff969925'
           test "$(git hash-object src/logic/dualityProjection.ts)" = '2e92f8018678c5f838fbfe717a58c7605a83bf7c'
 
       - name: Assemble and verify Carrier-003C reference runner
