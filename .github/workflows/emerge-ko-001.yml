@@ -14,7 +14,7 @@ permissions:
 jobs:
   causal-feedback-knockout:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout branch
@@ -82,16 +82,45 @@ jobs:
           NODE
 
       - name: Display trajectory-audit result
-        if: always()
         run: |
-          if [ -f experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json ]; then
-            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json'); console.log(JSON.stringify({gamma:r.gamma,gamma95:r.gamma95,interpretation:r.interpretation,checkpoints:r.checkpoints,cells:r.cells,pairSummaries:r.pairSummaries,manifest:m}, null, 2));"
-          fi
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json'); console.log(JSON.stringify({gamma:r.gamma,gamma95:r.gamma95,interpretation:r.interpretation,checkpoints:r.checkpoints,cells:r.cells,pairSummaries:r.pairSummaries,manifest:m}, null, 2));"
 
       - name: Upload V2.1 trajectory receipt
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: EMERGE-KO-001-v2.1-results
-          path: experiments/emerge-ko-001/results/
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json
+          if-no-files-found: error
+
+      - name: Freeze V2.2 matched panel and wounds
+        run: |
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Run V2.2 equal-wound needle repair test
+        run: |
+          npx tsx experiments/emerge-ko-001/run-v2-2.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json
+
+      - name: Display V2.2 causal result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json'); console.log(JSON.stringify({selectorSha256:r.selectorSha256,gamma:r.gamma,gammaStandardError:r.gammaStandardError,gamma95:r.gamma95,interpretation:r.interpretation,cells:r.cells,pairEffects:r.pairEffects.map(p=>({pairId:p.pairId,matchTier:p.matchTier,meanGamma:p.meanGamma}))}, null, 2));"
+          fi
+
+      - name: Upload V2.2 frozen panel and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-KO-001-v2.2-results
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json
           if-no-files-found: error
