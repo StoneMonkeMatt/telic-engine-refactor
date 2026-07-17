@@ -66,6 +66,7 @@ jobs:
         run: |
           cat \
             experiments/emerge-ko-001/carrier-003.patch.part00 \
+            experiments/emerge-ko-001/carrier-003.patch.boundary \
             experiments/emerge-ko-001/carrier-003.patch.part01 \
             experiments/emerge-ko-001/carrier-003.patch.part02 \
             experiments/emerge-ko-001/carrier-003.patch.part03 \
@@ -102,6 +103,7 @@ jobs:
           path: |
             docs/EMERGE-CARRIER-003-PREREGISTRATION-17JUL2026.md
             experiments/emerge-ko-001/carrier-003.patch.part00
+            experiments/emerge-ko-001/carrier-003.patch.boundary
             experiments/emerge-ko-001/carrier-003.patch.part01
             experiments/emerge-ko-001/carrier-003.patch.part02
             experiments/emerge-ko-001/carrier-003.patch.part03
