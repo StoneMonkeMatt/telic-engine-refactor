@@ -1,4 +1,4 @@
-name: Diagnose Carrier-003D ledger advance
+name: Generate Carrier-003D ledger advance
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  diagnose:
+  generate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,20 +21,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: npm
-      - run: npm ci --silent
-      - name: Capture transform diagnostic
+      - name: Generate and verify updated ledger
         run: |
-          set +e
-          npx tsx .github/scripts/advance-mathematics-003d.ts \
-            experiments/emerge-ko-001/MATHEMATICS.md \
-            > /tmp/advance-mathematics-003d.log 2>&1
-          status=$?
-          echo "status=$status" >> /tmp/advance-mathematics-003d.log
-          cat /tmp/advance-mathematics-003d.log
-          exit 0
+          test "$(git hash-object experiments/emerge-ko-001/MATHEMATICS.md)" = '3f4c49c0ac7bc244325cfb7d688e1a52250f5180'
+          test "$(git hash-object .github/scripts/advance-mathematics-003d.mjs)" = '1be9d30c8b1a6bf3cedac79ac7414e081deedd2c'
+          node .github/scripts/advance-mathematics-003d.mjs \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F 'Last updated: 17 July 2026 — after EMERGE-CARRIER-003D' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F '## 11. Carrier-003D Result Boundary' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F 'EMERGE-CARRIER-003E — Higher-Order Directional Law Audit' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F 'f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          git hash-object experiments/emerge-ko-001/MATHEMATICS.md \
+            | tee experiments/emerge-ko-001/MATHEMATICS-003D-BLOB.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: Carrier-003D-ledger-diagnostic
-          path: /tmp/advance-mathematics-003d.log
+          name: Carrier-003D-updated-ledger
+          path: |
+            experiments/emerge-ko-001/MATHEMATICS.md
+            experiments/emerge-ko-001/MATHEMATICS-003D-BLOB.txt
           if-no-files-found: error
