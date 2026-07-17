@@ -47,11 +47,11 @@ jobs:
           echo '5c1f2fe37979ed500db7eb482d30a43b0a6121b791df051db7e42a73e55689ea  experiments/emerge-ko-001/run-carrier-003b-base.generated.ts' | sha256sum -c -
           echo 'df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6  experiments/emerge-ko-001/aggregate-carrier-003b-base.generated.ts' | sha256sum -c -
 
-      - name: Verify Carrier-003D assembler receipts
+      - name: Verify Carrier-003D committed source receipts
         run: |
-          echo '4ca605da517a95c57e35fd710aca0c6a01dd9da4ea446849bb52afb7eff8c2ce  .github/scripts/emerge-carrier-003d-runner.ts' | sha256sum -c -
-          echo '02b0dd023db6a4ba91d85fe8f346bbb5b7def2d6154fc1532922e3163970c5b9  .github/scripts/emerge-carrier-003d-aggregate.ts' | sha256sum -c -
-          echo 'c518ad57997f38752a3782f93bce9117b487ad3c431033ac5e50490da70c9983  src/logic/dualityProjection.ts' | sha256sum -c -
+          test "$(git hash-object .github/scripts/emerge-carrier-003d-runner.ts)" = 'dca6a31d4271b40982f29cf985dd9fd490ae73cd'
+          test "$(git hash-object .github/scripts/emerge-carrier-003d-aggregate.ts)" = 'da8d8c4ab94e4f2a985d347cb8fd7e29ad9af6a3'
+          test "$(git hash-object src/logic/dualityProjection.ts)" = '2e92f8018678c5f838fbfe717a58c7605a83bf7c'
 
       - name: Assemble and verify Carrier-003C reference runner
         run: |
