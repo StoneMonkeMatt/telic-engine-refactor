@@ -1,0 +1,55 @@
+name: EMERGE-KO-001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'experiments/emerge-ko-001/**'
+      - '.github/workflows/emerge-ko-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-feedback-knockout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Run EMERGE-KO-001
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/run.ts \
+            experiments/emerge-ko-001/config.example.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001.json
+
+      - name: Display causal result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-KO-001.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001.json'); console.log(JSON.stringify({experiment_id:r.experiment_id ?? r.experimentId, gamma_h:r.gamma_h ?? r.gammaH, interpretation:r.interpretation, aggregates:r.aggregates}, null, 2));"
+          fi
+
+      - name: Upload experiment receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-KO-001-results
+          path: experiments/emerge-ko-001/results/
+          if-no-files-found: warn
