@@ -929,9 +929,9 @@ No retrospective adjustment of \(w_v=0.5\) is admissible as a rescue of this res
 
 ## 13. Active Bench Queue
 
-### Next: EMERGE-CARRIER-003E — Higher-Order Directional Law Audit
+### Active: EMERGE-CARRIER-003E — Candidate-Projected Duality Acceleration
 
-Status: **architecture and mathematics audit required before preregistration**.
+Status: **preregistered 18 July 2026; outcome execution pending**.
 
 The first-order signed-slope carrier completed:
 
@@ -947,20 +947,31 @@ The first-order signed-slope carrier completed:
 
 It established robust causal sensitivity to directional timing but did not establish useful repair control.
 
-The next audit must identify the cleanest model-native feature not reducible to current level or first-order slope. Candidate families are:
+The architecture audit selected bounded-history candidate acceleration because the native EMA history, current anchor and pure candidate projection already exist at the ranking boundary:
 
-1. bounded-history curvature or acceleration;
-2. persistence-state transition direction;
-3. threshold-crossing direction;
-4. inventory-event timing.
+\[
+a_t(c)
+=
+\left[D_{t+1}^{EMA}(c)-D_t^{EMA}\right]
+-
+\left[D_t^{EMA}-D_{t-1}^{EMA}\right].
+\]
 
-Selection must follow existing Telos variables and equations rather than a retrospective attempt to rescue Carrier-003D. Any selected mechanism must again pass:
+Carrier-003E freezes the Carrier-003C signed-slope coefficient at \(w_v=0.5\) and preregisters one additive acceleration coefficient \(w_a=0.5\). Fifteen realised slopes are derived from each normalized sixteen-value EMA history. The complete sham family cyclically rotates those same fifteen slopes before candidate acceleration is derived, preserving slope multiset, exposure, capsule, current EMA anchor, wounds, random streams, feedback and admission.
+
+The preregistered sequence is:
 
 1. projection validity;
 2. zero-coupling neutrality;
 3. reachable decision influence;
 4. complete-sham temporal control;
 5. positive pair-generalised usefulness.
+
+Permanent preregistration:
+
+- `docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md`
+
+Carrier-004 remains gated until the complete Carrier-003E result earns positive sham-controlled usefulness.
 
 ### Carrier-004 — held-out generalisation
 
@@ -1005,6 +1016,11 @@ Carrier-004 becomes admissible only after a higher-order model-native mechanism 
 - `.github/scripts/emerge-carrier-003d-runner.ts`
 - `.github/scripts/emerge-carrier-003d-aggregate.ts`
 - `.github/workflows/emerge-carrier-003d.yml`
+- `src/logic/dualityProjection.ts` (`projectDualityAcceleration`)
+- `experiments/emerge-ko-001/verify-duality-acceleration.ts`
+- `.github/scripts/emerge-carrier-003e-runner.ts`
+- `.github/scripts/emerge-carrier-003e-aggregate.ts`
+- `.github/workflows/emerge-carrier-003e.yml`
 
 ### Selector and artifact receipts
 
@@ -1196,6 +1212,14 @@ f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c
 - Preserved the boundary that twelve negative rotation point estimates do not establish general harm.
 - Closed positive true-slope chronology usefulness for the fixed first-order law and kept Carrier-004 gated.
 - Opened a higher-order model-native directional law audit without retrospective coefficient tuning.
+
+### 18 July 2026 — Carrier-003E preregistered
+
+- Selected candidate-projected duality acceleration as the cleanest higher-order native law.
+- Defined \(a_t(c)=v_t(c)-v_{t-1}\) using the existing pure candidate projection and frozen EMA histories.
+- Kept the signed-slope coefficient fixed at \(w_v=0.5\) and preregistered \(w_a=0.5\) without a sweep.
+- Defined fourteen cyclic shams over the same fifteen realised slope values, deriving acceleration only after the chronology intervention.
+- Required exact projection algebra, acceleration-off neutrality, reachable acceleration decisions, complete-sham timing causality and positive eight-pair usefulness before Carrier-004.
 
 ---
 

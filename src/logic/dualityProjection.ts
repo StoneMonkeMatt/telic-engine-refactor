@@ -21,6 +21,13 @@ export interface DualityProjection {
   velocity: number;
 }
 
+export interface DualityAccelerationProjection {
+  projection: DualityProjection;
+  previousDuality: number;
+  previousVelocity: number;
+  acceleration: number;
+}
+
 export const NATIVE_DUALITY_PROJECTION_PARAMS: Readonly<DualityProjectionParams> = {
   lambda: 0.618,
   eta: 0.3,
@@ -54,5 +61,28 @@ export function projectDualityUpdate(
     targetDuality,
     nextDuality,
     velocity: nextDuality - previousDuality,
+  };
+}
+
+export function projectDualityAcceleration(
+  scorer: DualityProjectionScorer,
+  currentDuality: number,
+  previousDuality: number,
+  sequence: string[],
+  params: DualityProjectionParams = NATIVE_DUALITY_PROJECTION_PARAMS,
+): DualityAccelerationProjection {
+  const projection = projectDualityUpdate(
+    scorer,
+    currentDuality,
+    sequence,
+    params,
+  );
+  const previousVelocity = currentDuality - previousDuality;
+
+  return {
+    projection,
+    previousDuality,
+    previousVelocity,
+    acceleration: projection.velocity - previousVelocity,
   };
 }
