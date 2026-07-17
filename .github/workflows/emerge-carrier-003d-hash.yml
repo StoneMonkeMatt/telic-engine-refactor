@@ -1,0 +1,22 @@
+name: EMERGE-CARRIER-003D source receipts
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/emerge-carrier-003d-hash.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  receipts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Display source SHA-256 receipts
+        run: |
+          sha256sum .github/scripts/emerge-carrier-003d-runner.ts
+          sha256sum .github/scripts/emerge-carrier-003d-aggregate.ts
+          sha256sum src/logic/dualityProjection.ts
