@@ -41,14 +41,14 @@ generated = generated
 replaceOnce(
   'rotation reference path',
   `  const manifestPath = resolve(
-    process.argv[5] ?? \`${resultsDirectory}/EMERGE-CARRIER-003D-aggregate-manifest.json\`,
+    process.argv[5] ?? \`\${resultsDirectory}/EMERGE-CARRIER-003D-aggregate-manifest.json\`,
   );`,
   `  const manifestPath = resolve(
-    process.argv[5] ?? \`${resultsDirectory}/EMERGE-CARRIER-003D-aggregate-manifest.json\`,
+    process.argv[5] ?? \`\${resultsDirectory}/EMERGE-CARRIER-003D-aggregate-manifest.json\`,
   );
   const rotation7ReferencePath = resolve(
     process.argv[6] ??
-      \`${resultsDirectory}/EMERGE-CARRIER-003D-rotation-7-reference-summary.json\`,
+      \`\${resultsDirectory}/EMERGE-CARRIER-003D-rotation-7-reference-summary.json\`,
   );`,
 );
 
@@ -68,11 +68,11 @@ replaceOnce(
     acceptedTimingInducedActions: 1260,
   };
   for (const metric of METRICS) {
-    assertClose(\`Rotation 7 ${metric}\`, rotation7.estimators[metric], rotation7Expected[metric]);
+    assertClose(\`Rotation 7 \${metric}\`, rotation7.estimators[metric], rotation7Expected[metric]);
   }
   for (const key of ['changedWinnerSteps', 'changedAdmissionSteps', 'acceptedTimingInducedActions'] as const) {
     if (rotation7.dynamics[key] !== rotation7Expected[key]) {
-      throw new Error(\`Rotation 7 ${key} drifted from Carrier-003.\`);
+      throw new Error(\`Rotation 7 \${key} drifted from Carrier-003.\`);
     }
   }`,
   `  // Rotation 7 is independently repeated in setup before the full sweep.
@@ -89,7 +89,7 @@ replaceOnce(
   const rotation7 = summaries.find(summary => summary.rotation === 7)!;
   for (const metric of METRICS) {
     assertClose(
-      \`Rotation 7 ${metric}\`,
+      \`Rotation 7 \${metric}\`,
       rotation7.estimators[metric],
       rotation7Reference.estimators[metric],
     );
@@ -108,7 +108,7 @@ replaceOnce(
     'reconvergenceEvents',
   ] as const) {
     if (rotation7.dynamics[key] !== rotation7Reference.dynamics[key]) {
-      throw new Error(\`Rotation 7 ${key} drifted from its independent setup reference.\`);
+      throw new Error(\`Rotation 7 \${key} drifted from its independent setup reference.\`);
     }
   }
   if (
