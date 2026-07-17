@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - '.github/scripts/advance-mathematics-003d.ts'
+      - '.github/scripts/advance-mathematics-003d.mjs'
       - '.github/workflows/advance-mathematics-003d.yml'
   workflow_dispatch:
 
@@ -34,11 +34,11 @@ jobs:
       - name: Verify frozen ledger and transformer
         run: |
           test "$(git hash-object experiments/emerge-ko-001/MATHEMATICS.md)" = '3f4c49c0ac7bc244325cfb7d688e1a52250f5180'
-          test "$(git hash-object .github/scripts/advance-mathematics-003d.ts)" = 'f11d96156eacd631140c5495485f1d5accdec0b4'
+          test "$(git hash-object .github/scripts/advance-mathematics-003d.mjs)" = '1be9d30c8b1a6bf3cedac79ac7414e081deedd2c'
 
       - name: Advance canonical ledger
         run: |
-          npx tsx .github/scripts/advance-mathematics-003d.ts \
+          node .github/scripts/advance-mathematics-003d.mjs \
             experiments/emerge-ko-001/MATHEMATICS.md
           npm run lint
           grep -F 'Last updated: 17 July 2026 — after EMERGE-CARRIER-003D' \
