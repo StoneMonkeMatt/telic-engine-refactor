@@ -1,0 +1,116 @@
+name: EMERGE-CARRIER-003
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-CARRIER-003-PREREGISTRATION-17JUL2026.md'
+      - 'experiments/emerge-ko-001/**'
+      - '.github/workflows/emerge-carrier-003.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-vs-sham-timing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Rebuild frozen V2.2 substrate
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Reproduce Carrier-002C active reference
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json
+
+      - name: Assemble and verify Carrier-003 executable
+        run: |
+          cat \
+            experiments/emerge-ko-001/carrier-003.patch.part00 \
+            experiments/emerge-ko-001/carrier-003.patch.part01 \
+            experiments/emerge-ko-001/carrier-003.patch.part02 \
+            experiments/emerge-ko-001/carrier-003.patch.part03 \
+            > /tmp/run-carrier-003.patch
+          echo '520376ffc171929b5d7d14cf8dd5de37176db70d76e0ad3a93747d86cde3de82  /tmp/run-carrier-003.patch' | sha256sum -c -
+          echo 'f2169f7a1f03ef599cdbfffd0f99d8dae3f532bea80fcb842ec60240beb46592  experiments/emerge-ko-001/run-carrier-002c.ts' | sha256sum -c -
+          cp experiments/emerge-ko-001/run-carrier-002c.ts experiments/emerge-ko-001/run-carrier-003.generated.ts
+          patch experiments/emerge-ko-001/run-carrier-003.generated.ts < /tmp/run-carrier-003.patch
+          echo 'aef813848ee7fcdc70e0fd3d328ade8c038aaf7f6ccb2218ca6c619266222dd3  experiments/emerge-ko-001/run-carrier-003.generated.ts' | sha256sum -c -
+          npm run lint
+
+      - name: Run Carrier-003 real versus sham timing test
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-manifest.json
+
+      - name: Display Carrier-003 result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-003-summary.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003-manifest.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256,neutrality:r.neutrality,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+          fi
+
+      - name: Upload Carrier-003 source receipts traces and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003-results
+          path: |
+            docs/EMERGE-CARRIER-003-PREREGISTRATION-17JUL2026.md
+            experiments/emerge-ko-001/carrier-003.patch.part00
+            experiments/emerge-ko-001/carrier-003.patch.part01
+            experiments/emerge-ko-001/carrier-003.patch.part02
+            experiments/emerge-ko-001/carrier-003.patch.part03
+            experiments/emerge-ko-001/run-carrier-003.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003-manifest.json
+          if-no-files-found: error
