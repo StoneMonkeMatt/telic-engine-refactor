@@ -1,0 +1,40 @@
+name: Diagnose Carrier-003D ledger advance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/advance-mathematics-003d-diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/emerge-ko-001-sandbox
+          show-progress: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --silent
+      - name: Capture transform diagnostic
+        run: |
+          set +e
+          npx tsx .github/scripts/advance-mathematics-003d.ts \
+            experiments/emerge-ko-001/MATHEMATICS.md \
+            > /tmp/advance-mathematics-003d.log 2>&1
+          status=$?
+          echo "status=$status" >> /tmp/advance-mathematics-003d.log
+          cat /tmp/advance-mathematics-003d.log
+          exit 0
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Carrier-003D-ledger-diagnostic
+          path: /tmp/advance-mathematics-003d.log
+          if-no-files-found: error
