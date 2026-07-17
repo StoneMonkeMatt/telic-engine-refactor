@@ -34,9 +34,9 @@ jobs:
       - name: Verify frozen ledger source
         run: |
           observed="$(git hash-object experiments/emerge-ko-001/MATHEMATICS.md)"
-          test "$observed" = 'b9c8b1057d720b869ed17708154d5fe0d3c9e871'
+          test "$observed" = 'f5a564964770eab316d618b68414a50fad312008'
 
-      - name: Advance canonical ledger
+      - name: Normalize canonical ledger receipt fences
         run: |
           npx tsx experiments/emerge-ko-001/advance-mathematics-003c.ts \
             experiments/emerge-ko-001/MATHEMATICS.md
@@ -47,11 +47,15 @@ jobs:
             experiments/emerge-ko-001/MATHEMATICS.md
           grep -F 'EMERGE-CARRIER-003D — Complete-Sham Native Slope Audit' \
             experiments/emerge-ko-001/MATHEMATICS.md
+          if grep -F '\`\`\`text' experiments/emerge-ko-001/MATHEMATICS.md; then
+            echo 'Escaped receipt fence remains.' >&2
+            exit 1
+          fi
 
-      - name: Commit ledger advance
+      - name: Commit ledger normalization
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add experiments/emerge-ko-001/MATHEMATICS.md
-          git commit -m 'advance mathematics ledger through Carrier-003C'
+          git commit -m 'normalize Carrier-003C ledger receipt fences'
           git push origin HEAD:agent/emerge-ko-001-sandbox
