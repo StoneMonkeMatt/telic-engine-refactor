@@ -2,7 +2,7 @@
   "experimentId": "EMERGE-KO-001",
   "initialSequence": ["🌪️", "🐋", "🎯", "⚓", "💀"],
   "seed": 4,
-  "replicates": 8,
+  "replicates": 32,
   "checkpointSearchSeeds": 256,
   "baselineSteps": 100,
   "horizon": 100,
