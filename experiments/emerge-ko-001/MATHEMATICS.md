@@ -3,7 +3,7 @@
 > **The mathematics defines the causal claim; the experiment earns the right to make it.**
 
 Date established: 17 July 2026  
-Last updated: 17 July 2026 — after EMERGE-CARRIER-003  
+Last updated: 17 July 2026 — after EMERGE-CARRIER-003B  
 Status: canonical live mathematics ledger  
 Experiment bench: `experiments/emerge-ko-001/`  
 Branch: `agent/emerge-ko-001-sandbox`
@@ -16,12 +16,14 @@ This document is the canonical mathematical source of truth for the `emerge-ko-0
 
 1. **Evidence remains chronological.** Earlier findings are not rewritten after later discoveries.
 2. **Invalid, null, inconclusive, directional, mechanistic and established results remain distinct.**
-3. **Reachability precedes efficacy.** A mechanism that receives zero candidate exposure cannot test usefulness.
+3. **Reachability precedes efficacy.** A mechanism with zero exposure cannot test usefulness.
 4. **Influence is not usefulness.** A state or history may alter decisions without improving repair.
 5. **Timing causality is not timing utility.** Chronology may change trajectories without the true order outperforming a sham.
-6. **The matched checkpoint pair is the unit of generalisation.** Replicates improve precision but do not create independent substrates.
-7. **Experimental changes are staged.** Neutral plumbing precedes active coupling; active coupling precedes timing controls; sham robustness precedes held-out generalisation.
-8. **The ledger advances with the bench.** Every completed experiment updates the evidence ladder, claim boundary, active queue and receipt index.
+6. **Sham choice is a nuisance variable.** One convenient counterfeit timeline cannot define a general timing claim.
+7. **The matched checkpoint pair is the unit of generalisation.** Replicates and sham rotations improve measurement but do not create independent scientific substrates.
+8. **Experimental changes are staged.** Neutral plumbing precedes active coupling; active coupling precedes timing controls; complete sham robustness precedes held-out generalisation.
+9. **Closed claims remain closed.** A mechanism that fails its complete sham-robustness test is not rescued by selecting a favourable sham, coefficient or subgroup.
+10. **The ledger advances with the bench.** Every completed experiment updates the evidence ladder, claim boundary, active queue and receipt index.
 
 ---
 
@@ -101,16 +103,16 @@ A_t\in\{0,1\}.
 \]
 
 - `A=0`: the capsule is carried and updated but cannot alter candidate evaluation;
-- `A=1`: a preregistered component of the capsule enters ranking and admission.
+- `A=1`: a preregistered component of the capsule enters ranking or admission.
 
 Timing treatment:
 
 \[
-Q_t\in\{real,sham\}.
+Q_t\in\{real,sham_r\}.
 \]
 
 - `real`: bounded EMA anchors are exposed in chronological order;
-- `sham`: the same anchor multiset, duration, total exposure and terminal anchor are preserved while temporal alignment changes.
+- `sham_r`: the same anchor multiset, duration, total exposure and terminal anchor are preserved while the first fifteen positions are cyclically rotated by \(r\in\{1,\ldots,14\}\).
 
 ### 1.5 Reachable action alphabet
 
@@ -129,7 +131,7 @@ At the experimental repair layer:
 \text{🪡}_{swap}.
 \]
 
-These labels remain experiment-local and are not yet promoted into the broader canonical needle-action inventory.
+These labels remain experiment-local and are not promoted into the broader canonical needle-action inventory.
 
 ### 1.6 Recovery outcome
 
@@ -173,31 +175,47 @@ Carrier-001 and later zero-coupling gates verified this boundary under exact twi
 P(S_{t+1},M_{t+1}\mid S_t,M_t,Z_t,A_t=1).
 \]
 
-Carrier-002C established that this is an executable experimental kernel: changing the active carrier while holding the paired pre-state fixed changed exact winners, admissions and accepted transitions.
+Carrier-002C established an executable carrier: changing the active retained EMA state while holding the paired pre-state fixed changed exact winners, admissions and accepted transitions.
 
-This establishes a functioning state carrier under the implemented intervention. It does not establish that the true history is useful, adaptive or superior to a sham.
+This establishes influence under the implemented carrier. It does not establish usefulness.
 
 ### 2.3 Timing-conditioned kernel
 
-Carrier-003 introduced a bounded timing schedule \(H^{Q}_{1:16}\):
+Carrier-003 introduced a bounded timing schedule \(H^Q_{1:16}\):
 
 \[
 P(S_{t+1},M_{t+1}
 \mid
-S_t,M_t,Z_t,A_t=1,H^{Q}_{1:16}).
+S_t,M_t,Z_t,A_t=1,H^Q_{1:16}).
 \]
 
-For the first sixteen decisions, candidate continuity was anchored to the scheduled EMA value. After step sixteen, both treatments returned to endogenous Carrier-002C capsule evolution.
+For the first sixteen decisions, candidate continuity is anchored to the scheduled EMA value. After step sixteen, treatments return to endogenous Carrier-002C capsule evolution.
 
-The real and sham treatments preserved:
+Carrier-003B used the complete cyclic ensemble:
 
 \[
-\operatorname{multiset}(H^{real}_{1:16})
+H^{sham_r}
 =
-\operatorname{multiset}(H^{sham}_{1:16}),
+\operatorname{rotate}_r(h_1,\ldots,h_{15})\oplus h_{16},
+\qquad
+r=1,\ldots,14,
 \]
 
-with equal duration, equal total exposure and an identical terminal checkpoint anchor.
+with:
+
+\[
+h_{16}=D_0^{\mathrm{EMA}}.
+\]
+
+For every \(r\):
+
+\[
+\operatorname{multiset}(H^{real})
+=
+\operatorname{multiset}(H^{sham_r}),
+\]
+
+with equal duration, total exposure and terminal checkpoint anchor.
 
 ### 2.4 Proposal and admission decomposition
 
@@ -253,7 +271,7 @@ The fixed coefficient is:
 w_D=0.5.
 \]
 
-For insertion candidates, the active carrier replaces the existing raw-duality loss with the carried continuity loss. For reachable non-insertion candidates, it applies the same continuity penalty:
+For insertion candidates, the carrier replaces the existing raw-duality loss with the carried continuity loss. For reachable non-insertion candidates:
 
 \[
 R_t^{A=1}(c)
@@ -267,28 +285,8 @@ The carrier remains a continuity loss rather than an emergence declaration bonus
 - no change to \(\kappa\);
 - no forced mutation;
 - no threshold-triggered action;
-- no coefficient sweep in Carrier-002C or Carrier-003;
+- no coefficient sweep;
 - identical wounds, targets, microstates, seeds, proposal frontier and admission law.
-
-### 3.3 Carrier-003 timing schedule
-
-For each capsule, let the normalised bounded history be:
-
-\[
-H^{real}=(h_1,h_2,\ldots,h_{15},h_{16}),
-\qquad
-h_{16}=D_0^{\mathrm{EMA}}.
-\]
-
-The preregistered sham rotated the first fifteen entries left by seven positions while preserving \(h_{16}\):
-
-\[
-H^{sham}
-=
-\operatorname{rotate}_{7}(h_1,\ldots,h_{15})\oplus h_{16}.
-\]
-
-Thus the intervention altered order, not the available values.
 
 ---
 
@@ -352,7 +350,7 @@ Y_h(\widetilde{\mathcal E}=0,Z=0)
 \right].
 \]
 
-Inference uses the eight matched-pair effects:
+Inference uses eight matched-pair effects:
 
 \[
 \overline\Gamma_h
@@ -360,7 +358,7 @@ Inference uses the eight matched-pair effects:
 \frac1{8}\sum_{j=1}^{8}\Gamma_{h,j}.
 \]
 
-### 5.2 Carrier interaction at fixed feedback
+### 5.2 Carrier interaction
 
 \[
 \Gamma_{A,Z}
@@ -374,15 +372,13 @@ Y(M_0,A=1,Z)-Y(M_0,A=0,Z)
 \right].
 \]
 
-### 5.3 State-by-carrier-by-feedback interaction
-
 \[
 \Gamma_{M\times A\times Z}
 =
 \Gamma_{A,Z=1}-\Gamma_{A,Z=0}.
 \]
 
-### 5.4 Mechanistic reachability
+### 5.3 Mechanistic reachability
 
 Before recovery efficacy is interpreted:
 
@@ -390,11 +386,9 @@ Before recovery efficacy is interpreted:
 N_{carrier\ decisions}>0.
 \]
 
-Carrier-002C passed this endpoint through changed exact winners, changed admissions and accepted carrier-induced actions.
+Carrier-002C passed this endpoint.
 
-### 5.5 Real-minus-sham timing effect
-
-For each feedback state:
+### 5.4 Single-sham timing effect
 
 \[
 \Delta_Z
@@ -402,21 +396,13 @@ For each feedback state:
 Y(real,Z)-Y(sham,Z).
 \]
 
-Carrier-003 preregistered:
-
-\[
-\boxed{\Delta_{Z=1}>0}.
-\]
-
-The feedback-specific timing interaction is:
-
 \[
 \Delta_{timing\times feedback}
 =
 \Delta_{Z=1}-\Delta_{Z=0}.
 \]
 
-### 5.6 State-specific timing interaction
+State-specific timing:
 
 \[
 \Theta_Z
@@ -426,21 +412,49 @@ The feedback-specific timing interaction is:
 \left[Y(M_0,real,Z)-Y(M_0,sham,Z)\right].
 \]
 
-The state-by-timing-by-feedback interaction is:
+### 5.5 Complete-sham ensemble estimator
+
+For pair \(j\), feedback \(Z\), and rotation \(r\):
 
 \[
-\Theta_{Z=1}-\Theta_{Z=0}.
+\Delta_{j,Z}^{(r)}
+=
+Y_j(real,Z)-Y_j(sham_r,Z).
 \]
 
-### 5.7 Mechanistic timing endpoint
+Average sham choice inside each independent pair:
 
-Temporal order must be functionally expressed before usefulness is interpreted:
+\[
+\overline\Delta_{j,Z}
+=
+\frac1{14}\sum_{r=1}^{14}\Delta_{j,Z}^{(r)}.
+\]
+
+The ensemble estimand is:
+
+\[
+\overline\Delta_Z
+=
+\frac1{8}\sum_{j=1}^{8}\overline\Delta_{j,Z}.
+\]
+
+The ensemble timing-by-feedback interaction is:
+
+\[
+\overline\Delta_{T\times Z}
+=
+\overline\Delta_{Z=1}-\overline\Delta_{Z=0}.
+\]
+
+Rotations are nuisance-control constructions. The eight matched pairs remain the inferential unit.
+
+### 5.6 Mechanistic timing endpoint
 
 \[
 N_{timing\ decisions}>0.
 \]
 
-Carrier-003 passed this endpoint. Its preregistered directional recovery endpoint did not pass.
+Carrier-003 and all fourteen Carrier-003B rotations passed this endpoint.
 
 ---
 
@@ -449,15 +463,15 @@ Carrier-003 passed this endpoint. Its preregistered directional recovery endpoin
 | Test | Primary result | Scientific status | Earned finding |
 |---|---:|---|---|
 | **V1** | \(\Gamma_h=+0.2083\) | **Invalidated** | Shared checkpoints and discarded history allowed seed offsets to masquerade as class differences. No scientific claim retained. |
-| **V2** | \(\Gamma_h=-0.0677083\) | **Inconclusive** | Strict checkpoint/seed handling removed the V1 defect. Unequal target counts left the recovery scale unmatched. |
+| **V2** | \(\Gamma_h=-0.0677083\) | **Inconclusive** | Strict checkpoint and seed handling removed the V1 defect. Unequal target counts left the recovery scale unmatched. |
 | **V2.1 audit** | same aggregate as V2 | **Mechanism audit** | Feedback genuinely changed sparse decisions. The principal turning surface was `none ↔ swap`; normalization and topology exposure were material hazards. |
 | **V2.2 equal wound** | \(\Gamma_h=+0.07421875\) | **Directional positive; not established** | Eight pairs, 512 lesions and 1,024 branches. Pair interval crosses zero; five pairs positive; median \(+0.1328125\). |
 | **Carrier-001** | \(\Gamma_{carrier}=0\) | **Architectural null established** | 1,024 exact history twins produced zero mismatches. Macro-history was metadata, not executable state. |
 | **Carrier-002A** | \(\Gamma_{002A}=0\) | **Passive carrier neutrality established** | 2,048 zero-coupling projections reproduced Carrier-001 exactly. Capsule carriage and updates introduced no observer effect. |
 | **Carrier-002B** | all interactions \(=0\) | **Unreachable-path null** | The insertion-only path received zero insert proposals. All 39,102 accepted transitions were swaps. No efficacy inference. |
-| **Carrier-002C** | 1,992 changed winners; 1,275 changed admissions; 1,603 accepted induced actions | **Functioning carrier established** | Retained EMA history changed reachable hold/swap decisions and trajectories. Recovery interactions remained small and all pair intervals crossed zero. |
-| **Carrier-003** | \(\Delta_{Z=1}=-0.0161133\), CI \([-0.0375980,0.0053714]\) | **Timing causality established; positive primary unsupported** | Real versus equal-distribution sham changed 1,615 winners, 1,280 admissions and 1,260 accepted actions. True chronology did not establish a repair advantage. A secondary timing×feedback interaction was negative with CI excluding zero. |
-| **Carrier-003B** | pending | **Next preregistered robustness audit** | Replace the single rotation-7 sham with the complete non-zero cyclic-rotation ensemble before any held-out generalisation. |
+| **Carrier-002C** | 1,992 changed winners; 1,275 changed admissions; 1,603 accepted actions | **Functioning carrier established** | Retained EMA history changed reachable decisions and trajectories. Recovery interactions remained small and all pair intervals crossed zero. |
+| **Carrier-003** | \(\Delta_{Z=1}=-0.0161133\), CI \([-0.0375980,0.0053714]\) | **Timing causality established; positive primary unsupported** | One equal-distribution sham changed 1,615 winners, 1,280 admissions and 1,260 accepted actions. A secondary negative timing×feedback interval excluded zero under rotation 7 only. |
+| **Carrier-003B** | \(\overline\Delta_{Z=1}=-0.0157645\), CI \([-0.0338455,0.0023164]\) | **Complete-sham timing robustness completed** | All 14 rotations changed decisions; all 14 recovery point estimates were negative; the eight-pair ensemble interval crossed zero. The rotation-7 feedback-interference signal did not survive the complete ensemble. Positive timing usefulness is closed for the current carrier. |
 
 ---
 
@@ -470,17 +484,12 @@ Across 2,048 active branches:
 - changed exact winners: **1,992**;
 - changed admissions: **1,275**;
 - accepted carrier-induced actions: **1,603**;
-- `hold → swap`: **576**;
-- `swap → hold`: **492**;
-- `swap → different swap`: **924**;
 - divergent active branches: **1,930**;
 - reconvergent active branches: **49**.
 
-Therefore:
-
 \[
 \boxed{
-\text{retained macro-history is an executable and reachable causal state in the experimental kernel}
+\text{retained macro-history is an executable and reachable causal state}
 }
 \]
 
@@ -489,26 +498,24 @@ Recovery interactions:
 \[
 \Gamma_{A,Z=0}=+0.001953125,
 \qquad
-95\%\ \mathrm{CI}=[-0.0284371,0.0323433],
+95\%=[-0.0284371,0.0323433],
 \]
 
 \[
 \Gamma_{A,Z=1}=-0.0087890625,
 \qquad
-95\%\ \mathrm{CI}=[-0.0357089,0.0181308],
+95\%=[-0.0357089,0.0181308],
 \]
 
 \[
 \Gamma_{M\times A\times Z}=-0.0107421875,
 \qquad
-95\%\ \mathrm{CI}=[-0.0322490,0.0107646].
+95\%=[-0.0322490,0.0107646].
 \]
-
-Thus:
 
 \[
 \boxed{
-\text{functioning macro-history carrier established; state-specific recovery efficacy not established}
+\text{functioning carrier established; state-specific recovery efficacy not established}
 }
 \]
 
@@ -516,93 +523,139 @@ Thus:
 
 ## 8. Carrier-003 Result Boundary
 
-### 8.1 Neutral timing plumbing
-
 - neutrality comparisons: **4,096**;
 - neutrality mismatches: **0**;
-- total branch executions: **8,192**;
-- active real/sham timing branches: **4,096**;
-- accepted timing trace records: **77,395**.
-
-Both schedule payloads reproduced the active Carrier-002C reference exactly when timing exposure was disabled.
-
-### 8.2 Mechanistic timing result
-
-Across shared pre-state comparisons:
-
-- comparable decisions: **63,791**;
+- active timing branches: **4,096**;
 - changed exact winners: **1,615**;
 - changed admissions: **1,280**;
-- accepted timing-induced actions: **1,260**;
-- sham hold → real swap: **456**;
-- sham swap → real hold: **522**;
-- sham swap → different real swap: **637**;
-- divergent real branches: **1,533**;
-- reconvergent branches: **89**.
-
-Therefore:
-
-\[
-\boxed{
-\text{bounded temporal ordering is causally influential under the Carrier-003 replay intervention}
-}
-\]
-
-### 8.3 Preregistered recovery result
+- accepted timing-induced actions: **1,260**.
 
 \[
 \Delta_{Z=1}=-0.01611328125,
 \qquad
-95\%\ \mathrm{CI}=[-0.0375980,0.0053714].
+95\%=[-0.0375980,0.0053714].
 \]
-
-The interval crosses zero and the point estimate is negative. The preregistered positive true-history hypothesis was not supported.
-
-Without feedback:
 
 \[
 \Delta_{Z=0}=+0.0068359375,
 \qquad
-95\%\ \mathrm{CI}=[-0.0189858,0.0326577].
-\]
-
-Secondary timing×feedback interaction:
-
-\[
-\Delta_{Z=1}-\Delta_{Z=0}=-0.02294921875,
+95\%=[-0.0189858,0.0326577].
 \]
 
 \[
-95\%\ \mathrm{CI}=[-0.0453371,-0.0005614].
-\]
-
-Seven of eight pair-level timing×feedback effects were negative. This is a **bounded secondary interference signal** under a single rotation-7 sham, not an established general law.
-
-State-specific timing interactions all crossed zero:
-
-\[
-\Theta_{Z=0}=-0.009765625,
+\Delta_{T\times Z}=-0.02294921875,
 \qquad
-\Theta_{Z=1}=-0.0048828125,
+95\%=[-0.0453371,-0.0005614].
 \]
 
-\[
-\Theta_{Z=1}-\Theta_{Z=0}=+0.0048828125.
-\]
-
-Thus:
-
-\[
-\boxed{
-\text{timing causality established; true-history usefulness not established; feedback interference signal detected}
-}
-\]
-
-Carrier-003 is a bounded EMA-history replay test. It is not evidence of consciousness, subjective recollection or a complete autobiographical memory system.
+The primary positive true-history hypothesis was unsupported. The negative interaction was retained only as a bounded secondary signal pending complete-sham testing.
 
 ---
 
-## 9. Current Claim Boundary
+## 9. Carrier-003B Result Boundary
+
+### 9.1 Integrity and scale
+
+- schedule-neutrality comparisons: **4,096**;
+- mismatches: **0**;
+- sham rotations: **14**;
+- active branch executions: **57,344**;
+- accepted trace records: **1,089,484**;
+- rotation-7 exact reproduction gate: **passed**;
+- repeated real-history receipt identity gate: **passed**;
+- distinct sham-receipt gate: **passed**.
+
+### 9.2 Mechanistic robustness
+
+Across all rotations:
+
+- rotations with timing mechanism: **14/14**;
+- comparable pre-state decisions: **1,047,371**;
+- changed exact winners: **20,823**;
+- changed admissions: **16,537**;
+- accepted timing-induced actions: **16,165**.
+
+\[
+\boxed{
+\text{temporal ordering is a robust causal input across the complete cyclic-sham ensemble}
+}
+\]
+
+### 9.3 Primary usefulness result
+
+\[
+\overline\Delta_{Z=1}=-0.01576450893,
+\]
+
+\[
+95\%=[-0.03384545473,0.00231643687].
+\]
+
+All fourteen rotation-specific point estimates were negative, ranging from:
+
+\[
+-0.03173828125
+\quad\text{to}\quad
+-0.0078125.
+\]
+
+Only one individual rotation interval excluded zero. The pair-level complete-ensemble interval crosses zero.
+
+\[
+\boxed{
+\text{true chronology did not establish a repair advantage or a general repair disadvantage}
+}
+\]
+
+### 9.4 No-feedback and interaction results
+
+\[
+\overline\Delta_{Z=0}=+0.00034877232,
+\qquad
+95\%=[-0.02091618559,0.02161373024].
+\]
+
+\[
+\overline\Delta_{T\times Z}=-0.01611328125,
+\qquad
+95\%=[-0.03986550634,0.00763894384].
+\]
+
+All fourteen interaction point estimates were negative, but the complete-ensemble interval crosses zero. The Carrier-003 rotation-7 interference signal is therefore not rotation-robust.
+
+### 9.5 State-specific results
+
+\[
+\overline\Theta_{Z=0}=-0.01715959821,
+\qquad
+95\%=[-0.06245879186,0.02813959543],
+\]
+
+\[
+\overline\Theta_{Z=1}=-0.00906808036,
+\qquad
+95\%=[-0.04336061558,0.02522445486],
+\]
+
+\[
+\overline\Theta_{Z=1}-\overline\Theta_{Z=0}=+0.00809151786,
+\qquad
+95\%=[-0.04062652723,0.05680956295].
+\]
+
+All state-specific intervals cross zero.
+
+### 9.6 Verdict
+
+\[
+\boxed{
+\text{timing influence robustly established; positive timing usefulness closed for the current carrier; no stable feedback interaction established}
+}
+\]
+
+---
+
+## 10. Current Claim Boundary
 
 ### Established
 
@@ -611,102 +664,92 @@ Carrier-003 is a bounded EMA-history replay test. It is not evidence of consciou
 - Full capsule carriage and updates are neutral at zero coupling.
 - Unequal target wounds materially changed earlier interpretation.
 - The insertion-only carrier path is unreachable on the fixed-length substrate.
-- The EMA continuity carrier changes reachable exact winners, admissions, accepted actions and trajectories.
-- Under the bounded Carrier-003 replay, changing only EMA-history order changed decisions and trajectories.
+- The EMA continuity carrier changes reachable winners, admissions, accepted actions and trajectories.
+- Temporal ordering changes decisions and trajectories across all fourteen cyclic sham rotations.
+- Rotation 7 was not a privileged or necessary sham for the timing-causality finding.
 
 ### Directionally supported
 
 - V2.2 produced \(\Gamma_h=+0.07421875\), with five of eight pairs positive and median pair effect \(+0.1328125\).
-- The V2.2 interval crosses zero; state-specific repair efficacy is not established.
+- Under Carrier-003B feedback, all fourteen real-minus-sham point estimates were negative.
+- Neither directional pattern has a pair-generalised interval excluding zero.
 
 ### Mechanistically demonstrated
 
 - Repair trajectories depend on sparse topological turning points.
-- The decisive surface is hold/swap.
-- Retained EMA history can alter decisions through a model-native continuity loss.
-- Active and knockout trajectories can diverge and occasionally reconverge.
-- The temporal arrangement of the same bounded EMA values can alter exact rankings, admissions and accepted transitions.
+- The operative surface is hold/swap.
+- Retained EMA level can causally alter reachable decisions through a model-native continuity loss.
+- Bounded EMA-history order can causally alter decisions independent of its value multiset.
+- Active and comparison trajectories can diverge and reconverge.
 
-### Secondary signal requiring robustness
+### Closed for the current carrier
 
-- Carrier-003 produced a negative timing×feedback interaction:
-
-\[
--0.02294921875,
-\qquad
-95\%\ \mathrm{CI}=[-0.0453371,-0.0005614].
-\]
-
-- This may reflect genuine interference or the chosen single sham rotation. Rotation-complete testing is required.
+- The claim that true EMA chronology improves repair relative to equal-distribution cyclic shams.
+- The claim that the Carrier-003 negative timing×feedback interaction is robust across sham choice.
+- Direct progression of the current timing carrier to held-out generalisation.
 
 ### Still untested
 
-- Whether the Carrier-003 timing result is robust across all admissible cyclic sham rotations.
-- Whether true chronology has useful repair information under a sham-ensemble comparison.
-- Whether any timing-specific mechanism generalises to unseen seeds, microstates, lesions, inventories and ontology perturbations.
+- Whether an existing Telos law based on historical direction, slope, persistence transition or inventory-event timing can use ordered history beneficially.
+- Whether a new model-native carrier passes neutrality, reachability, complete-sham timing control and positive pair-generalised usefulness.
+- Held-out generalisation of any mechanism that first clears those gates.
 
-### Invalidated, unsupported or rejected
+### Invalidated or rejected
 
 - V1's positive estimate is inadmissible evidence.
 - A raw checkpoint-class difference is not proof of retained-history causation.
 - A zero result from zero mechanism exposure is not evidence of inefficacy.
 - Influence alone is not proof of adaptive value.
-- Carrier-003 did not support the claim that true chronology improves repair relative to its preregistered rotation-7 sham.
-- Carrier-003 did not establish a distinct timing advantage for latched `M1` history.
+- One selected sham cannot establish a general timing effect.
 - \(\mathcal E_t\) must not become an arbitrary bonus, forced mutation or feedback-strength switch.
 
 ---
 
-## 10. Active Bench Queue
+## 11. Active Bench Queue
 
-### EMERGE-CARRIER-003B — Rotation-Complete Sham Robustness Audit
+### Next: model-native history-direction carrier design
 
-Hold fixed:
-
-- V2.2 panel and lesions;
-- state capsules;
-- Carrier-002C carrier law;
-- \(\alpha=0.2\);
-- \(w_D=0.5\);
-- \(\kappa=0.25\);
-- sixteen-step exposure window;
-- terminal checkpoint anchor;
-- microstates, wounds, targets and random streams.
-
-Replace the single rotation-7 sham with all non-zero cyclic rotations of the first fifteen history positions:
+The current EMA-level continuity carrier has completed its admissible evidence path:
 
 \[
-\mathcal R=\{1,2,\ldots,14\}.
-\]
-
-Treat rotation as a preregistered nuisance/control dimension rather than selecting one favourable sham.
-
-Primary robustness questions:
-
-1. Does real chronology continue to change decisions relative to the sham ensemble?
-2. Is the negative timing×feedback interaction stable across rotations or rotation-7-specific?
-3. Does the ensemble-mean real-minus-sham recovery effect remain near zero?
-4. Is between-rotation variation larger than the estimated true-history effect?
-
-No coefficient tuning or retrospective rotation selection is permitted.
-
-### EMERGE-CARRIER-004 — Held-Out Generalisation
-
-Proceed only after a preregistered timing mechanism survives the sham-ensemble robustness boundary.
-
-Ordered sequence:
-
-\[
-\boxed{
-\text{003B rotation-complete sham audit}
+\text{neutrality}
 \rightarrow
-\text{004 held-out generalisation}
-}
+\text{reachability}
+\rightarrow
+\text{single-sham timing}
+\rightarrow
+\text{complete-sham robustness}.
 \]
+
+It established influence but not useful repair control.
+
+The next design must identify a state law already justified by Telos mathematics that uses a feature of ordered history not reducible to its current level, such as:
+
+- signed EMA slope;
+- persistence-state transition;
+- threshold-crossing direction;
+- inventory-event timing;
+- bounded-history curvature or momentum.
+
+No mechanism is selected by this ledger. Selection requires an architecture and mathematics audit before preregistration.
+
+Every candidate mechanism must pass, in order:
+
+1. zero-coupling neutrality;
+2. reachable decision exposure;
+3. real versus complete-sham timing control;
+4. positive pair-generalised usefulness;
+5. held-out generalisation.
+
+### Carrier-004 — held-out generalisation
+
+Status: **gated**.
+
+Carrier-004 becomes admissible only after a model-native mechanism establishes a positive pair-generalised benefit against its complete sham-control family.
 
 ---
 
-## 11. Evidence and Receipt Index
+## 12. Evidence and Receipt Index
 
 ### Permanent scientific records
 
@@ -716,6 +759,8 @@ Ordered sequence:
 - `docs/EMERGE-CARRIER-002C-REACHABLE-HOLD-SWAP-RESULT-17JUL2026.md`
 - `docs/EMERGE-CARRIER-003-PREREGISTRATION-17JUL2026.md`
 - `docs/EMERGE-CARRIER-003-REAL-VS-SHAM-TIMING-RESULT-17JUL2026.md`
+- `docs/EMERGE-CARRIER-003B-PREREGISTRATION-17JUL2026.md`
+- `docs/EMERGE-CARRIER-003B-ROTATION-COMPLETE-SHAM-RESULT-17JUL2026.md`
 
 ### Executable experiment files
 
@@ -727,14 +772,11 @@ Ordered sequence:
 - `experiments/emerge-ko-001/freeze-carrier-002.ts`
 - `experiments/emerge-ko-001/run-carrier-002.ts`
 - `experiments/emerge-ko-001/run-carrier-002c.ts`
-- `experiments/emerge-ko-001/carrier-003.patch.part00`
-- `experiments/emerge-ko-001/carrier-003.patch.boundary`
-- `experiments/emerge-ko-001/carrier-003.patch.part01`
-- `experiments/emerge-ko-001/carrier-003.patch.part02`
-- `experiments/emerge-ko-001/carrier-003.patch.part03`
-- `.github/workflows/emerge-carrier-003.yml`
+- `experiments/emerge-ko-001/carrier-003.patch.part00` through `part03`
+- `experiments/emerge-ko-001/carrier-003b-runner.part00` through `part05`
+- `experiments/emerge-ko-001/carrier-003b-aggregate.part00` through `part02`
 
-### Selector, executable and artifact receipts
+### Selector and artifact receipts
 
 V2.2 panel selector:
 
@@ -754,34 +796,10 @@ Carrier capsule selector:
 be18af79000ad1aa65515402528d3dfeeb28d6c7ffa681a659f2510fa060c3b5
 ```
 
-Carrier-002 artifact:
-
-```text
-f1dcbfd628ffc0e3a2f24c0324e0c37655c3dd66e9bd2ac03cf98a4b78e32ab3
-```
-
 Carrier-002C artifact:
 
 ```text
 4cf869f339b49822c61a4c2378f552dcbe8a7e5e2e54ff0052a0225098e44e49
-```
-
-Carrier-003 generated executable:
-
-```text
-aef813848ee7fcdc70e0fd3d328ade8c038aaf7f6ccb2218ca6c619266222dd3
-```
-
-Carrier-003 summary object:
-
-```text
-5b4543ffb3e6c39e0cdb4ad63c247c88f786d71e5759093b4e7bfc32a1b4b710
-```
-
-Carrier-003 trace:
-
-```text
-f231bd8e2e9d6994dadd18cc4e3931f26ecc1f2792c1bd01e5c1cb994d2b790d
 ```
 
 Carrier-003 artifact:
@@ -790,34 +808,72 @@ Carrier-003 artifact:
 cc701497c87f5b0ec18b36593a1cbcd0c4bdad537c738c4ac736a8ffa835ba6e
 ```
 
+Carrier-003B workflow run:
+
+```text
+29579962999
+```
+
+Carrier-003B aggregate summary:
+
+```text
+f6cd2a599cb34a359a66d842407873bff858ceccdf1581b8d37152daf5c940a1
+```
+
+Carrier-003B rotation-summary set:
+
+```text
+df5e51bca0605e2f75a375a2dd2b0ca4004d2fca02ce6976508eeb52374d42b6
+```
+
+Carrier-003B repeated real-history receipt:
+
+```text
+ef3c9b60da80ca11d3ab9ab319575b49d07ddbbd9df55d3808e5e5b5fae08125
+```
+
+Carrier-003B sham-receipt set:
+
+```text
+49bc2d8adce5037cebc29d233e9ffef8fb83f10ac4c0942e5125b84410fccf7e
+```
+
+Carrier-003B artifact:
+
+```text
+a86c473f5a17dbc53fa693662f9665f485c7b969159f6cf0ffb435210136ba88
+```
+
 ---
 
-## 12. Change Log
+## 13. Change Log
 
 ### 17 July 2026 — Ledger established
 
 - Defined canonical objects, kernels, outcomes, feedback law, carrier loss and estimators.
 - Recorded V1 through Carrier-002B without promoting findings beyond their evidence.
-- Fixed Carrier-002C as the next admissible experiment.
 
 ### 17 July 2026 — Carrier-002C completed
 
-- Recorded 2,048/2,048 neutral zero-coupling comparisons.
-- Recorded 429,109 non-zero candidate adjustments.
-- Recorded 1,992 changed winners, 1,275 changed admissions and 1,603 accepted carrier-induced actions.
-- Promoted executable macro-history carriage from untested to mechanistically established.
-- Preserved the null recovery conclusion: every matched-pair interval crossed zero.
-- Advanced the active queue to Carrier-003.
+- Established executable and reachable macro-history influence.
+- Preserved the null state-specific recovery conclusion.
 
 ### 17 July 2026 — Carrier-003 completed
 
-- Recorded 4,096/4,096 neutral timing-payload comparisons.
-- Recorded 1,615 timing-changed winners, 1,280 timing-changed admissions and 1,260 accepted timing-induced actions.
-- Promoted bounded temporal-order causality from untested to mechanistically established.
-- Recorded that the preregistered positive true-history recovery endpoint was unsupported.
-- Recorded the secondary negative timing×feedback interaction as a bounded interference signal.
-- Advanced the active queue to Carrier-003B rotation-complete sham robustness.
-- Kept Carrier-004 closed until the sham-robustness boundary is crossed.
+- Established bounded temporal-order causality under one equal-distribution sham.
+- Rejected the preregistered positive repair claim.
+- Recorded one bounded negative timing×feedback signal.
+
+### 17 July 2026 — Carrier-003B completed
+
+- Validated 4,096 neutral timing comparisons with zero mismatches.
+- Completed all fourteen non-zero cyclic sham rotations across 57,344 active branches.
+- Established timing causality across 14/14 rotations.
+- Recorded 20,823 changed winners, 16,537 changed admissions and 16,165 accepted timing-induced actions.
+- Recorded uniformly negative feedback recovery point estimates across all rotations while preserving the eight-pair interval crossing zero.
+- Removed rotation-7 privilege and closed the feedback-interference claim as non-robust.
+- Closed positive timing usefulness for the current EMA-level continuity carrier.
+- Gated held-out generalisation pending a new model-native mechanism that earns positive complete-sham-controlled usefulness.
 
 ---
 
