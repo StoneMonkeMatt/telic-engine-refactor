@@ -1,0 +1,318 @@
+               capsuleId: capsule.capsuleId,
++                scheduleLength: schedules.real.length,
++                rotation: schedules.rotation,
++                terminalAnchor: schedules.real[schedules.real.length - 1],
++                realSha256: schedules.realSha256,
++                shamSha256: schedules.shamSha256,
++                multisetSha256: stableHash(sortedNumeric(schedules.real)),
++              });
++            }
++
++            const referenceHash = referenceMap.get(
++              referenceKey(
++                pair.pairId,
++                microstateSource,
++                lesion.replicate,
++                feedback,
++                capsule.capsuleId,
++              ),
+             );
+-          }
++            if (!referenceHash) {
++              throw new Error(
++                `Missing Carrier-002C active reference for ${pair.pairId}/${microstateSource}/${capsule.capsuleId}/replicate=${lesion.replicate}/Z=${feedback}.`,
++              );
++            }
+ 
+-          for (const capsule of [carrierPair.m0, carrierPair.m1]) {
+-            const knockout = runBranch(
++            for (const timingMode of ['real', 'sham'] as const) {
++              const schedule = timingMode === 'real' ? schedules.real : schedules.sham;
++              const neutral = runBranch(
++                config,
++                codex,
++                pair.pairId,
++                microstateSource,
++                checkpoint,
++                lesion,
++                feedback,
++                capsule,
++                timingMode,
++                0,
++                schedule,
++                emaAlpha,
++                historyWindow,
++              );
++              const neutralHash = stableHash(neutral.projection);
++              neutralityComparisons++;
++              if (neutralHash !== referenceHash) {
++                neutralityMismatches++;
++                throw new Error(
++                  `Carrier-003 schedule-plumbing neutrality mismatch at ${pair.pairId}/${microstateSource}/${capsule.capsuleId}/${timingMode}/replicate=${lesion.replicate}/Z=${feedback}.`,
++                );
++              }
++              branches.push({
++                pairId: pair.pairId,
++                microstateSource,
++                replicate: lesion.replicate,
++                feedback,
++                capsuleId: capsule.capsuleId,
++                timingMode,
++                timingActive: 0,
++                branchSeed: lesion.branchSeed,
++                projection: neutral.projection,
++                diagnostics: neutral.diagnostics,
++                projectionSha256: neutralHash,
++                pairedDiagnostics: null,
++              });
++            }
++
++            const real = runBranch(
+               config,
+               codex,
+               pair.pairId,
+@@ -738,20 +882,13 @@
+               lesion,
+               feedback,
+               capsule,
+-              0,
++              'real',
++              1,
++              schedules.real,
+               emaAlpha,
+               historyWindow,
+             );
+-            const knockoutHash = stableHash(knockout.projection);
+-            neutralityComparisons++;
+-            if (knockoutHash !== legacyHash) {
+-              neutralityMismatches++;
+-              throw new Error(
+-                `Carrier-002C neutrality mismatch at ${pair.pairId}/${microstateSource}/${capsule.capsuleId}/replicate=${lesion.replicate}/Z=${feedback}.`,
+-              );
+-            }
+-
+-            const active = runBranch(
++            const sham = runBranch(
+               config,
+               codex,
+               pair.pairId,
+@@ -760,11 +897,13 @@
+               lesion,
+               feedback,
+               capsule,
++              'sham',
+               1,
++              schedules.sham,
+               emaAlpha,
+               historyWindow,
+             );
+-            const pairedDiagnostics = compareRuns(knockout, active);
++            const pairedDiagnostics = compareRuns(sham, real);
+ 
+             branches.push({
+               pairId: pair.pairId,
+@@ -772,12 +911,13 @@
+               replicate: lesion.replicate,
+               feedback,
+               capsuleId: capsule.capsuleId,
+-              active: 0,
++              timingMode: 'real',
++              timingActive: 1,
+               branchSeed: lesion.branchSeed,
+-              projection: knockout.projection,
+-              diagnostics: knockout.diagnostics,
+-              projectionSha256: knockoutHash,
+-              pairedDiagnostics: null,
++              projection: real.projection,
++              diagnostics: real.diagnostics,
++              projectionSha256: stableHash(real.projection),
++              pairedDiagnostics,
+             });
+             branches.push({
+               pairId: pair.pairId,
+@@ -785,31 +925,40 @@
+               replicate: lesion.replicate,
+               feedback,
+               capsuleId: capsule.capsuleId,
+-              active: 1,
++              timingMode: 'sham',
++              timingActive: 1,
+               branchSeed: lesion.branchSeed,
+-              projection: active.projection,
+-              diagnostics: active.diagnostics,
+-              projectionSha256: stableHash(active.projection),
+-              pairedDiagnostics,
++              projection: sham.projection,
++              diagnostics: sham.diagnostics,
++              projectionSha256: stableHash(sham.projection),
++              pairedDiagnostics: null,
+             });
+ 
+-            for (const trace of active.acceptedTrace) traceLines.push(JSON.stringify(trace));
++            for (const trace of real.acceptedTrace) traceLines.push(JSON.stringify(trace));
++            for (const trace of sham.acceptedTrace) traceLines.push(JSON.stringify(trace));
+           }
+         }
+       }
+     }
+   }
+ 
+-  const cell = (capsuleId: CapsuleId, active: CarrierActive, feedback: 0 | 1) => {
++  const cell = (
++    capsuleId: CapsuleId,
++    timingMode: TimingMode,
++    timingActive: TimingActive,
++    feedback: 0 | 1,
++  ) => {
+     const selected = branches.filter(
+       branch =>
+         branch.capsuleId === capsuleId &&
+-        branch.active === active &&
++        branch.timingMode === timingMode &&
++        branch.timingActive === timingActive &&
+         branch.feedback === feedback,
+     );
+     return {
+       capsuleId,
+-      active,
++      timingMode,
++      timingActive,
+       feedback,
+       n: selected.length,
+       meanFinalTargetRecovery: mean(
+@@ -822,37 +971,51 @@
+   };
+ 
+   const cells = (['M0-unlatched', 'M1-latched'] as const).flatMap(capsuleId =>
+-    ([0, 1] as const).flatMap(active =>
+-      ([0, 1] as const).map(feedback => cell(capsuleId, active, feedback)),
++    (['real', 'sham'] as const).flatMap(timingMode =>
++      ([0, 1] as const).flatMap(timingActive =>
++        ([0, 1] as const).map(feedback =>
++          cell(capsuleId, timingMode, timingActive, feedback),
++        ),
++      ),
+     ),
+   );
+ 
+   const value = (
+     capsuleId: CapsuleId,
+-    active: CarrierActive,
++    timingMode: TimingMode,
+     feedback: 0 | 1,
+   ): number =>
+     cells.find(
+       entry =>
+         entry.capsuleId === capsuleId &&
+-        entry.active === active &&
++        entry.timingMode === timingMode &&
++        entry.timingActive === 1 &&
+         entry.feedback === feedback,
+     )!.meanFinalTargetRecovery;
+ 
+-  const gammaForFeedback = (feedback: 0 | 1) =>
+-    (value('M1-latched', 1, feedback) - value('M1-latched', 0, feedback)) -
+-    (value('M0-unlatched', 1, feedback) - value('M0-unlatched', 0, feedback));
+-
+-  const gammaAFeedback0 = gammaForFeedback(0);
+-  const gammaAFeedback1 = gammaForFeedback(1);
+-  const tripleInteraction = gammaAFeedback1 - gammaAFeedback0;
++  const deltaForFeedback = (feedback: 0 | 1) =>
++    mean(
++      (['M0-unlatched', 'M1-latched'] as const).map(
++        capsuleId => value(capsuleId, 'real', feedback) - value(capsuleId, 'sham', feedback),
++      ),
++    );
++  const thetaForFeedback = (feedback: 0 | 1) =>
++    (value('M1-latched', 'real', feedback) - value('M1-latched', 'sham', feedback)) -
++    (value('M0-unlatched', 'real', feedback) - value('M0-unlatched', 'sham', feedback));
++
++  const deltaZ0 = deltaForFeedback(0);
++  const deltaZ1 = deltaForFeedback(1);
++  const timingFeedbackInteraction = deltaZ1 - deltaZ0;
++  const thetaZ0 = thetaForFeedback(0);
++  const thetaZ1 = thetaForFeedback(1);
++  const stateTimingFeedbackInteraction = thetaZ1 - thetaZ0;
+ 
+   const branchValue = (
+     pairId: string,
+     microstateSource: MicrostateSource,
+     replicate: number,
+     capsuleId: CapsuleId,
+-    active: CarrierActive,
++    timingMode: TimingMode,
+     feedback: 0 | 1,
+   ): number => {
+     const branch = branches.find(
+@@ -861,64 +1024,55 @@
+         entry.microstateSource === microstateSource &&
+         entry.replicate === replicate &&
+         entry.capsuleId === capsuleId &&
+-        entry.active === active &&
++        entry.timingMode === timingMode &&
++        entry.timingActive === 1 &&
+         entry.feedback === feedback,
+     );
+-    if (!branch) throw new Error('Missing branch while calculating pair effects.');
++    if (!branch) throw new Error('Missing branch while calculating timing effects.');
+     return branch.projection.finalTargetRecovery;
+   };
+ 
+   const pairEffects = panel.frozen.pairs.map(pair => {
+-    const effect = (feedback: 0 | 1) => {
+-      const replicateEffects: number[] = [];
++    const delta = (feedback: 0 | 1) => {
++      const effects: number[] = [];
+       for (const microstateSource of ['nonEmergent', 'emergent'] as const) {
+         for (let replicate = 0; replicate < config.replicates; replicate++) {
+-          replicateEffects.push(
+-            (branchValue(
+-              pair.pairId,
+-              microstateSource,
+-              replicate,
+-              'M1-latched',
+-              1,
+-              feedback,
+-            ) -
+-              branchValue(
+-                pair.pairId,
+-                microstateSource,
+-                replicate,
+-                'M1-latched',
+-                0,
+-                feedback,
+-              )) -
+-              (branchValue(
+-                pair.pairId,
+-                microstateSource,
+-                replicate,
+-                'M0-unlatched',
+-                1,
+-                feedback,
+-              ) -
+-                branchValue(
+-                  pair.pairId,
+-                  microstateSource,
+-                  replicate,
+-                  'M0-unlatched',
+-                  0,
+-                  feedback,
+-                )),
++          for (const capsuleId of ['M0-unlatched', 'M1-latched'] as const) {
++            effects.push(
++              branchValue(pair.pairId, microstateSource, replicate, capsuleId, 'real', feedback) -
++                branchValue(pair.pairId, microstateSource, replicate, capsuleId, 'sham', feedback),
++            );
++          }
++        }
++      }
++      return mean(effects);
++    };
++    const theta = (feedback: 0 | 1) => {
++      const effects: number[] = [];
++      for (const microstateSource of ['nonEmergent', 'emergent'] as const) {
++        for (let replicate = 0; replicate < config.replicates; replicate++) {
++          effects.push(
++            (branchValue(pair.pairId, microstateSource, replicate, 'M1-latched', 'real', feedback) -
++              branchValue(pair.pairId, microstateSource, replicate, 'M1-latched', 'sham', feedback)) -
++              (branchValue(pair.pairId, microstateSource, replic
