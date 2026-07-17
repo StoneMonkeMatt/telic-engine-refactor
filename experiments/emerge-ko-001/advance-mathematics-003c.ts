@@ -4,6 +4,16 @@ const path =
   process.argv[2] ?? 'experiments/emerge-ko-001/MATHEMATICS.md';
 let text = readFileSync(path, 'utf8');
 
+if (text.includes('Last updated: 17 July 2026 — after EMERGE-CARRIER-003C')) {
+  const normalized = text.replaceAll('\\`', '`');
+  if (normalized === text) {
+    throw new Error('Carrier-003C ledger is already normalized; no edit required.');
+  }
+  writeFileSync(path, normalized, 'utf8');
+  console.log(`Normalized Carrier-003C receipt fences in ${path}.`);
+  process.exit(0);
+}
+
 function replaceOnce(label: string, search: string, replacement: string): void {
   const first = text.indexOf(search);
   if (first < 0) throw new Error(`Ledger transform missing: ${label}.`);
