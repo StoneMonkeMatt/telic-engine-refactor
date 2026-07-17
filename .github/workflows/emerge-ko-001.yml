@@ -152,6 +152,20 @@ jobs:
             experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
             experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
 
+      - name: Align Carrier-002A legacy telemetry projection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('experiments/emerge-ko-001/run-carrier-002.ts')
+          source = path.read_text()
+          old = """    const rawWinner = deterministicWinner(\n      ranked.map(candidate => ({ ...candidate, carrierAdjustment: 0 })),\n      tieBreakContext,\n    );\n    const feedbackWinner = deterministicWinner(baselineAugmented, tieBreakContext);"""
+          new = """    const rawWinner = [...ranked].sort((a, b) => b.score - a.score)[0];\n    const feedbackWinner = [...baselineAugmented].sort((a, b) => b.score - a.score)[0];"""
+          if old not in source:
+              raise SystemExit('Carrier-002 legacy telemetry block was not found exactly once.')
+          path.write_text(source.replace(old, new, 1))
+          PY
+          npm run lint
+
       - name: Run Carrier-002A neutrality and Carrier-002B native continuity
         run: |
           npx tsx experiments/emerge-ko-001/run-carrier-002.ts \
@@ -169,12 +183,13 @@ jobs:
             node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256,carrier002A:r.carrier002A,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
           fi
 
-      - name: Upload Carrier-002 capsules, trace and result
+      - name: Upload Carrier-002 capsules, executed source, trace and result
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: EMERGE-CARRIER-002-results
           path: |
+            experiments/emerge-ko-001/run-carrier-002.ts
             experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
             experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json
             experiments/emerge-ko-001/results/EMERGE-CARRIER-002-trace.jsonl.gz
