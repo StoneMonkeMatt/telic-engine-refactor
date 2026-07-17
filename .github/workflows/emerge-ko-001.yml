@@ -124,3 +124,24 @@ jobs:
             experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
             experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json
           if-no-files-found: error
+
+      - name: Run EMERGE-CARRIER-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Display carrier-null result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,twinComparisons:r.twinComparisons,byteIdenticalComparisons:r.byteIdenticalComparisons,mismatchCount:r.mismatchCount,cells:r.cells,carrierInteraction:r.carrierInteraction,comparisonReceiptSha256:r.comparisonReceiptSha256,interpretation:r.interpretation,nextExperiment:r.nextExperiment}, null, 2));"
+          fi
+
+      - name: Upload carrier-null receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-001-results
+          path: experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+          if-no-files-found: error
