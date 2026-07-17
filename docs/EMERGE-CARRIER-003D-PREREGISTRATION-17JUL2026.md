@@ -149,7 +149,7 @@ The active rotation sweep is inadmissible unless all gates pass:
 4. the committed Carrier-003D runner assembler has Git blob SHA  
    `dca6a31d4271b40982f29cf985dd9fd490ae73cd`;
 5. the committed Carrier-003D aggregate assembler has Git blob SHA  
-   `da8d8c4ab94e4f2a985d347cb8fd7e29ad9af6a3`;
+   `9c18198e2639d85aec13c863d18bda3dff969925`;
 6. the committed pure duality projection has Git blob SHA  
    `2e92f8018678c5f838fbfe717a58c7605a83bf7c`;
 7. repository type-checking passes after deterministic assembly;
