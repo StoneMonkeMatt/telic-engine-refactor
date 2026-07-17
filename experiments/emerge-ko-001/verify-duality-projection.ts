@@ -4,8 +4,8 @@ import { projectDualityUpdate } from '../../src/logic/dualityProjection';
 
 const seeds = Array.from({ length: 64 }, (_, index) => 41000 + index);
 const initialSequences = [
-  ['🕯️', '🧭', '🪸', '🪡', '🌉', '🌀', '🔒', '⛓️', '✅', '🧠'],
-  ['🧭', '🌉', '🌀', '🪸', '🪡', '✅', '🔒', '🧠', '⛓️', '🕯️'],
+  ['🌪️', '🐋', '🎯', '⚓', '💀'],
+  ['🐋', '⚓', '🌪️', '💀', '🎯'],
 ];
 
 let comparisons = 0;
