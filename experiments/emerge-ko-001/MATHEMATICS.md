@@ -3,24 +3,24 @@
 > **The mathematics defines the causal claim; the experiment earns the right to make it.**
 
 Date established: 17 July 2026  
+Last updated: 17 July 2026 — after EMERGE-CARRIER-002C  
 Status: canonical live mathematics ledger  
 Experiment bench: `experiments/emerge-ko-001/`  
 Branch: `agent/emerge-ko-001-sandbox`
 
-This document is the canonical mathematical source of truth for the `emerge-ko-001` experiment bench. It defines the formal objects, transition kernels, causal estimators, evidence status, claim boundaries, and next admissible experiments.
-
-The runners are executable implementations. The dated result documents are immutable historical records. The workflow artifacts contain the raw receipts and traces. This ledger records what the mathematics currently permits us to claim.
+This document is the canonical mathematical source of truth for the `emerge-ko-001` bench. The runners are executable implementations. Dated result documents are immutable scientific records. Actions artifacts contain raw selectors, receipts and traces. This ledger states what the evidence currently permits us to claim.
 
 ---
 
 ## 0. Record-Keeping Doctrine
 
-1. **Evidence rows are chronological.** Earlier results are not rewritten to look cleaner after later discoveries.
-2. **Invalid, null, inconclusive, directional, architectural, and established results remain distinct.**
-3. **A mechanism must be reachable before its efficacy can be tested.** A null from a path with zero candidate exposure is a reachability result, not evidence of no causal effect.
-4. **The independent matched checkpoint pair is the unit of generalisation.** Stochastic replicates within one pair increase measurement precision but do not create new independent substrates.
-5. **Experimental changes are staged.** Plumbing neutrality precedes active coupling; active coupling precedes timing tests; timing tests precede held-out generalisation.
-6. **The ledger advances with the bench.** Every completed experiment must update the evidence ladder, claim boundary, active queue, and receipt index.
+1. **Evidence remains chronological.** Earlier findings are not rewritten after later discoveries.
+2. **Invalid, null, inconclusive, directional, mechanistic and established results remain distinct.**
+3. **Reachability precedes efficacy.** A mechanism that receives zero candidate exposure cannot test causal usefulness.
+4. **Influence is not usefulness.** A state may alter decisions without improving the scientific outcome.
+5. **The matched checkpoint pair is the unit of generalisation.** Replicates improve precision but do not create independent substrates.
+6. **Experimental changes are staged.** Neutral plumbing precedes active coupling; active coupling precedes timing controls; timing controls precede held-out generalisation.
+7. **The ledger advances with the bench.** Every completed experiment updates the evidence ladder, claim boundary, active queue and receipt index.
 
 ---
 
@@ -28,61 +28,39 @@ The runners are executable implementations. The dated result documents are immut
 
 ### 1.1 Symbolic microstate
 
-The system microstate at execution step `t` is an ordered symbolic sequence:
-
 \[
 S_t=[s_{t,1},s_{t,2},\ldots,s_{t,n}],
 \qquad
 s_{t,i}\in\mathcal L_{\mathrm{CODEX}}.
 \]
 
-Order matters because bridge activation, transition coherence, proposal generation, and repair outcomes depend on symbol adjacency.
+Order matters because bridge activation, transition coherence, proposal generation and repair depend on adjacency.
 
-### 1.2 Bridge multiset
+### 1.2 Bridge multiset and target wound
 
-Let:
+Let \(\mathcal B(S_t)\) be the multiset of registered bridge signatures activated by \(S_t\). A multiset is required because a signature may occur more than once.
 
-\[
-\mathcal B(S_t)
-\]
-
-be the multiset of registered bridge signatures activated by `S_t`.
-
-A multiset is required rather than an ordinary set because the same bridge signature can occur more than once. Experimental wounds use uniquely identifiable target signatures so every lesion begins with exact target recovery:
+For checkpoint \(j\), the frozen wound target is:
 
 \[
-Y_0=0.
+\mathcal T_j\subseteq\mathcal B(S_j),
+\qquad
+|\mathcal T_j|=k=2.
 \]
 
-### 1.3 Target wound
-
-For checkpoint `j`, let:
-
-\[
-\mathcal T_j\subseteq\mathcal B(S_j)
-\]
-
-be the frozen multiset of target bridges selected for destruction.
-
-The equal-wound bench fixes:
-
-\[
-|\mathcal T_j|=k=2
-\]
-
-for every compared checkpoint.
-
-The wound operator produces:
+The lesion operator produces:
 
 \[
 \widetilde S_{j,r}=\mathcal P_2(S_j;\xi_r),
 \]
 
-where `r` is the replicate and `\xi_r` is the preregistered lesion seed and permutation receipt.
+where \(r\) is the replicate and \(\xi_r\) is the frozen lesion/permutation receipt. Every valid lesion begins with:
 
-### 1.4 Macro-history state capsule
+\[
+Y_0=0.
+\]
 
-The retained macro-history state is:
+### 1.3 Macro-history state capsule
 
 \[
 M_t=
@@ -100,45 +78,40 @@ where:
 - \(D_t^{\mathrm{EMA}}\) is exponentially smoothed duality;
 - \(p_t\in\mathbb N_{\ge0}\) is consecutive threshold persistence;
 - \(\mathcal E_t\in\{0,1\}\) is the declared observer/emergence state;
-- \(I_t\in\{0,1\}\) records whether a qualifying inventory change has occurred;
+- \(I_t\in\{0,1\}\) records a qualifying inventory change;
 - \(H_t^D\) is a bounded ordered receipt of recent duality values.
 
-The executable capsule also carries provenance fields such as source pair, source seed, source step, source sequence hash, raw duality, threshold, and reconstruction verification. Those fields authenticate the state but are not independent causal variables unless explicitly introduced into a transition law.
+Provenance fields authenticate the capsule but are not causal variables unless explicitly introduced into a transition law.
 
-### 1.5 Repair feedback intervention
+### 1.4 Interventions
 
-The repair feedback condition is an interventional variable:
-
-\[
-Z_t\in\{0,1\}.
-\]
-
-`Z=0` removes the recovery augmentation. `Z=1` applies the fixed recovery feedback law with:
+Repair feedback:
 
 \[
+Z_t\in\{0,1\},
+\qquad
 \kappa=0.25.
 \]
 
-### 1.6 State-carrier activation
-
-The architectural carrier intervention is:
+Carrier activation:
 
 \[
 A_t\in\{0,1\}.
 \]
 
-- `A=0`: the capsule is carried and updated but does not alter candidate evaluation;
-- `A=1`: an explicitly preregistered component of `M_t` enters candidate evaluation or admission.
+- `A=0`: the capsule is carried and updated but cannot alter candidate evaluation;
+- `A=1`: a preregistered component of the capsule enters ranking and admission.
 
-### 1.7 Reachable action alphabet
+### 1.5 Reachable action alphabet
 
-The current equal-wound substrate has empirically remained on the decision surface:
+The equal-wound substrate exposed the operative surface:
 
 \[
-\mathcal A_{\mathrm{reachable}}=\{\texttt{none},\texttt{swap}\}.
+\mathcal A_{\mathrm{reachable}}=
+\{\texttt{none},\texttt{swap}\}.
 \]
 
-At the mathematical repair layer these are provisionally interpreted as:
+At the experimental repair layer:
 
 \[
 \text{🪡}_{hold}
@@ -146,11 +119,9 @@ At the mathematical repair layer these are provisionally interpreted as:
 \text{🪡}_{swap}.
 \]
 
-This notation is experimental and has not been promoted into the broader canonical needle-action inventory.
+These labels remain experiment-local and are not yet promoted into the broader canonical needle-action inventory.
 
-### 1.8 Wound recovery performance
-
-The primary outcome is target-bridge multiset recall:
+### 1.6 Recovery outcome
 
 \[
 Y_{j,r,h}
@@ -164,13 +135,13 @@ Y_{j,r,h}
 }{k}.
 \]
 
-For the current bench:
+For \(k=2\):
 
 \[
 Y\in\left\{0,\frac12,1\right\}.
 \]
 
-This metric measures recovery of the selected destroyed bridges, not recovery of every bridge present in the pre-wound sequence.
+This measures recovery of the selected destroyed bridges, not every bridge in the pre-wound sequence.
 
 ---
 
@@ -178,45 +149,44 @@ This metric measures recovery of the selected destroyed bridges, not recovery of
 
 ### 2.1 Passive-history kernel
 
-When the carrier is inactive, retained history is authenticated metadata and updated state, but it has no causal input into the sequence transition:
-
 \[
 P(S_{t+1}\mid S_t,Z_t,M_t,A_t=0)
 =
 P(S_{t+1}\mid S_t,Z_t).
 \]
 
-Carrier-001 verified this boundary under exact history twins.
+Carrier-001 and the later zero-coupling gates verified this boundary under exact twin conditions.
 
-### 2.2 Joint state-carrying kernel
-
-Once a carrier pathway is active, sequence and macro-history evolve jointly:
+### 2.2 Active state-carrying kernel
 
 \[
 P(S_{t+1},M_{t+1}\mid S_t,M_t,Z_t,A_t=1).
 \]
 
-This expression defines the architectural form required for a genuine retained-state causal test. It does not itself establish downward causation; that claim requires an active, reachable, experimentally distinguished pathway.
+Carrier-002C established that this is now an executable experimental kernel: changing \(A\) while holding the paired pre-state fixed changed exact winners, admissions and accepted transitions.
+
+This establishes a functioning state carrier under the implemented intervention. It does not establish that the true history is useful, adaptive or superior to a sham history.
 
 ### 2.3 Proposal and admission decomposition
 
-At each step, the engine constructs a proposal frontier:
+At each step:
 
 \[
-\mathcal C_t=\mathcal F(S_t,\xi_t),
+\mathcal C_t=\mathcal F(S_t,\xi_t).
 \]
 
-ranks candidates, resolves exact score ties deterministically, and applies stochastic admission using the frozen random stream.
+Candidates are ranked, exact ties are resolved deterministically, and the selected candidate passes through the frozen stochastic admission law.
 
-A valid carrier experiment must therefore report separately:
+Every carrier experiment must report separately:
 
-1. carrier-adjusted candidates;
-2. carrier-changed exact winners;
-3. carrier-changed admission decisions;
-4. accepted carrier-induced transitions;
-5. first state divergence;
-6. reconvergence;
-7. final recovery and coherence.
+1. candidate exposures;
+2. non-zero carrier adjustments;
+3. changed exact winners;
+4. changed admission decisions;
+5. accepted carrier-induced transitions;
+6. first state divergence;
+7. reconvergence;
+8. final recovery and coherence.
 
 ---
 
@@ -224,26 +194,17 @@ A valid carrier experiment must therefore report separately:
 
 ### 3.1 Native EMA propagation
 
-For candidate sequence `c`, the projected carried duality is:
-
 \[
 D_{t+1}^{\mathrm{EMA}}(c)
 =
 D_t^{\mathrm{EMA}}
 +
-\alpha
-\left(
-\widehat D(c)-D_t^{\mathrm{EMA}}
-\right),
+\alpha\left(\widehat D(c)-D_t^{\mathrm{EMA}}\right),
 \qquad
 \alpha=0.2.
 \]
 
-Here \(\widehat D(c)\) is the candidate's raw duality under the current Telos implementation.
-
-### 3.2 Reachable continuity loss
-
-The candidate's loss against retained duality is:
+### 3.2 Continuity loss
 
 \[
 L_D(c;M_t)
@@ -254,27 +215,13 @@ D_t^{\mathrm{EMA}}-D_{t+1}^{\mathrm{EMA}}(c)
 \right).
 \]
 
-The existing duality-loss coefficient is retained:
+The fixed coefficient is:
 
 \[
 w_D=0.5.
 \]
 
-### 3.3 Carrier-002B implementation boundary
-
-Carrier-002B applied the EMA replacement only to insertion candidates because the original ranker applied its raw-duality loss only to harmful insertions.
-
-The equal-wound substrate generated:
-
-\[
-N_{insert}=0.
-\]
-
-Therefore the mechanism received zero exposure and Carrier-002B is classified as an **unreachable-path null**, not an efficacy null.
-
-### 3.4 Carrier-002C preregistered extension
-
-Carrier-002C will apply the same native continuity loss to every reachable candidate action, including `none` and `swap`, without changing its coefficient:
+For insertion candidates, the active carrier replaces the existing raw-duality loss with the carried continuity loss. For reachable non-insertion candidates, it applies the same continuity penalty:
 
 \[
 R_t^{A=1}(c)
@@ -282,41 +229,34 @@ R_t^{A=1}(c)
 R_t^{A=0}(c)-w_D L_D(c;M_t).
 \]
 
-No coefficient sweep is permitted on the confirmatory run.
-
 The carrier remains a continuity loss rather than an emergence declaration bonus:
 
 - no `if E=1` gate;
 - no change to \(\kappa\);
 - no forced mutation;
 - no threshold-triggered action;
-- same wounds, targets, microstates, seeds, proposal frontier, and admission law.
+- no coefficient sweep in Carrier-002C;
+- same wounds, targets, microstates, seeds, proposal frontier and admission law.
 
 ---
 
 ## 4. Repair Feedback Law
 
-For candidate `c`, let:
+For candidate \(c\):
 
 \[
-\Delta\Phi(c)
-=
-\Phi(c)-\Phi(S_t),
+\Delta\Phi(c)=\Phi(c)-\Phi(S_t),
 \]
 
 \[
-\Delta B(c)
-=
-B(c)-B(S_t),
+\Delta B(c)=B(c)-B(S_t),
 \]
-
-and:
 
 \[
 L_{\mathcal T}(c)=1-Y(c).
 \]
 
-The current recovery term is:
+The fixed repair term is:
 
 \[
 R_{repair}(c)
@@ -328,7 +268,7 @@ R_{repair}(c)
 0.2L_{\mathcal T}(c).
 \]
 
-The feedback-augmented proposal score is:
+The feedback-augmented score is:
 
 \[
 R_t^Z(c)
@@ -338,15 +278,11 @@ R_t(c)+\kappa Z_tR_{repair}(c),
 \kappa=0.25.
 \]
 
-Carrier experiments must preserve this feedback law unless a later separately preregistered experiment explicitly intervenes on it.
-
 ---
 
 ## 5. Causal Estimators
 
 ### 5.1 Equal-wound repair interaction
-
-For measured checkpoint class \(\widetilde{\mathcal E}\in\{0,1\}\):
 
 \[
 \Gamma_h
@@ -364,21 +300,15 @@ Y_h(\widetilde{\mathcal E}=0,Z=0)
 \right].
 \]
 
-The matched-pair estimator is:
+Inference is based on the eight matched-pair effects:
 
 \[
 \overline\Gamma_h
 =
-\frac1J\sum_{j=1}^{J}\Gamma_{h,j},
-\qquad
-J=8.
+\frac1{8}\sum_{j=1}^{8}\Gamma_{h,j}.
 \]
 
-Inference is based on independent matched-pair effects, not the 32 within-pair lesion replicates treated as independent scientific substrates.
-
 ### 5.2 Carrier interaction at fixed feedback
-
-For retained-history capsules `M0` and `M1`:
 
 \[
 \Gamma_{A,Z}
@@ -392,8 +322,6 @@ Y(M_0,A=1,Z)-Y(M_0,A=0,Z)
 \right].
 \]
 
-This asks whether activating the carrier changes recovery differently for the two retained histories at a fixed feedback state.
-
 ### 5.3 Three-way interaction
 
 \[
@@ -402,53 +330,35 @@ This asks whether activating the carrier changes recovery differently for the tw
 \Gamma_{A,Z=1}-\Gamma_{A,Z=0}.
 \]
 
-This asks whether any history-specific carrier effect itself changes under active repair feedback.
+### 5.4 Mechanistic reachability
 
-### 5.4 Mechanistic reachability endpoint
-
-Before interpreting recovery efficacy, an active carrier must satisfy:
+Before recovery efficacy is interpreted:
 
 \[
 N_{carrier\ decisions}>0.
 \]
 
-Required component counts include:
-
-\[
-N_{adjusted\ candidates},
-\quad
-N_{changed\ winners},
-\quad
-N_{changed\ admissions},
-\quad
-N_{accepted\ carrier\ transitions}.
-\]
-
-A result with all four counts equal to zero is a reachability null.
+Carrier-002C passed this endpoint through changed exact winners, changed admissions and accepted carrier-induced actions.
 
 ### 5.5 Timing-specific history test
 
-Carrier-003 is admissible only after a reachable active carrier is demonstrated.
-
-It compares:
+Carrier-003 compares:
 
 \[
 M_t^{real}
+\quad\text{against}\quad
+M_t^{sham},
 \]
 
-against a sham history with the same marginal values, duration, and total exposure but altered temporal alignment:
+where the sham preserves the same marginal capsule values, duration and total exposure but alters temporal alignment.
 
-\[
-M_t^{sham}.
-\]
-
-The timing hypothesis is:
+Directional recovery hypothesis:
 
 \[
 Y_{real\ history}>Y_{sham\ history}.
 \]
 
-A non-directional mechanistic timing endpoint may be retained alongside this directional recovery hypothesis.
+A separate non-directional mechanistic endpoint will test whether real and sham histories produce different decisions before recovery direction is interpreted.
 
 ---
 
@@ -456,114 +366,159 @@ A non-directional mechanistic timing endpoint may be retained alongside this dir
 
 | Test | Primary result | Scientific status | Earned finding |
 |---|---:|---|---|
-| **V1** | \(\Gamma_h=+0.2083\) | **Invalidated** | Shared checkpoint sequences and discarded history allowed seed offsets to masquerade as class differences. No scientific claim retained. |
-| **V2** | \(\Gamma_h=-0.0677083\) | **Inconclusive** | Strict checkpoint and seed handling removed the V1 defect. Unequal target-bridge counts left the recovery scale structurally unmatched. |
-| **V2.1 audit** | same aggregate as V2 | **Mechanism audit** | Feedback genuinely changed sparse decisions. The principal turning surface was `none ↔ swap`. Unequal normalization and topology exposure were identified as material interpretation hazards. |
-| **V2.2 equal wound** | \(\Gamma_h=+0.07421875\) | **Directional positive; not established** | Eight matched pairs, two target bridges each, 512 lesions, and 1,024 branches. Pair interval \([-0.0667975,0.2152350]\) crosses zero. Five of eight pairs were positive; median pair effect \(+0.1328125\). |
-| **Carrier-001** | \(\Gamma_{carrier}=0\) | **Architectural null established** | 2,048 branches and 1,024 exact history-twin comparisons produced zero mismatches. Retained macro-history was descriptive metadata, not an executable state. |
-| **Carrier-002A** | \(\Gamma_{002A}=0\) | **Passive carrier neutrality established** | 2,048 zero-coupling projections reproduced Carrier-001 exactly. Full capsule reconstruction, carriage, update, and receipts introduced no dynamical observer effect. |
-| **Carrier-002B** | all carrier interactions \(=0\) | **Unreachable-path null** | The insertion-only native carrier generated zero adjusted candidates and zero carrier decisions because the substrate produced no insert proposals. All 39,102 accepted active transitions were swaps. Macro-history efficacy remains untested. |
-| **Carrier-002C** | pending | **Next preregistered experiment** | Extend the unchanged native continuity loss to the reachable `none ↔ swap` surface and require non-zero carrier decision exposure before efficacy interpretation. |
+| **V1** | \(\Gamma_h=+0.2083\) | **Invalidated** | Shared checkpoints and discarded history allowed seed offsets to masquerade as class differences. No scientific claim retained. |
+| **V2** | \(\Gamma_h=-0.0677083\) | **Inconclusive** | Strict checkpoint/seed handling removed the V1 defect. Unequal target counts left the recovery scale unmatched. |
+| **V2.1 audit** | same aggregate as V2 | **Mechanism audit** | Feedback genuinely changed sparse decisions. The principal turning surface was `none ↔ swap`; normalization and topology exposure were material hazards. |
+| **V2.2 equal wound** | \(\Gamma_h=+0.07421875\) | **Directional positive; not established** | Eight pairs, 512 lesions and 1,024 branches. Pair interval \([-0.0667975,0.2152350]\) crosses zero; five pairs positive; median \(+0.1328125\). |
+| **Carrier-001** | \(\Gamma_{carrier}=0\) | **Architectural null established** | 1,024 exact twins produced zero mismatches. Macro-history was metadata, not executable state. |
+| **Carrier-002A** | \(\Gamma_{002A}=0\) | **Passive carrier neutrality established** | 2,048 zero-coupling projections reproduced Carrier-001 exactly. Capsule carriage and updates introduced no observer effect. |
+| **Carrier-002B** | all interactions \(=0\) | **Unreachable-path null** | The insertion-only path received zero insert proposals. All 39,102 accepted transitions were swaps. No efficacy inference. |
+| **Carrier-002C** | 1,992 changed winners; 1,275 changed admissions; 1,603 accepted induced actions | **Functioning carrier established** | The retained EMA history changed reachable hold/swap decisions and trajectories. Recovery interactions remained small and all pair intervals crossed zero. |
+| **Carrier-003** | pending | **Next preregistered experiment** | Test true ordered history against an equal-distribution sham to determine whether timing carries useful control information. |
 
 ---
 
-## 7. Current Claim Boundary
+## 7. Carrier-002C Result Boundary
+
+### Mechanistic result
+
+Across 2,048 active branches:
+
+- candidate exposures: 204,800 each for hold, delete, swap and combine;
+- non-zero candidate adjustments: **429,109**;
+- comparable paired pre-state decisions: **18,963**;
+- changed exact winners: **1,992**;
+- changed admissions: **1,275**;
+- accepted carrier-induced actions: **1,603**;
+- `hold → swap`: **576**;
+- `swap → hold`: **492**;
+- `swap → different swap`: **924**;
+- divergent active branches: **1,930**;
+- reconvergent active branches: **49**.
+
+Therefore:
+
+\[
+\boxed{
+\text{retained macro-history is an executable and reachable causal state in the experimental kernel}
+}
+\]
+
+### Recovery result
+
+\[
+\Gamma_{A,Z=0}=+0.001953125,
+\]
+
+\[
+95\%\ \mathrm{CI}=
+[-0.0284370694,0.0323433194].
+\]
+
+\[
+\Gamma_{A,Z=1}=-0.0087890625,
+\]
+
+\[
+95\%\ \mathrm{CI}=
+[-0.0357088996,0.0181307746].
+\]
+
+\[
+\Gamma_{M\times A\times Z}=-0.0107421875,
+\]
+
+\[
+95\%\ \mathrm{CI}=
+[-0.0322490230,0.0107646480].
+\]
+
+Thus:
+
+\[
+\boxed{
+\text{functioning macro-history carrier established; state-specific recovery efficacy not established}
+}
+\]
+
+---
+
+## 8. Current Claim Boundary
 
 ### Established
 
-- The experimental runner is deterministic under the exact twin conditions tested by Carrier-001.
-- No hidden macro-history leakage was detected in Carrier-001.
-- A complete reconstructed history capsule can be carried and updated at zero coupling without changing baseline trajectories.
-- Equalizing target wounds changed the estimated interaction from negative to positive, demonstrating that the unequal-wound design materially affected interpretation.
-- The insertion-only carrier path is unreachable on the current length-10 equal-wound substrate.
+- Exact twin determinism under Carrier-001 conditions.
+- No hidden macro-history leakage in the passive kernel.
+- Full capsule carriage and updates are neutral at zero coupling.
+- Unequal target wounds materially distorted earlier interpretation.
+- The insertion-only carrier path is unreachable on the fixed-length substrate.
+- The EMA continuity carrier changes reachable exact winners, admissions, accepted actions and trajectories.
 
 ### Directionally supported
 
-- Under equal two-bridge wounds, the measured emergent checkpoint class received a larger mean feedback benefit:
+- V2.2 produced \(\Gamma_h=+0.07421875\), with five of eight pairs positive and median pair effect \(+0.1328125\).
+- The V2.2 uncertainty interval crosses zero; state-specific repair efficacy is not established.
 
-\[
-\Gamma_h=+0.07421875.
-\]
+### Mechanistically demonstrated
 
-- Five of eight matched pairs were positive and the median matched-pair effect was:
-
-\[
-+0.1328125.
-\]
-
-- The uncertainty interval still crosses zero, so state-specific efficacy is not established.
-
-### Architecturally demonstrated
-
-- Repair trajectories are path-dependent on sparse topological turning points.
-- The current reachable decision surface is dominated by `none ↔ swap` choices.
-- A state channel may be correctly implemented yet experimentally silent when the dynamics never expose the action class to which it is connected.
+- Repair trajectories depend on sparse topological turning points.
+- The decisive surface is hold/swap.
+- Retained EMA history can causally alter decisions through a model-native continuity loss.
+- Active and knockout trajectories can diverge and occasionally reconverge.
 
 ### Still untested
 
-- Whether retained macro-history changes reachable `none ↔ swap` winners or admissions.
-- Whether any active carrier effect differs between `M0` and `M1`.
-- Whether temporal ordering of true history contains causal information beyond an equal-distribution sham.
-- Whether any successful mechanism generalises to fresh seeds, microstates, lesions, inventories, and ontology perturbations.
+- Whether true temporal ordering is more informative than an equal-distribution sham.
+- Whether real history improves repair rather than merely changing behaviour.
+- Whether any timing-specific effect generalises to unseen seeds, microstates, lesions, inventories and ontology perturbations.
 
 ### Invalidated or rejected
 
-- V1's positive estimate is not admissible evidence.
-- A raw difference between checkpoint classes is not proof of retained-history causation.
-- A zero estimate from a mechanism with zero candidate exposure is not evidence of causal inefficacy.
-- The emergence declaration \(\mathcal E_t\) must not be converted into an arbitrary score bonus, forced mutation, or feedback-strength switch.
+- V1's positive estimate is inadmissible evidence.
+- A raw checkpoint-class difference is not proof of retained-history causation.
+- A zero result from zero mechanism exposure is not evidence of inefficacy.
+- Influence alone is not proof of adaptive value.
+- \(\mathcal E_t\) must not become an arbitrary bonus, forced mutation or feedback-strength switch.
 
 ---
 
-## 8. Active Bench Queue
+## 9. Active Bench Queue
 
-### EMERGE-CARRIER-002C — Reachable Hold/Swap Continuity Carrier
+### EMERGE-CARRIER-003 — Real History vs Equal-Distribution Sham
+
+Prerequisite satisfied: Carrier-002C demonstrated a reachable functioning carrier.
+
+Freeze paired capsule treatments:
+
+- **real history:** true ordered capsule trajectory;
+- **sham history:** same values and exposure, temporally permuted or yoked;
+- equal marginal distribution;
+- equal duration;
+- equal total exposure;
+- same microstate, wound, target bridges, feedback and random stream.
 
 Primary mechanistic question:
 
 \[
-N_{carrier\ decisions}>0\;?
+N_{real\neq sham\ decisions}>0\;?
 \]
 
-Secondary recovery questions:
+Directional recovery question:
 
 \[
-\Gamma_{A,Z=0},
-\qquad
-\Gamma_{A,Z=1},
-\qquad
-\Gamma_{M\times A\times Z}.
+Y_{real\ history}>Y_{sham\ history}\;?
 \]
 
-No directional recovery sign is preregistered for the first reachable-carrier run.
-
-Required diagnostics:
-
-- candidate exposures by action class;
-- exact carrier adjustment per candidate;
-- baseline and active exact winners;
-- baseline and active admission decisions;
-- accepted carrier-induced actions;
-- first divergence step;
-- `hold → swap` and `swap → hold` counts;
-- reconvergence rate;
-- target recovery and coherence;
-- capsule before and after accepted transitions.
-
-### EMERGE-CARRIER-003 — Real History vs Equal-Distribution Sham
-
-Proceed only after Carrier-002C demonstrates a reachable functioning carrier.
+The directional endpoint is interpreted only after the mechanistic timing endpoint is reached.
 
 ### EMERGE-CARRIER-004 — Held-Out Generalisation
 
-Proceed only after a preregistered Carrier-003 mechanism survives the timing control.
+Proceed only after a preregistered Carrier-003 timing mechanism survives its sham control.
 
 Ordered sequence:
 
 \[
 \boxed{
-\text{002C reachable carrier}
-\rightarrow
 \text{003 real vs sham timing}
 \rightarrow
 \text{004 held-out generalisation}
@@ -572,13 +527,14 @@ Ordered sequence:
 
 ---
 
-## 9. Evidence and Receipt Index
+## 10. Evidence and Receipt Index
 
 ### Permanent scientific records
 
 - `docs/EMERGE-KO-001-V2.2-EQUAL-WOUND-RESULT-17JUL2026.md`
 - `docs/EMERGE-CARRIER-001-ARCHITECTURAL-NULL-RESULT-17JUL2026.md`
 - `docs/EMERGE-CARRIER-002-NEUTRALITY-AND-REACHABILITY-RESULT-17JUL2026.md`
+- `docs/EMERGE-CARRIER-002C-REACHABLE-HOLD-SWAP-RESULT-17JUL2026.md`
 
 ### Executable experiment files
 
@@ -587,10 +543,11 @@ Ordered sequence:
 - `experiments/emerge-ko-001/select-v2-2.ts`
 - `experiments/emerge-ko-001/run-v2-2.ts`
 - `experiments/emerge-ko-001/run-carrier-null.ts`
-- `experiments/emerge-ko-001/select-carrier-002.ts`
+- `experiments/emerge-ko-001/freeze-carrier-002.ts`
 - `experiments/emerge-ko-001/run-carrier-002.ts`
+- `experiments/emerge-ko-001/run-carrier-002c.ts`
 
-### Frozen selectors and artifact receipts
+### Selector and artifact receipts
 
 V2.2 panel selector:
 
@@ -610,7 +567,7 @@ Carrier-001 artifact:
 cb9792a72f09ad0c8881b041fc66dfba05a9ae393c6a294ad7c684df87231865
 ```
 
-Carrier-002 capsule selector:
+Carrier capsule selector:
 
 ```text
 be18af79000ad1aa65515402528d3dfeeb28d6c7ffa681a659f2510fa060c3b5
@@ -622,18 +579,30 @@ Carrier-002 artifact:
 f1dcbfd628ffc0e3a2f24c0324e0c37655c3dd66e9bd2ac03cf98a4b78e32ab3
 ```
 
+Carrier-002C artifact:
+
+```text
+4cf869f339b49822c61a4c2378f552dcbe8a7e5e2e54ff0052a0225098e44e49
+```
+
 ---
 
-## 10. Change Log
+## 11. Change Log
 
 ### 17 July 2026 — Ledger established
 
-- Defined the canonical objects, kernels, recovery metric, feedback law, carrier loss, and causal estimators.
-- Corrected the target-recovery definition to use the frozen destroyed-bridge multiset rather than all pre-wound bridges.
-- Recorded V1 through Carrier-002B without promoting null, directional, or unreachable-path findings beyond their evidence.
-- Marked Carrier-002A as completed and neutral.
-- Marked Carrier-002B as completed and unreachable on the current substrate.
+- Defined the canonical objects, kernels, outcomes, feedback law, carrier loss and estimators.
+- Recorded V1 through Carrier-002B without promoting findings beyond their evidence.
 - Fixed Carrier-002C as the next admissible experiment.
+
+### 17 July 2026 — Carrier-002C completed
+
+- Recorded 2,048/2,048 neutral zero-coupling comparisons.
+- Recorded 429,109 non-zero candidate adjustments.
+- Recorded 1,992 changed winners, 1,275 changed admissions and 1,603 accepted carrier-induced actions.
+- Promoted executable macro-history carriage from untested to mechanistically established.
+- Preserved the null recovery conclusion: every matched-pair interval crosses zero.
+- Advanced the active queue to Carrier-003 real-history versus equal-distribution sham.
 
 ---
 
