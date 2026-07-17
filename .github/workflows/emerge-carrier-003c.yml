@@ -1,0 +1,130 @@
+name: EMERGE-CARRIER-003C
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-CARRIER-003C-PREREGISTRATION-17JUL2026.md'
+      - 'src/logic/dualityProjection.ts'
+      - 'experiments/emerge-ko-001/**'
+      - '.github/workflows/emerge-carrier-003c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-projected-slope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify preregistered source receipts
+        run: |
+          echo 'f2169f7a1f03ef599cdbfffd0f99d8dae3f532bea80fcb842ec60240beb46592  experiments/emerge-ko-001/run-carrier-002c.ts' | sha256sum -c -
+          echo 'c518ad57997f38752a3782f93bce9117b487ad3c431033ac5e50490da70c9983  src/logic/dualityProjection.ts' | sha256sum -c -
+          echo 'b1e4dcb280b7a427c631d948d77bba2844e528e883a2233178b5fa0072a6c1ec  experiments/emerge-ko-001/verify-duality-projection.ts' | sha256sum -c -
+          echo 'af09a2cd969d78cd2a0e5c1b1fbbaeac14a0bf9aa2fad958ecebfeaa156ddbaa  experiments/emerge-ko-001/assemble-carrier-003c.ts' | sha256sum -c -
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Verify pure projection equals native engine update
+        run: |
+          npx tsx experiments/emerge-ko-001/verify-duality-projection.ts \
+            | tee experiments/emerge-ko-001/EMERGE-CARRIER-003C-projection-equivalence.json
+
+      - name: Rebuild frozen V2.2 substrate
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Assemble Carrier-003C executable
+        run: |
+          npx tsx experiments/emerge-ko-001/assemble-carrier-003c.ts \
+            experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/run-carrier-003c.generated.ts \
+            | tee experiments/emerge-ko-001/EMERGE-CARRIER-003C-assembly.json
+          npm run lint
+
+      - name: Run Carrier-003C native projected slope verification
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003c.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-manifest.json
+
+      - name: Enforce mechanistic reachability gate
+        run: |
+          node - <<'NODE'
+          const r = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-summary.json');
+          if (!r.neutrality?.passed) throw new Error('Carrier-003C neutrality gate failed.');
+          if (!r.dynamics?.mechanisticEndpointMet) {
+            throw new Error('Carrier-003C did not change a reachable winner, admission, or accepted action.');
+          }
+          console.log(JSON.stringify({
+            neutrality: r.neutrality,
+            dynamics: r.dynamics,
+            estimators: r.estimators,
+            uncertainty: r.uncertainty,
+            interpretation: r.interpretation,
+            nextExperiment: r.nextExperiment,
+          }, null, 2));
+          NODE
+
+      - name: Display Carrier-003C result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-summary.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-manifest.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256,neutrality:r.neutrality,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+          fi
+
+      - name: Upload Carrier-003C sources receipts traces and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003C-results
+          path: |
+            docs/EMERGE-CARRIER-003C-PREREGISTRATION-17JUL2026.md
+            src/logic/dualityProjection.ts
+            experiments/emerge-ko-001/verify-duality-projection.ts
+            experiments/emerge-ko-001/assemble-carrier-003c.ts
+            experiments/emerge-ko-001/run-carrier-003c.generated.ts
+            experiments/emerge-ko-001/EMERGE-CARRIER-003C-projection-equivalence.json
+            experiments/emerge-ko-001/EMERGE-CARRIER-003C-assembly.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-manifest.json
+          if-no-files-found: warn
