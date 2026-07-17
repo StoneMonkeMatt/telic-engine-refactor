@@ -61,23 +61,29 @@ export function selectTargetBridgeOccurrences(
   targetBridgeCount: number,
 ): { indices: number[]; signatures: string[] } {
   const criticality = calculateBridgeCriticality(codex, sequence);
-  if (criticality.size < targetBridgeCount) {
+  const signatureCounts = countValues(bridgeSignatures(codex, sequence));
+  const sortedIndices = [...criticality.keys()].sort(
+    (a, b) =>
+      (criticality.get(b) ?? 0) - (criticality.get(a) ?? 0) || a - b,
+  );
+
+  const indices: number[] = [];
+  const signatures: string[] = [];
+  for (const index of sortedIndices) {
+    const signature = `${sequence[index]}→${sequence[index + 1]}`;
+    if ((signatureCounts.get(signature) ?? 0) !== 1) continue;
+    indices.push(index);
+    signatures.push(signature);
+    if (indices.length === targetBridgeCount) break;
+  }
+
+  if (indices.length < targetBridgeCount) {
     throw new Error(
-      `Checkpoint has ${criticality.size} active bridges; ${targetBridgeCount} are required.`,
+      `Checkpoint has only ${indices.length} uniquely identifiable bridges; ${targetBridgeCount} are required.`,
     );
   }
 
-  const indices = [...criticality.keys()]
-    .sort(
-      (a, b) =>
-        (criticality.get(b) ?? 0) - (criticality.get(a) ?? 0) || a - b,
-    )
-    .slice(0, targetBridgeCount);
-
-  return {
-    indices,
-    signatures: indices.map(index => `${sequence[index]}→${sequence[index + 1]}`),
-  };
+  return { indices, signatures };
 }
 
 function exactReferenceDamage(
