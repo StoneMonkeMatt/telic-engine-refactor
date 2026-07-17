@@ -1,0 +1,68 @@
+      passed: true,
+      expected: rotation7Expected,
+      observedEstimators: rotation7.estimators,
+      observedDynamics: {
+        changedWinnerSteps: rotation7.dynamics.changedWinnerSteps,
+        changedAdmissionSteps: rotation7.dynamics.changedAdmissionSteps,
+        acceptedTimingInducedActions: rotation7.dynamics.acceptedTimingInducedActions,
+      },
+    },
+    ensembleEstimators,
+    ensembleUncertainty,
+    ensemblePairEffects,
+    rotationSensitivity,
+    leaveOneRotationOut,
+    dynamics,
+    conclusions: {
+      trueHistoryAdvantageEstablished,
+      trueHistoryHarmEstablished,
+      feedbackInterferenceRobust,
+      feedbackSynergyRobust,
+      mechanisticTimingAcrossAllRotations:
+        dynamics.rotationsWithMechanisticTimingEndpoint === 14,
+    },
+    interpretation,
+    nextExperiment,
+    rotations: rotationRows,
+  };
+
+  const manifest = {
+    schemaVersion: 'emerge-carrier-003b-aggregate-manifest-v1',
+    experimentId: summary.experimentId,
+    sourceSelectorSha256: summary.sourceSelectorSha256,
+    capsuleSelectorSha256: summary.capsuleSelectorSha256,
+    summarySha256: stableHash(summary),
+    rotationSummarySetSha256: summary.receipts.rotationSummarySetSha256,
+    realProjectionReceiptSha256: summary.receipts.realProjectionReceiptSha256,
+    neutralityPassed: summary.neutrality.passed,
+    rotation7ReplicationPassed: summary.rotation7Replication.passed,
+    primaryInterval: primary.interval95,
+    interferenceInterval: interference.interval95,
+  };
+
+  mkdirSync(dirname(summaryPath), { recursive: true });
+  mkdirSync(dirname(manifestPath), { recursive: true });
+  writeFileSync(summaryPath, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+
+  console.log(
+    JSON.stringify(
+      {
+        experimentId: summary.experimentId,
+        scale: summary.scale,
+        rotation7Replication: summary.rotation7Replication.passed,
+        ensembleEstimators: summary.ensembleEstimators,
+        ensembleUncertainty: summary.ensembleUncertainty,
+        dynamics: summary.dynamics,
+        conclusions: summary.conclusions,
+        interpretation: summary.interpretation,
+        nextExperiment: summary.nextExperiment,
+        manifest,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+main();
