@@ -1,0 +1,59 @@
+name: Advance mathematics through Carrier-003D
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/scripts/advance-mathematics-003d.ts'
+      - '.github/workflows/advance-mathematics-003d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  advance-ledger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout experiment branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/emerge-ko-001-sandbox
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify frozen ledger and transformer
+        run: |
+          test "$(git hash-object experiments/emerge-ko-001/MATHEMATICS.md)" = '3f4c49c0ac7bc244325cfb7d688e1a52250f5180'
+          test "$(git hash-object .github/scripts/advance-mathematics-003d.ts)" = 'f11d96156eacd631140c5495485f1d5accdec0b4'
+
+      - name: Advance canonical ledger
+        run: |
+          npx tsx .github/scripts/advance-mathematics-003d.ts \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          npm run lint
+          grep -F 'Last updated: 17 July 2026 — after EMERGE-CARRIER-003D' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F '## 11. Carrier-003D Result Boundary' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F 'EMERGE-CARRIER-003E — Higher-Order Directional Law Audit' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+          grep -F 'f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c' \
+            experiments/emerge-ko-001/MATHEMATICS.md
+
+      - name: Commit ledger advance
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/emerge-ko-001/MATHEMATICS.md
+          git commit -m 'advance mathematics ledger through Carrier-003D'
+          git push origin HEAD:agent/emerge-ko-001-sandbox
