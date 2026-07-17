@@ -14,7 +14,7 @@ permissions:
 jobs:
   causal-feedback-knockout:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     steps:
       - name: Checkout branch
@@ -144,4 +144,39 @@ jobs:
         with:
           name: EMERGE-CARRIER-001-results
           path: experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+          if-no-files-found: error
+
+      - name: Freeze EMERGE-CARRIER-002 state capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Run Carrier-002A neutrality and Carrier-002B native continuity
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json
+
+      - name: Display Carrier-002 result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256,carrier002A:r.carrier002A,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+          fi
+
+      - name: Upload Carrier-002 capsules, trace and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-002-results
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json
           if-no-files-found: error
