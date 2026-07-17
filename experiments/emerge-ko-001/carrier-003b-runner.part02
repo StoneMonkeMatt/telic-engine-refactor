@@ -1,0 +1,278 @@
+    const selection = selectProposal(
+      {
+        ranked: activeAugmented,
+        currentTemp: Math.pow(0.95, step),
+        tieBreakContext,
+      },
+      rng,
+    );
+
+    if (selection.selected.sequence.join('|') !== exactWinner.sequence.join('|')) {
+      throw new Error('Exact tie-resolved winner disagreed with selector output.');
+    }
+
+    if (selection.accepted) {
+      const beforeCapsule = capsuleSnapshot(capsuleState);
+      current = [...selection.selected.sequence];
+      acceptedSteps++;
+      const inventoryChanged = multisetKey(beforeSequence) !== multisetKey(current);
+      capsuleState = updateCapsule(
+        capsuleState,
+        telos.computeRawDuality(current),
+        inventoryChanged,
+        config,
+        emaAlpha,
+        historyWindow,
+      );
+
+      {
+        const selected = selection.selected as CarrierCandidate;
+        acceptedTrace.push({
+          pairId,
+          microstateSource,
+          replicate: lesion.replicate,
+          feedback,
+          capsuleId: capsule.capsuleId,
+          timingMode,
+          timingActive,
+          step,
+          action: actionLabel(selected.type),
+          carrierAdjustment: selected.carrierAdjustment,
+          carriedDualityLoss: selected.carriedDualityLoss,
+          candidateDema: selected.candidateDema,
+          historyAnchor: selected.historyAnchor,
+          beforeSequenceSha256,
+          afterSequenceSha256: stableHash(current),
+          beforeCapsule,
+          afterCapsule: capsuleSnapshot(capsuleState),
+          targetRecovery: multisetRecall(
+            targets,
+            bridgeSignatures(codex, current),
+          ),
+        });
+      }
+    }
+
+    decisions.push({
+      step,
+      beforeSequenceSha256,
+      winnerSequenceSha256: stableHash(selection.selected.sequence),
+      winnerType: actionLabel(selection.selected.type),
+      accepted: selection.accepted,
+      afterSequenceSha256: stableHash(current),
+    });
+    trajectoryKeys.push(current.join('|'));
+  }
+
+  const projection: KernelProjection = {
+    finalTargetRecovery: multisetRecall(targets, bridgeSignatures(codex, current)),
+    finalCoherence: telos.coherence(current),
+    finalBridgeRate: bridgeRate(codex, current),
+    acceptedSteps,
+    feedbackChangedWinnerSteps,
+    finalSequence: current,
+  };
+
+  return {
+    projection,
+    trajectoryKeys,
+    decisions,
+    acceptedTrace,
+    diagnostics: {
+      candidateExposures,
+      carrierAdjustedCandidates,
+      carrierAdjustedByAction,
+      carrierAdjustmentSum,
+      maxAbsCarrierAdjustment,
+      acceptedTransitions: acceptedSteps,
+      timingExposureSteps,
+      timingScheduleSha256,
+      finalCapsule: capsuleState,
+    },
+  };
+}
+
+function compareRuns(knockout: BranchRun, active: BranchRun): PairedDiagnostics {
+  let comparablePreStateSteps = 0;
+  let changedWinnerSteps = 0;
+  let changedAdmissionSteps = 0;
+  let acceptedCarrierInducedActions = 0;
+  let holdToSwap = 0;
+  let swapToHold = 0;
+  let swapToSwap = 0;
+  let otherWinnerChanges = 0;
+  let firstDecisionDifferenceStep: number | null = null;
+
+  for (let index = 0; index < Math.min(knockout.decisions.length, active.decisions.length); index++) {
+    const baseline = knockout.decisions[index];
+    const carrier = active.decisions[index];
+    if (baseline.beforeSequenceSha256 !== carrier.beforeSequenceSha256) continue;
+
+    comparablePreStateSteps++;
+    const winnerChanged =
+      baseline.winnerSequenceSha256 !== carrier.winnerSequenceSha256;
+    const admissionChanged = baseline.accepted !== carrier.accepted;
+
+    if (winnerChanged) {
+      changedWinnerSteps++;
+      if (baseline.winnerType === 'hold' && carrier.winnerType === 'swap') {
+        holdToSwap++;
+      } else if (baseline.winnerType === 'swap' && carrier.winnerType === 'hold') {
+        swapToHold++;
+      } else if (baseline.winnerType === 'swap' && carrier.winnerType === 'swap') {
+        swapToSwap++;
+      } else {
+        otherWinnerChanges++;
+      }
+    }
+
+    if (admissionChanged) changedAdmissionSteps++;
+    if (
+      carrier.accepted &&
+      carrier.winnerType !== 'hold' &&
+      (winnerChanged || admissionChanged)
+    ) {
+      acceptedCarrierInducedActions++;
+    }
+
+    if (
+      firstDecisionDifferenceStep === null &&
+      (winnerChanged || admissionChanged)
+    ) {
+      firstDecisionDifferenceStep = baseline.step;
+    }
+  }
+
+  let firstStateDivergenceStep: number | null = null;
+  let reconvergenceEvents = 0;
+  let divergent = false;
+  let everReconverged = false;
+  for (
+    let index = 0;
+    index < Math.min(knockout.trajectoryKeys.length, active.trajectoryKeys.length);
+    index++
+  ) {
+    const equal = knockout.trajectoryKeys[index] === active.trajectoryKeys[index];
+    if (!equal && firstStateDivergenceStep === null) firstStateDivergenceStep = index;
+    if (!equal) divergent = true;
+    if (equal && divergent) {
+      reconvergenceEvents++;
+      everReconverged = true;
+      divergent = false;
+    }
+  }
+
+  return {
+    comparablePreStateSteps,
+    changedWinnerSteps,
+    changedAdmissionSteps,
+    acceptedCarrierInducedActions,
+    holdToSwap,
+    swapToHold,
+    swapToSwap,
+    otherWinnerChanges,
+    firstDecisionDifferenceStep,
+    firstStateDivergenceStep,
+    reconvergenceEvents,
+    everReconverged,
+  };
+}
+
+function main(): void {
+  const panelPath = resolve(
+    process.argv[2] ??
+      'experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json',
+  );
+  const capsulePath = resolve(
+    process.argv[3] ??
+      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json',
+  );
+  const carrier002CPath = resolve(
+    process.argv[4] ??
+      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json',
+  );
+  const rotation = Number(process.argv[5] ?? '7');
+  if (!Number.isInteger(rotation) || rotation < 1 || rotation > 14) {
+    throw new Error(`Carrier-003B rotation must be an integer from 1 to 14; received ${process.argv[5]}.`);
+  }
+  const runMode = process.argv[6] ?? 'active';
+  if (runMode !== 'active' && runMode !== 'neutrality') {
+    throw new Error(`Carrier-003B run mode must be active or neutrality; received ${runMode}.`);
+  }
+  const summaryPath = resolve(
+    process.argv[7] ??
+      `experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${rotation}-summary.json`,
+  );
+  const tracePath = resolve(
+    process.argv[8] ??
+      `experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${rotation}-trace.jsonl.gz`,
+  );
+  const manifestPath = resolve(
+    process.argv[9] ??
+      `experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${rotation}-manifest.json`,
+  );
+
+  const panel = loadPanel(panelPath);
+  const capsules = loadCapsules(capsulePath, panel.selectorSha256);
+  const carrier002C = loadCarrier002C(
+    carrier002CPath,
+    panel.selectorSha256,
+    capsules.capsuleSelectorSha256,
+  );
+  const config = panel.frozen.config;
+  const emaAlpha = capsules.frozen.emaAlpha;
+  const historyWindow = capsules.frozen.historyWindow;
+  const codex = new Codex();
+
+  const referenceMap = new Map(
+    carrier002C.branches
+      .filter(branch => branch.active === 1)
+      .map(branch => [
+        referenceKey(
+          branch.pairId,
+          branch.microstateSource,
+          branch.replicate,
+          branch.feedback,
+          branch.capsuleId,
+        ),
+        branch.projectionSha256,
+      ]),
+  );
+
+  const branches: BranchSummary[] = [];
+  const traceLines: string[] = [];
+  let neutralityComparisons = 0;
+  let neutralityMismatches = 0;
+  const scheduleReceipts: Record<string, unknown>[] = [];
+
+  for (const pair of panel.frozen.pairs) {
+    const carrierPair = capsules.frozen.pairs.find(
+      entry => entry.pairId === pair.pairId,
+    );
+    if (!carrierPair) throw new Error(`Missing frozen carrier capsules for ${pair.pairId}.`);
+
+    for (const microstateSource of ['nonEmergent', 'emergent'] as const) {
+      const checkpoint = pair[microstateSource];
+      for (const lesion of checkpoint.lesions) {
+        for (const feedback of [0, 1] as const) {
+          for (const capsule of [carrierPair.m0, carrierPair.m1]) {
+            const schedules = buildTimingSchedules(capsule, rotation);
+            if (lesion.replicate === 0 && microstateSource === 'nonEmergent' && feedback === 0) {
+              scheduleReceipts.push({
+                pairId: pair.pairId,
+                capsuleId: capsule.capsuleId,
+                scheduleLength: schedules.real.length,
+                rotation: schedules.rotation,
+                terminalAnchor: schedules.real[schedules.real.length - 1],
+                realSha256: schedules.realSha256,
+                shamSha256: schedules.shamSha256,
+                multisetSha256: stableHash(sortedNumeric(schedules.real)),
+              });
+            }
+
+            const referenceHash = referenceMap.get(
+              referenceKey(
+                pair.pairId,
+                microstateSource,
+                lesion.replicate,
+                feedback,
