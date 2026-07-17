@@ -13,6 +13,12 @@ function replaceOnce(label: string, search: string, replacement: string): void {
   text = text.slice(0, first) + replacement + text.slice(first + search.length);
 }
 
+function insertBefore(label: string, marker: string, insertion: string): void {
+  const index = text.indexOf(marker);
+  if (index < 0) throw new Error(`Ledger insertion marker missing: ${label}.`);
+  text = text.slice(0, index) + insertion + text.slice(index);
+}
+
 function replaceSection(
   label: string,
   startMarker: string,
@@ -26,21 +32,25 @@ function replaceSection(
   text = text.slice(0, start) + replacement + '\n\n' + text.slice(end);
 }
 
+function appendAfterLine(label: string, lineStart: string, addition: string): void {
+  const start = text.indexOf(lineStart);
+  if (start < 0) throw new Error(`Ledger line missing: ${label}.`);
+  const end = text.indexOf('\n', start);
+  if (end < 0) throw new Error(`Ledger line end missing: ${label}.`);
+  text = text.slice(0, end + 1) + addition + text.slice(end + 1);
+}
+
 replaceOnce(
   'last-updated marker',
   'Last updated: 17 July 2026 — after EMERGE-CARRIER-003B',
   'Last updated: 17 July 2026 — after EMERGE-CARRIER-003C',
 );
 
-replaceOnce(
+replaceSection(
   'record-keeping doctrine',
-  `5. **Timing causality is not timing utility.** Chronology may change trajectories without the true order outperforming a sham.
-6. **Sham choice is a nuisance variable.** One convenient counterfeit timeline cannot define a general timing claim.
-7. **The matched checkpoint pair is the unit of generalisation.** Replicates and sham rotations improve measurement but do not create independent scientific substrates.
-8. **Experimental changes are staged.** Neutral plumbing precedes active coupling; active coupling precedes timing controls; complete sham robustness precedes held-out generalisation.
-9. **Closed claims remain closed.** A mechanism that fails its complete sham-robustness test is not rescued by selecting a favourable sham, coefficient or subgroup.
-10. **The ledger advances with the bench.** Every completed experiment updates the evidence ladder, claim boundary, active queue and receipt index.`,
-  `5. **Timing causality is not timing utility.** Chronology may change trajectories without the true order outperforming a sham.
+  '5. **Timing causality is not timing utility.**',
+  '\n\n---\n\n## 1. Core Mathematical Objects',
+  String.raw`5. **Timing causality is not timing utility.** Chronology may change trajectories without the true order outperforming a sham.
 6. **Directional exposure is not directional utility.** A signed slope may change choices without improving repair.
 7. **Sham choice is a nuisance variable.** One convenient counterfeit timeline cannot define a general timing claim.
 8. **The matched checkpoint pair is the unit of generalisation.** Replicates and sham rotations improve measurement but do not create independent scientific substrates.
@@ -49,15 +59,10 @@ replaceOnce(
 11. **The ledger advances with the bench.** Every completed experiment updates the evidence ladder, claim boundary, active queue and receipt index.`,
 );
 
-replaceOnce(
+insertBefore(
   'native slope mathematics',
-  `- identical wounds, targets, microstates, seeds, proposal frontier and admission law.
-
----
-
-## 4. Repair Feedback Law`,
-  `- identical wounds, targets, microstates, seeds, proposal frontier and admission law.
-
+  '\n---\n\n## 4. Repair Feedback Law',
+  String.raw`
 ### 3.3 Native Telos target and signed candidate slope
 
 Carrier-003C exposes the direction already latent in the existing Telos update. For candidate \(c\):
@@ -116,23 +121,20 @@ R_t^{A=0}(c)+0.5[L_{raw}(c)+v_t(c)].
 \]
 
 Carrier-003C verified that the pure projection reproduces the engine-native update exactly across 6,400 seeded comparisons.
-
----
-
-## 4. Repair Feedback Law`,
+`,
 );
 
-replaceOnce(
+appendAfterLine(
   'evidence ladder Carrier-003C row',
-  `| **Carrier-003B** | \(\overline\Delta_{Z=1}=-0.0157645\), CI \([-0.0338455,0.0023164]\) | **Complete-sham timing robustness completed** | All 14 rotations changed decisions; all 14 recovery point estimates were negative; the eight-pair ensemble interval crossed zero. The rotation-7 feedback-interference signal did not survive the complete ensemble. Positive timing usefulness is closed for the current carrier. |`,
-  `| **Carrier-003B** | \(\overline\Delta_{Z=1}=-0.0157645\), CI \([-0.0338455,0.0023164]\) | **Complete-sham timing robustness completed** | All 14 rotations changed decisions; all 14 recovery point estimates were negative; the eight-pair ensemble interval crossed zero. The rotation-7 feedback-interference signal did not survive the complete ensemble. Positive timing usefulness is closed for the current carrier. |
-| **Carrier-003C** | 1,325 changed winners; 802 changed admissions; 1,042 accepted actions | **Native directional carrier established** | Candidate-projected signed Telos slope changed reachable hold/swap decisions while 2,048 zero-activation projections remained exact. Recovery estimates were slightly positive, but every matched-pair interval crossed zero. |`,
+  '| **Carrier-003B** |',
+  String.raw`| **Carrier-003C** | 1,325 changed winners; 802 changed admissions; 1,042 accepted actions | **Native directional carrier established** | Candidate-projected signed Telos slope changed reachable hold/swap decisions while 2,048 zero-activation projections remained exact. Recovery estimates were slightly positive, but every matched-pair interval crossed zero. |
+`,
 );
 
-replaceOnce(
-  'Carrier-003C result boundary insertion',
-  `## 10. Current Claim Boundary`,
-  `## 10. Carrier-003C Result Boundary
+insertBefore(
+  'Carrier-003C result boundary',
+  '## 10. Current Claim Boundary',
+  String.raw`## 10. Carrier-003C Result Boundary
 
 ### 10.1 Projection and neutrality
 
@@ -190,37 +192,40 @@ Every interval crosses zero.
 
 ---
 
-## 11. Current Claim Boundary`,
+`,
 );
 
 replaceOnce(
-  'established claim slope',
-  `- Rotation 7 was not a privileged or necessary sham for the timing-causality finding.`,
-  `- Rotation 7 was not a privileged or necessary sham for the timing-causality finding.
-- The pure candidate projection exactly reproduces the native Telos duality update.
-- Candidate-projected signed Telos slope changes reachable winners, admissions, accepted actions and trajectories.`,
+  'current claim heading',
+  '## 10. Current Claim Boundary',
+  '## 11. Current Claim Boundary',
+);
+
+appendAfterLine(
+  'established slope claims',
+  '- Rotation 7 was not a privileged or necessary sham for the timing-causality finding.',
+  String.raw`- The pure candidate projection exactly reproduces the native Telos duality update.
+- Candidate-projected signed Telos slope changes reachable winners, admissions, accepted actions and trajectories.
+`,
 );
 
 replaceOnce(
-  'directional claim slope',
-  `- Neither directional pattern has a pair-generalised interval excluding zero.`,
-  `- Carrier-003C produced small positive state-specific recovery point estimates with and without feedback.
-- None of these directional patterns has a pair-generalised interval excluding zero.`,
+  'directional claims',
+  '- Neither directional pattern has a pair-generalised interval excluding zero.',
+  '- Carrier-003C produced small positive state-specific recovery point estimates with and without feedback.\n- None of these directional patterns has a pair-generalised interval excluding zero.',
 );
 
-replaceOnce(
-  'mechanistic claim slope',
-  `- Bounded EMA-history order can causally alter decisions independent of its value multiset.`,
-  `- Bounded EMA-history order can causally alter decisions independent of its value multiset.
-- The native Telos force, target and EMA update can be projected before selection to create a signed candidate velocity.`,
+appendAfterLine(
+  'mechanistic slope claim',
+  '- Bounded EMA-history order can causally alter decisions independent of its value multiset.',
+  '- The native Telos force, target and EMA update can be projected before selection to create a signed candidate velocity.\n',
 );
 
-replaceOnce(
+replaceSection(
   'still-untested claims',
-  `- Whether an existing Telos law based on historical direction, slope, persistence transition or inventory-event timing can use ordered history beneficially.
-- Whether a new model-native carrier passes neutrality, reachability, complete-sham timing control and positive pair-generalised usefulness.
-- Held-out generalisation of any mechanism that first clears those gates.`,
-  `- Whether true chronological signed slope outperforms the complete fourteen-rotation sham family.
+  '- Whether an existing Telos law based on historical direction, slope, persistence transition or inventory-event timing can use ordered history beneficially.',
+  '\n\n### Invalidated or rejected',
+  String.raw`- Whether true chronological signed slope outperforms the complete fourteen-rotation sham family.
 - Whether the native slope carrier establishes positive pair-generalised repair usefulness.
 - Whether persistence transition, threshold direction, inventory-event timing or curvature can add value beyond signed slope.
 - Held-out generalisation of any mechanism that first clears the complete-sham usefulness gate.`,
@@ -228,9 +233,9 @@ replaceOnce(
 
 replaceSection(
   'active bench queue',
-  `## 11. Active Bench Queue`,
-  `## 12. Evidence and Receipt Index`,
-  `## 12. Active Bench Queue
+  '## 11. Active Bench Queue',
+  '## 12. Evidence and Receipt Index',
+  String.raw`## 12. Active Bench Queue
 
 ### Next: EMERGE-CARRIER-003D — Complete-Sham Native Slope Audit
 
@@ -246,7 +251,7 @@ Carrier-003C completed:
 \text{reachable signed-slope influence}.
 \]
 
-Carrier-003D must now compare true signed historical direction against every non-zero cyclic rotation:
+Carrier-003D must compare true signed historical direction against every non-zero cyclic rotation:
 
 \[
 r\in\{1,2,\ldots,14\}.
@@ -287,41 +292,26 @@ Carrier-004 becomes admissible only after the native slope mechanism establishes
 
 replaceOnce(
   'evidence index heading',
-  `## 12. Evidence and Receipt Index`,
-  `## 13. Evidence and Receipt Index`,
+  '## 12. Evidence and Receipt Index',
+  '## 13. Evidence and Receipt Index',
 );
 
-replaceOnce(
+appendAfterLine(
   'result records index',
-  `- \`docs/EMERGE-CARRIER-003B-ROTATION-COMPLETE-SHAM-RESULT-17JUL2026.md\``,
-  `- \`docs/EMERGE-CARRIER-003B-ROTATION-COMPLETE-SHAM-RESULT-17JUL2026.md\`
-- \`docs/EMERGE-CARRIER-003C-PREREGISTRATION-17JUL2026.md\`
-- \`docs/EMERGE-CARRIER-003C-NATIVE-PROJECTED-SLOPE-RESULT-17JUL2026.md\``,
+  '- `docs/EMERGE-CARRIER-003B-ROTATION-COMPLETE-SHAM-RESULT-17JUL2026.md`',
+  '- `docs/EMERGE-CARRIER-003C-PREREGISTRATION-17JUL2026.md`\n- `docs/EMERGE-CARRIER-003C-NATIVE-PROJECTED-SLOPE-RESULT-17JUL2026.md`\n',
 );
 
-replaceOnce(
+appendAfterLine(
   'executable index',
-  `- \`experiments/emerge-ko-001/carrier-003b-aggregate.part00\` through \`part02\``,
-  `- \`experiments/emerge-ko-001/carrier-003b-aggregate.part00\` through \`part02\`
-- \`src/logic/dualityProjection.ts\`
-- \`experiments/emerge-ko-001/verify-duality-projection.ts\`
-- \`experiments/emerge-ko-001/assemble-carrier-003c.ts\`
-- \`.github/workflows/emerge-carrier-003c.yml\``,
+  '- `experiments/emerge-ko-001/carrier-003b-aggregate.part00` through `part02`',
+  '- `src/logic/dualityProjection.ts`\n- `experiments/emerge-ko-001/verify-duality-projection.ts`\n- `experiments/emerge-ko-001/assemble-carrier-003c.ts`\n- `.github/workflows/emerge-carrier-003c.yml`\n',
 );
 
-replaceOnce(
+insertBefore(
   'Carrier-003C receipts',
-  `Carrier-003B artifact:
-
-\`\`\`text
-a86c473f5a17dbc53fa693662f9665f485c7b969159f6cf0ffb435210136ba88
-\`\`\``,
-  `Carrier-003B artifact:
-
-\`\`\`text
-a86c473f5a17dbc53fa693662f9665f485c7b969159f6cf0ffb435210136ba88
-\`\`\`
-
+  '\n---\n\n## 13. Change Log',
+  String.raw`
 Carrier-003C workflow run:
 
 \`\`\`text
@@ -344,24 +334,20 @@ Carrier-003C artifact:
 
 \`\`\`text
 fd051cfcc4ca427ec6a043744eb1eb031cf50ea101f23a9f5a4a8abe5c8395b9
-\`\`\``,
+\`\`\`
+`,
 );
 
 replaceOnce(
   'change log heading',
-  `## 13. Change Log`,
-  `## 14. Change Log`,
+  '## 13. Change Log',
+  '## 14. Change Log',
 );
 
-replaceOnce(
+insertBefore(
   'Carrier-003C change log',
-  `- Gated held-out generalisation pending a new model-native mechanism that earns positive complete-sham-controlled usefulness.
-
----
-
-## Crown`,
-  `- Gated held-out generalisation pending a new model-native mechanism that earns positive complete-sham-controlled usefulness.
-
+  '\n---\n\n## Crown',
+  String.raw`
 ### 17 July 2026 — Carrier-003C completed
 
 - Exposed a pure candidate projection of the existing Telos force, target and EMA update.
@@ -370,10 +356,7 @@ replaceOnce(
 - Established reachable signed-slope influence through 1,325 changed winners, 802 changed admissions and 1,042 accepted induced actions.
 - Preserved the recovery-usefulness boundary because all matched-pair intervals crossed zero.
 - Opened Carrier-003D complete-sham native slope testing while keeping Carrier-004 gated.
-
----
-
-## Crown`,
+`,
 );
 
 writeFileSync(path, text, 'utf8');
