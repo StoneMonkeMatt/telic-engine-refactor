@@ -95,11 +95,10 @@ The existing proposal generator, raw telic scorer, deterministic tie-breaker, an
 For each checkpoint and replicate:
 
 - both feedback branches receive the identical perturbed sequence;
-- both branches receive the same post-lesion seed;
-- both branches consume the same number of random draws per step;
-- the only intended branch-level difference is \(Z\).
+- both branches begin from the same post-lesion seed;
+- the only intended branch-level intervention is \(Z\).
 
-Once trajectories diverge, subsequent proposals differ because the current symbolic states differ, while the random-number stream remains paired.
+The common random stream is exact at branch start. Once feedback changes a winning proposal, the symbolic states can diverge; state-dependent proposal paths may then consume random numbers differently. The receipt therefore records paired initial conditions and seeds rather than claiming permanent draw-for-draw identity after divergence.
 
 ## Checkpoints
 
