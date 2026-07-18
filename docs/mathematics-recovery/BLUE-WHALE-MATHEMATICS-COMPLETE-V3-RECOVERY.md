@@ -5,14 +5,14 @@
 The complete 9,401-line V3 source was recovered in commit `2bc1512` at:
 
 ```text
-docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md
+docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-RECOVERED-SOURCE.md
 ```
 
 Its SHA-256 is `b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff`. It continues through Part III and section 37. The record below describes only the shorter uploaded copy and is retained to identify those exact bytes.
 
 Recovery date: 18 July 2026  
 Source filename: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL(1).md`  
-Canonical repository filename: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
+Reference repository filename: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-PARTIAL-UPLOADED-COPY.md`
 Library file identity: `libfile_1cf9211ce5508191a55de550983ba14d`  
 Recovered byte length: `200704`  
 Recovered line count: `7666`  
@@ -24,9 +24,9 @@ Repository SHA-256: `ea0cd5dd0ceb749fef8def7b21754e881dd2208e117594b78b40fd1dd70
 
 ## Uploaded-copy status
 
-The recovered content is preserved under the canonical repository filename. The repository copy differs from the uploaded Library bytes only by one normalized trailing newline: the uploaded file had no final newline, while the repository copy does. Both byte counts and hashes are recorded above so the source artifact remains independently identifiable.
+The recovered content is preserved under the sourceCopy repository filename. The repository copy differs from the uploaded Library bytes only by one normalized trailing newline: the uploaded file had no final newline, while the repository copy does. Both byte counts and hashes are recorded above so the source artifact remains independently identifiable.
 
-The source calls itself the sealed canonical V3 document, but the recovered file ends during section `31.6.12A.3 Provenance status`, in the incomplete fragment:
+The original filename contains `SEALED-CANONICAL`, but the uploaded copy ends during section `31.6.12A.3 Provenance status`, in the incomplete fragment:
 
 ```text
 It first appears with `c
@@ -40,7 +40,7 @@ This document is distinct from `experiments/emerge-ko-001/MATHEMATICS.md`. The l
 
 ## Recovery method
 
-1. Preserve the recovered canonical content unchanged while provenance is investigated; retain both recorded hashes until an exact source export is recovered.
+1. Preserve the recovered sourceCopy content unchanged while provenance is investigated; retain both recorded hashes until an exact source export is recovered.
 2. Put corrections or recovered continuations in separately reviewable commits.
 3. Do not silently synthesize the missing tail.
 4. Verify any candidate continuation by source history, matching predecessor text, and cryptographic receipts where available.

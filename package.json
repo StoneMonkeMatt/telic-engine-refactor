@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "verify:canonical-mathematics": "node scripts/verify-canonical-mathematics.mjs"
+    "verify:mathematics-records": "node scripts/verify-mathematics-records.mjs"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",

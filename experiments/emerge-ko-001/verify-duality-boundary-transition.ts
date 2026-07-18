@@ -441,7 +441,7 @@ function main(): void {
       requestedThreshold,
       frozenThreshold,
     ),
-    law: 'b_t(c)=1[D_t<theta<=D_next(c)]-1[D_next(c)<theta<=D_t]',
+    formula: 'b_t(c)=1[D_t<theta<=D_next(c)]-1[D_next(c)<theta<=D_t]',
     scope: {
       darkOnly: true,
       rankingAdjustment: 0,

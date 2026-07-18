@@ -4,13 +4,13 @@
   "repository": "StoneMonkeMatt/telic-engine-refactor",
   "branch": "agent/emerge-ko-001-sandbox",
   "preCheckpointCommit": "574feb0f0e739d57c9301d70230b2020e54b58fc",
-  "sealedMathematics": {
+  "recordedMathematics": {
     "directory": "docs/mathematics-lineage",
-    "receipt": "docs/mathematics-lineage/V3-SEALED-SHA256SUMS.txt",
-    "canonical": "docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md",
-    "canonicalSha256": "b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff",
-    "sealedAuditExtract": "docs/mathematics-lineage/V3-O2-COMPOUND-EMERGENCE-AUDIT-EXTRACT.md",
-    "sealedAuditExtractSha256": "34e68433d3a55b970d27687709d3d3ba9abcf2b1ea66952253df3da1c5f06a5e"
+    "receipt": "docs/mathematics-lineage/V3-SOURCE-SHA256SUMS.txt",
+    "source": "docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-RECOVERED-SOURCE.md",
+    "sourceSha256": "b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff",
+    "auditExtract": "docs/mathematics-lineage/V3-O2-COMPOUND-EMERGENCE-AUDIT-EXTRACT.md",
+    "auditExtractSha256": "34e68433d3a55b970d27687709d3d3ba9abcf2b1ea66952253df3da1c5f06a5e"
   },
   "phases": [
     {
@@ -188,7 +188,7 @@
     {"phase":"Carrier-003B","workflowRun":29579962999,"file":"EMERGE-CARRIER-003B-results.zip","bytes":91136647,"sha256":"a86c473f5a17dbc53fa693662f9665f485c7b969159f6cf0ffb435210136ba88","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
     {"phase":"Carrier-003C","workflowRun":29610229475,"file":"EMERGE-CARRIER-003C-results.zip","bytes":4104823,"sha256":"fd051cfcc4ca427ec6a043744eb1eb031cf50ea101f23a9f5a4a8abe5c8395b9","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
     {"phase":"Carrier-003D","workflowRun":29614750232,"file":"EMERGE-CARRIER-003D-results.zip","bytes":94315403,"sha256":"f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
-    {"phase":"Carrier-003E","workflowRun":29621108507,"file":"EMERGE-CARRIER-003E-results-authoritative.zip","bytes":144468777,"sha256":"ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711","storage":"Library","verification":"downloaded from the authoritative run; byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003E","workflowRun":29621108507,"file":"EMERGE-CARRIER-003E-results-authoritative.zip","bytes":144468777,"sha256":"ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711","storage":"Library","verification":"downloaded from workflow run 29621108507; byte hash and ZIP integrity verified 2026-07-18"},
     {"phase":"Carrier-003F","workflowRun":29641237892,"file":"EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz","bytes":94533023,"sha256":"9e4aa92b72d514a71d3fa97f684ad8315dc4f20894df1e557bb6600038e3a593","storage":"Library","verification":"deterministic 77-file archive created, listed, hashed, and saved 2026-07-18"}
   ],
   "rawEvidence": {

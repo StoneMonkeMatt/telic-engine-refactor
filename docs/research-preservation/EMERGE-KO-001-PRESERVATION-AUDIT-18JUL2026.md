@@ -19,7 +19,7 @@ V1, V2, V2.1, V2.2 and Carriers 001, 002, 002C, 003, 003B, 003C, 003D, 003E and 
 The missing reference document was recovered as the original stored file, not reconstructed:
 
 ~~~text
-docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md
+docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-RECOVERED-SOURCE.md
 ~~~
 
 Its original seal verifies exactly:

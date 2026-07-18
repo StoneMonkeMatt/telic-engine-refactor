@@ -70,11 +70,11 @@ assert(
   'The preservation manifest does not cover every EMERGE workflow.',
 );
 
-const sealEntries = parseChecksums(manifest.sealedMathematics.receipt);
-for (const entry of sealEntries) {
-  const path = manifest.sealedMathematics.directory + '/' + entry.path;
-  assert(existsSync(resolve(root, path)), 'Missing sealed mathematics file: ' + path);
-  assert(hashFile(path) === entry.sha256, 'Sealed mathematics hash mismatch: ' + path);
+const mathematicsEntries = parseChecksums(manifest.recordedMathematics.receipt);
+for (const entry of mathematicsEntries) {
+  const path = manifest.recordedMathematics.directory + '/' + entry.path;
+  assert(existsSync(resolve(root, path)), 'Missing mathematics source file: ' + path);
+  assert(hashFile(path) === entry.sha256, 'Mathematics source hash mismatch: ' + path);
 }
 
 const artifactEntries = parseChecksums(manifest.artifactChecksumRegister);
@@ -127,7 +127,7 @@ if (presentRawEntries.length > 0) {
 console.log(JSON.stringify({
   preservedPhases: manifest.phases.length,
   repositoryRecords: new Set(phaseRecords).size,
-  sealedFiles: sealEntries.length,
+  mathematicsSourceFiles: mathematicsEntries.length,
   persistentArtifacts: artifactEntries.length,
   rawEvidenceReceipts: rawEntries.length,
   rawEvidenceVerifiedLocally: presentRawEntries.length === rawEntries.length,

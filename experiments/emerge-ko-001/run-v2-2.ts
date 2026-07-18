@@ -390,7 +390,7 @@ function main(): void {
     preregisteredPrimaryOutcome:
       'Fraction of the two uniquely identified target bridges restored at horizon h=100.',
     causalBoundary:
-      'Constant kappa; no threshold gate. Checkpoints, targets, lesions, perturbation seeds, and branch seeds were frozen before treatment execution.',
+      'Constant kappa; no threshold check. Checkpoints, targets, lesions, perturbation seeds, and branch seeds were fixed before treatment execution.',
     config,
     panelSummary: panel.frozen.pairs.map(pair => ({
       pairId: pair.pairId,
@@ -420,7 +420,7 @@ function main(): void {
       gamma95.lower > 0
         ? 'Positive state-specific interaction across the matched-pair panel; equal-wound macro-state efficacy is supported for this sandbox.'
         : gamma95.upper < 0
-          ? 'Negative state-specific interaction across the matched-pair panel; the current feedback law is mismatched with the measured-emergent checkpoint class.'
+          ? 'Negative state-specific interaction across the matched-pair panel; the current feedback formula is mismatched with the measured-emergent checkpoint class.'
           : 'The matched-pair interval includes zero; equal-wound state-specific causal efficacy is not established.',
     results,
   };

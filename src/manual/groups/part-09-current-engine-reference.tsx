@@ -286,7 +286,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
       <ManualSectionDrawer
         icon={Activity}
         title="Part IX-A. Engine Logic Overview"
-        subtitle="Governing Logic of the Telos Kernel"
+        subtitle="Current Computation in the Telos Kernel"
         keywords="engine, logic, initialization, proposal, evaluation, acceptance, structural, observer, summary, kernel, purity, bridge, duality"
       >
         <div className="space-y-8">

@@ -52,7 +52,7 @@ replaceOnce(
 );
 
 replaceOnce(
-  'capsule update signature and law',
+  'capsule update signature and formula',
   `function updateCapsule(
   state: CapsuleState,
   rawDuality: number,
@@ -162,10 +162,10 @@ replaceOnce(
       ? 'Carrier-003C changed reachable decisions and produced a pair-generalised state-specific recovery effect under feedback. Direction follows the signed interval.'
       : 'Carrier-003C changed reachable hold/swap decisions, establishing a functioning macro-history carrier. The pair-level recovery interval still crosses zero, so state-specific recovery efficacy is not established.';`,
   `  const interpretation = !mechanisticEndpointMet
-    ? 'Carrier-003C exposed native projected duality velocity to reachable candidates but changed no exact winner or admission decision. A complete-sham slope sweep is not admissible.'
+    ? 'Carrier-003C exposed native projected duality velocity to reachable candidates but changed no exact winner or admission decision. A complete-sham slope sweep is not supported.'
     : primaryClearsZero
-      ? 'Carrier-003C changed reachable decisions and produced a pair-generalised state-specific recovery effect under feedback. Direction follows the signed interval; complete-sham slope timing control is the next gate.'
-      : 'Carrier-003C changed reachable hold/swap decisions using native projected signed duality slope. Recovery efficacy is not established; the complete-sham slope timing control is now admissible.';`,
+      ? 'Carrier-003C changed reachable decisions and produced a pair-generalised state-specific recovery effect under feedback. Direction follows the signed interval; complete-sham slope timing control is the next check.'
+      : 'Carrier-003C changed reachable hold/swap decisions using native projected signed duality slope. Recovery efficacy is not established; the complete-sham slope timing control is now supported.';`,
 );
 
 replaceOnce(

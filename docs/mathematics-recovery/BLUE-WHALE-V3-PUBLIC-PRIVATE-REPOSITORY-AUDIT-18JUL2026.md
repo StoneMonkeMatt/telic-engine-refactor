@@ -37,7 +37,7 @@ All seven external mirrors completed `git fsck --full --no-dangling` without rep
 | `8c392784…` | `The-Compass-V4-Current-State-` commit `8c39278470353d8400aa7962a6bb608dd1eac6b8` | Recovers the V4 engine with default threshold `0.8`, compound high-duality predicate, and persistence count |
 | `853478e…` | blob `853478e505f5933202445ce26953fa1aefc8a2dd` in the V4 repository | Exact cited `src/logic/telos.ts` object recovered |
 | `4a5b0b4` | `bluewhalememory` commit `4a5b0b46db531d0b903e5f8e69e783d25ad2f8de` | Introduces the CH20 four-layer mathematics draft and its `E = Integration validated via CFI` gloss |
-| `69a826967` | `bluewhalememory` commit `69a8269676ff29829fc1300051ebbf4b4311e1d7` | Canonical Ch20 V3 note lineage recovered |
+| `69a826967` | `bluewhalememory` commit `69a8269676ff29829fc1300051ebbf4b4311e1d7` | Reference Ch20 V3 note lineage recovered |
 | `8725797` | `bluewhalememory` commit `87257972cc7eef6d7f0f854da2609a2ed58f7240` | Mathematics specification held/deferred register recovered |
 | `92d6a88b5` | `Consciousness-` commit `92d6a88b56fd063e2969c1908023447dc3f4703f` | Historical repository identifier resolved |
 | `a734304` | `bluewhalememory` commit `a73430454111bca33e18ff55c48f131f9075de03` | Needle–Action inventory candidate provenance recovered |
@@ -100,6 +100,6 @@ No private-repository source was recovered that names `EXP-006-THETA-INIT`, `EXP
 - The `EXP-001`–`EXP-008` mapping has no recovered repository evidence.
 - The supplied uploaded copy ends mid-sentence. A separate complete 9,401-line V3 source was recovered from stored evidence and committed in `2bc1512`; it continues through Part III and section 37.
 
-## Scientific verdict
+## Scientific finding
 
 The three days of Carrier testing were not computationally wasted: their causal measurements remain attached to exact executed sources. The provenance review surrounding those tests was incomplete, and some explanatory claims were stated more confidently than the available public-only evidence allowed. The private audit repairs that documentary gap and narrows the claims without changing the numerical Carrier results.

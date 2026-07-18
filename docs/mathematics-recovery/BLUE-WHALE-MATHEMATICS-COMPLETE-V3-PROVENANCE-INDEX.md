@@ -2,7 +2,7 @@
 
 Status: all V3-named public and private repository lineages inspected
 Opened: 18 July 2026  
-Recovered source: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
+Recovered source: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-PARTIAL-UPLOADED-COPY.md`
 Recovery commit: `76871da`
 
 Complete-source recovery: commit `2bc1512`, 9,401 lines, SHA-256 `b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff`
@@ -120,12 +120,12 @@ The private history confirms that `Key_Formulas.pdf` and the exact filename `The
 
 ## 6. Association with the emergence experiment ledger
 
-`experiments/emerge-ko-001/MATHEMATICS.md` was first committed as an independent canonical experiment ledger in commit `d099a7e` on 17 July 2026. It records the Carrier evidence programme, including duality EMA, slope, acceleration, and native-boundary experiments. The recovered V3 corpus is broader and supplies the system-level mathematical and implementation archaeology from which parts of that bench derive.
+`experiments/emerge-ko-001/MATHEMATICS.md` was first committed as an independent sourceCopy experiment ledger in commit `d099a7e` on 17 July 2026. It records the Carrier evidence programme, including duality EMA, slope, acceleration, and native-boundary experiments. The recovered V3 corpus is broader and supplies the system-level mathematical and implementation archaeology from which parts of that bench derive.
 
 The documents are linked and recorded as distinct sources:
 
 - **V3 corpus:** discovery architecture, algorithms, implementation archaeology, statuses, and open questions across the wider Blue Whale / Intelligent Notes system.
-- **EMERGE ledger:** preregistered causal claims, experiment gates, receipts, and results for the `emerge-ko-001` bench.
+- **EMERGE ledger:** preregistered causal claims, experiment checks, receipts, and results for the `emerge-ko-001` bench.
 
 ## 7. Open recovery actions
 
@@ -134,9 +134,9 @@ The documents are linked and recorded as distinct sources:
 3. [x] Locate the CH20 draft, Key Formulas source, UIA formula tree, V4 source, and later purpose text.
 4. [x] Build a core Part II section-to-source matrix instead of relying only on prose citations; expand it as external sources are recovered.
 5. [ ] Recover the missing tail without generating or inferring text.
-6. [x] Add a repository-level canonical-document index for direct discovery of this corpus.
+6. [x] Add a repository-level reference-document index for direct discovery of this corpus.
 
 Completed locally:
 
 - Core Part II section-to-source matrix: `BLUE-WHALE-MATHEMATICS-V3-SECTION-SOURCE-MATRIX.md`.
-- Repository-level canonical-document index: `docs/canonical/README.md`, linked from the root `README.md`.
+- Repository-level reference-document index: `docs/mathematics-recovery/README.md`, linked from the root `README.md`.

@@ -285,7 +285,7 @@ export const Part01ParameterOntology: React.FC = () => {
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">Purpose</h4>
             <p>
-              This section defines the reference symbolic ontology used by Compass. The ontology is sourced from <code>library.ts</code> and provides the authoritative registry for symbols, domains, compass orientations, and cross-domain bridge relations. The simulation may operationalize only a subset of these structures at any given engine version, but the ontology source remains reference.
+              This section describes the symbolic ontology used by Compass. The ontology is sourced from <code>library.ts</code> and records symbols, domains, compass orientations, and cross-domain bridge relations. Each engine version may use a subset of these structures.
             </p>
           </div>
 

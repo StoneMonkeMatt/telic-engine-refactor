@@ -128,7 +128,7 @@ function main(): void {
   );
   assert(
     referenceReplayReceipt === dynamicReplayReceipt,
-    'Dark instrumentation changed the sealed Carrier-003C replay receipt.',
+    'Dark instrumentation changed the recorded Carrier-003C replay receipt.',
   );
   assert(
     referenceTraceSha256 === dynamicTraceSha256,
@@ -213,7 +213,7 @@ function main(): void {
     generatedAt: new Date().toISOString(),
     threshold,
     scope: {
-      substrate: 'sealed Carrier-003C active trajectories',
+      substrate: 'recorded Carrier-003C active trajectories',
       boundaryActivationCoefficient: 0,
       rankingChanged: false,
       acceptanceChanged: false,
@@ -282,7 +282,7 @@ function main(): void {
       acceptedBoundaryEventReceiptSha256:
         acceptedAudit.value.acceptedBoundaryEventReceiptSha256,
     },
-    verdict: {
+    result: {
       laterExitAvailabilityProven: boundary.exitOptionsAfterStepOne > 0,
       candidateControlDensityProven: boundary.candidateDivergentFrontiers > 0,
       acceptedBoundaryEventsChangedInventoryImmediately: false,
@@ -326,7 +326,7 @@ function main(): void {
           exitOptionsAfterStepOne: result.dynamicFrontier.exitOptionsAfterStepOne,
         },
         acceptedCooccurrence: result.acceptedCooccurrence,
-        verdict: result.verdict,
+        result: result.result,
       },
       null,
       2,

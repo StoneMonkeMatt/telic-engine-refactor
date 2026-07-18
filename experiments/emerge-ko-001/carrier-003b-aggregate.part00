@@ -146,7 +146,7 @@ function main(): void {
     scheduleValidation: Record<string, unknown>;
   };
   if (!neutrality.neutrality.passed || neutrality.neutrality.mismatches !== 0) {
-    throw new Error('Carrier-003B neutrality gate did not pass.');
+    throw new Error('Carrier-003B neutrality check did not pass.');
   }
 
   const files = readdirSync(resultsDirectory)
@@ -190,7 +190,7 @@ function main(): void {
     throw new Error('Carrier-003B did not produce 14 distinct sham projection receipts.');
   }
 
-  // Rotation 7 must exactly reproduce the sealed Carrier-003 point estimates and diagnostics.
+  // Rotation 7 must exactly reproduce the recorded Carrier-003 point estimates and diagnostics.
   const rotation7 = summaries.find(summary => summary.rotation === 7)!;
   const rotation7Expected = {
     deltaRealMinusShamZ0: 0.0068359375,

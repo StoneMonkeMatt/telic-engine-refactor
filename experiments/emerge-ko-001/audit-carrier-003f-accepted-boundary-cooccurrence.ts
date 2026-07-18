@@ -133,7 +133,7 @@ function main(): void {
   }
   const observedTraceSha256 = sha256(traceBytes);
   if (observedTraceSha256 !== manifest.traceSha256) {
-    throw new Error('Accepted trace SHA-256 does not match its sealed manifest.');
+    throw new Error('Accepted trace SHA-256 does not match its recorded manifest.');
   }
 
   const traceText = gunzipSync(traceBytes).toString('utf8');
@@ -143,7 +143,7 @@ function main(): void {
     .filter(Boolean)
     .map(line => JSON.parse(line) as AcceptedTraceRecord);
   if (records.length !== manifest.traceRecords) {
-    throw new Error('Accepted trace record count does not match its sealed manifest.');
+    throw new Error('Accepted trace record count does not match its recorded manifest.');
   }
 
   const directions: Record<string, number> = {};

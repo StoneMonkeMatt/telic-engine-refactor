@@ -18,7 +18,7 @@ export const expertPolicy: ExpertPolicy = {
   principles: [
     "Reference terminology is the primary source of truth.",
     "The schema boundary is a persistence and validation contract, not an execution model.",
-    "The manual is the authoritative registry for symbols, domains, and relations."
+    "The manual records the symbols, domains, and relations used by this version."
   ],
   constraints: [
     "Do not rewrite manual content stylistically; preserve the original wording.",

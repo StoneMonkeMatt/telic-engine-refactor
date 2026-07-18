@@ -179,7 +179,7 @@ function main(): void {
     experimentId: 'EMERGE-CARRIER-003E',
     sourceSelectorSha256: panel.selectorSha256,
     capsuleSelectorSha256: capsules.capsuleSelectorSha256,
-    law: 'a_t(c)=[D_next(c)-D_t]-[D_t-D_(t-1)]',
+    formula: 'a_t(c)=[D_next(c)-D_t]-[D_t-D_(t-1)]',
     comparisons,
     historyTransitions,
     maximumAbsoluteError,

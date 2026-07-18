@@ -81,7 +81,7 @@ The same additive term is applied to `score` and `deltaScore`. No other rank, fe
 
 Rotating the EMA history is prohibited for Carrier-003F because it can create boundary labels inconsistent with the realized current state. The sham acts only on candidate ownership of the already-valid event labels.
 
-For frontier \(f\), canonically order its four candidates by the stable receipt:
+For frontier \(f\), order its four candidates by the stable receipt:
 
 \[
 \rho_f(c)=\operatorname{SHA256}(type(c),sequence(c)).

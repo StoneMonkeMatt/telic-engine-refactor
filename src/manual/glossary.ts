@@ -83,7 +83,7 @@ export const manualGlossary: GlossaryEntry[] = [
   },
   {
     term: "canon",
-    definition: "The authoritative, theoretical specification of the Compass system, as defined in Parts I-IV of the manual.",
+    definition: "The reference specification of the Compass system described in Parts I-IV of the manual.",
     forbiddenMeanings: ["current engine implementation"],
     relatedTerms: ["lexicon", "definition"],
     sourceType: "reference"
