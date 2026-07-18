@@ -31,6 +31,10 @@ The result is:
 - **Telos Engine**  
   A step-based simulation that evolves symbolic sequences over time.
 
+## Canonical Mathematics
+
+The repository's protected mathematical source material is indexed in [`docs/canonical/`](docs/canonical/README.md). This includes the recovered **Blue Whale / Intelligent Notes — Mathematics and Algorithms V3**, its integrity record, and the active provenance audit.
+
 ---
 
 ## Features
