@@ -28,6 +28,16 @@ export interface DualityAccelerationProjection {
   acceleration: number;
 }
 
+export type DualityBoundaryDirection = -1 | 0 | 1;
+
+export interface DualityBoundaryTransitionProjection {
+  projection: DualityProjection;
+  threshold: number;
+  currentQualifies: boolean;
+  projectedQualifies: boolean;
+  direction: DualityBoundaryDirection;
+}
+
 export const NATIVE_DUALITY_PROJECTION_PARAMS: Readonly<DualityProjectionParams> = {
   lambda: 0.618,
   eta: 0.3,
@@ -84,5 +94,46 @@ export function projectDualityAcceleration(
     previousDuality,
     previousVelocity,
     acceleration: projection.velocity - previousVelocity,
+  };
+}
+
+export function classifyDualityBoundaryTransition(
+  currentDuality: number,
+  nextDuality: number,
+  threshold: number,
+): DualityBoundaryDirection {
+  const currentQualifies = currentDuality >= threshold;
+  const nextQualifies = nextDuality >= threshold;
+  if (currentQualifies === nextQualifies) return 0;
+  return nextQualifies ? 1 : -1;
+}
+
+export function projectDualityBoundaryTransition(
+  scorer: DualityProjectionScorer,
+  currentDuality: number,
+  sequence: string[],
+  threshold: number,
+  params: DualityProjectionParams = NATIVE_DUALITY_PROJECTION_PARAMS,
+): DualityBoundaryTransitionProjection {
+  const projection = projectDualityUpdate(
+    scorer,
+    currentDuality,
+    sequence,
+    params,
+  );
+  const currentQualifies = currentDuality >= threshold;
+  const projectedQualifies = projection.nextDuality >= threshold;
+  const direction = classifyDualityBoundaryTransition(
+    currentDuality,
+    projection.nextDuality,
+    threshold,
+  );
+
+  return {
+    projection,
+    threshold,
+    currentQualifies,
+    projectedQualifies,
+    direction,
   };
 }

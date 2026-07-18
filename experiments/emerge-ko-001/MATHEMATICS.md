@@ -536,6 +536,8 @@ Carrier-003, all fourteen Carrier-003B rotations and all fourteen Carrier-003D s
 | **Carrier-003B** | \(\overline\Delta_{Z=1}=-0.0157645\), CI \([-0.0338455,0.0023164]\) | **Complete-sham timing robustness completed** | All 14 rotations changed decisions; all 14 recovery point estimates were negative; the eight-pair ensemble interval crossed zero. The rotation-7 feedback-interference signal did not survive the complete ensemble. Positive timing usefulness is closed for the current carrier. |
 | **Carrier-003C** | 1,325 changed winners; 802 changed admissions; 1,042 accepted actions | **Native directional carrier established** | Candidate-projected signed Telos slope changed reachable hold/swap decisions while 2,048 zero-activation projections remained exact. Recovery estimates were slightly positive, but every matched-pair interval crossed zero. |
 | **Carrier-003D** | \(\overline\Delta_{Z=1}=-0.0055106\), CI \([-0.0193342,0.0083130]\) | **Complete-sham signed-slope robustness completed** | All 14 rotations changed reachable decisions. Twelve of fourteen recovery point estimates were negative, but every rotation interval and the eight-pair ensemble interval crossed zero. True signed-slope chronology did not establish repair usefulness; Carrier-004 remains gated. |
+| **Carrier-003E** | \(\overline\Delta_{Z=1}=-0.0089634\), CI \([-0.0256051,0.0076782]\) | **Complete-sham acceleration robustness completed** | Acceleration changed reachable decisions and all 14 prior-slope shams were active. The complete-ensemble interval crossed zero; true acceleration chronology did not establish repair usefulness. |
+| **Carrier-003F** | \(\overline\Delta_{Z=1}=+0.0018834\), CI \([-0.0054898,0.0092565]\) | **Complete-sham native-boundary robustness completed** | The fixed \(w_b=0.01\) law changed 501 winners and 407 admissions. All 14 equal-exposure candidate-label shams were active and exact. The eight-pair interval crossed zero; true native boundary assignment did not establish repair usefulness. |
 
 ---
 
@@ -994,11 +996,108 @@ Permanent records:
 
 No retrospective adjustment of (w_v=0.5) or (w_a=0.5) is admissible as a rescue. The next architecture audit may examine persistence-transition direction, threshold-crossing direction or inventory-event timing. Carrier-004 remains gated.
 
+### Completed: EMERGE-CARRIER-003F — Native Boundary Assignment
+
+Status: **completed 18 July 2026; native boundary assignment causal, positive usefulness not established**.
+
+The dark audit identified the frozen native threshold as \(\theta=0.6\) and defined:
+
+\[
+b_t(c)
+=
+\mathbf 1[D_t^{EMA}<0.6\le D_{t+1}^{EMA}(c)]
+-
+\mathbf 1[D_{t+1}^{EMA}(c)<0.6\le D_t^{EMA}].
+\]
+
+At coefficient zero, the projector was exact and baseline-neutral across 204,800 active Carrier-003C frontiers and 819,200 candidates. It exposed 28,359 candidate-divergent frontiers, including 13,423 later frontiers with exit options. The accepted trace contained 1,716 exits and 1,509 entries; every accepted crossing was an inventory-stable swap and no crossing directly declared observer state.
+
+Carrier-003F keeps the Carrier-003C signed-slope law fixed and preregisters one active event term:
+
+\[
+R_t^{003F}(c)=R_t^{003C}(c)+w_b b_t(c),
+\qquad
+\boxed{w_b=0.01}.
+\]
+
+The one-percentage-point event perturbation is below the maximum absolute signed-slope adjustment observed on the same substrate, \(0.02771943834567009\). The coefficient is fixed before active boundary outcomes, with no sweep or retrospective rescue.
+
+The fourteen geometry-safe shams do not rotate EMA history. At each realized frontier they apply a deterministic SHA-256-derived bijection to the valid native ternary labels among the four canonical candidate slots:
+
+\[
+b_{r,f}^{sham}(c_i)=b_f(c_{\pi_{r,f}(i)}),
+\qquad r\in\{1,\ldots,14\}.
+\]
+
+Therefore every sham preserves the exact per-frontier multiset of \(+1\), \(0\) and \(-1\), the native boundary side, event timing, candidates, state and random stream. Only candidate ownership of the event label changes. The fourteen fixed salts are `01` through `14`.
+
+Carrier-003F requires:
+
+1. exact native projection and boundary algebra;
+2. boundary-off reproduction of sealed Carrier-003C;
+3. exact per-frontier sham exposure equality and fourteen distinct assignment receipts;
+4. non-zero true-law decision influence;
+5. non-zero true-versus-sham decision influence for all fourteen schedules;
+6. exact independent schedule-7 reproduction;
+7. positive complete-ensemble eight-pair usefulness under feedback before Carrier-004.
+
+For matched pair \(j\), feedback state \(Z\), and sham schedule \(r\):
+
+\[
+\Delta_{j,Z}^{(r)}
+=
+Y_j(true\ boundary\ assignment,Z)-Y_j(sham_r\ assignment,Z).
+\]
+
+The primary endpoint is the mean of the fourteen within-pair sham contrasts under feedback:
+
+\[
+\overline\Delta_{Z=1}
+=
+\frac{1}{8}\sum_{j=1}^{8}
+\left[
+\frac{1}{14}\sum_{r=1}^{14}\Delta_{j,Z=1}^{(r)}
+\right].
+\]
+
+Useful native boundary information is established only if its point estimate is positive and its two-sided 95% interval across the eight matched-pair ensemble effects lies entirely above zero. No individual sham, pair, capsule or secondary contrast can substitute for this gate.
+
+Permanent preregistration:
+
+- `docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md`
+
+All fourteen active schedules passed their integrity and mechanism gates:
+
+1. 28,672 Carrier-001 neutrality comparisons had zero mismatches;
+2. 28,672 Carrier-003C boundary-off comparisons had zero mismatches;
+3. 2,867,200 sham frontiers preserved their exact native ternary multiset with zero mismatches;
+4. the fixed true law changed 501 winners, 407 admissions and 399 accepted actions;
+5. all fourteen shams changed reachable decisions;
+6. true-versus-sham assignment changed 10,504 winners, 14,905 admissions and 8,232 accepted actions across the complete ensemble;
+7. all fourteen sham assignment and projection receipts were distinct;
+8. independent schedule 7 reproduced exactly.
+
+The primary complete-sham estimate was:
+
+\[
+\overline\Delta_{Z=1}=0.001883370535714,
+\qquad
+95\%=[-0.005489800554499, 0.009256541625927].
+\]
+
+The point estimate favored the true native assignment by approximately 0.188 percentage points, but the eight-pair interval crossed zero. Five pair effects were positive and three were negative. Eight of fourteen schedule point estimates were positive, three were zero and three were negative. Schedule 13 had an individually positive interval, but no individual sham can substitute for the preregistered complete-ensemble endpoint.
+
+No secondary ensemble interval excluded zero. The fixed native boundary law and candidate assignment are causal inputs, but positive repair usefulness is not established. No retrospective adjustment of \(w_b=0.01\), sham salt, subgroup, capsule, action family or feedback cell is admissible as a rescue. Carrier-004 remains gated.
+
+Permanent result:
+
+- `docs/EMERGE-CARRIER-003F-COMPLETE-SHAM-NATIVE-BOUNDARY-RESULT-18JUL2026.md`
+
 ### Carrier-004 — held-out generalisation
 
 Status: **gated**.
 
-Carrier-004 becomes admissible only after a higher-order model-native mechanism establishes a positive pair-generalised benefit against its complete sham family.
+Carrier-004 becomes admissible only after a model-native mechanism establishes a positive pair-generalised benefit against its complete sham family.
 
 ## 14. Evidence and Receipt Index
 
@@ -1018,6 +1117,9 @@ Carrier-004 becomes admissible only after a higher-order model-native mechanism 
 - `docs/EMERGE-CARRIER-003D-COMPLETE-SHAM-NATIVE-SLOPE-RESULT-17JUL2026.md`
 - `docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md`
 - `docs/EMERGE-CARRIER-003E-COMPLETE-SHAM-CANDIDATE-ACCELERATION-RESULT-18JUL2026.md`
+- `docs/EMERGE-CARRIER-003F-DARK-BOUNDARY-TRANSITION-AUDIT-18JUL2026.md`
+- `docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md`
+- `docs/EMERGE-CARRIER-003F-COMPLETE-SHAM-NATIVE-BOUNDARY-RESULT-18JUL2026.md`
 
 ### Executable experiment files
 
@@ -1044,6 +1146,13 @@ Carrier-004 becomes admissible only after a higher-order model-native mechanism 
 - `.github/scripts/emerge-carrier-003e-runner.ts`
 - `.github/scripts/emerge-carrier-003e-aggregate.ts`
 - `.github/workflows/emerge-carrier-003e.yml`
+- `experiments/emerge-ko-001/verify-duality-boundary-transition.ts`
+- `experiments/emerge-ko-001/assemble-carrier-003f-dark-dynamic.ts`
+- `experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts`
+- `experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts`
+- `experiments/emerge-ko-001/assemble-carrier-003f-active-runner.ts`
+- `experiments/emerge-ko-001/run-carrier-003f-complete-shams.sh`
+- `experiments/emerge-ko-001/aggregate-carrier-003f-complete-shams.ts`
 
 ### Selector and artifact receipts
 
@@ -1290,6 +1399,31 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Recorded a primary true-minus-mean-sham estimate of \(-0.00896345\) with the eight-pair interval crossing zero.
 - Preserved one positive secondary state-specific timing-by-feedback contrast without promoting it into the failed direct usefulness claim.
 - Closed positive true-history usefulness for the fixed acceleration law and kept Carrier-004 gated.
+
+### 18 July 2026 — Carrier-003F dark audit completed and active law preregistered
+
+- Rejected the proposed \(0.65\) boundary as non-native and unreachable on the frozen substrate.
+- Verified exact native \(\theta=0.6\) boundary algebra across 15,114 comparisons.
+- Preserved Carrier-003C exactly across 2,048 activation-off comparisons and a byte-identical 39,580-record accepted trace.
+- Audited 204,800 active frontiers and 819,200 candidates at coefficient zero.
+- Established 28,359 crossing-versus-no-crossing frontiers and 13,423 later exit-option frontiers.
+- Established that all 3,225 accepted crossings were inventory-stable swaps following a previously remembered qualifying inventory change.
+- Preregistered the fixed law \(R^{003F}=R^{003C}+0.01b_t(c)\) without a sweep.
+- Defined fourteen SHA-256-derived within-frontier candidate-label permutations preserving the exact native ternary multiset at every evaluated frontier.
+- Kept Carrier-004 gated pending non-zero mechanism expression and positive complete-sham eight-pair usefulness.
+
+### 18 July 2026 — Carrier-003F completed
+
+- Completed 57,344 active Needle branch runs across all fourteen equal-exposure sham schedules.
+- Verified 28,672 Carrier-001 neutrality comparisons and 28,672 sealed Carrier-003C boundary-off comparisons with zero mismatches.
+- Preserved the exact native ternary multiset across 2,867,200 sham frontiers with zero mismatches.
+- Reassigned 624,370 candidate event labels while retaining fourteen distinct sham assignment and projection receipts.
+- Established fixed-law reachability through 501 changed winners, 407 changed admissions and 399 accepted boundary-induced actions.
+- Established candidate-assignment causality in 14/14 shams through 10,504 changed winners, 14,905 changed admissions and 8,232 accepted assignment-induced actions.
+- Reproduced independent schedule 7 exactly.
+- Recorded a primary true-minus-mean-sham estimate of \(+0.00188337\) with eight-pair interval \([-0.00548980,0.00925654]\).
+- Preserved the boundary that one individually positive sham comparison cannot substitute for the failed complete-ensemble gate.
+- Closed positive native-boundary usefulness for the fixed \(w_b=0.01\) law and kept Carrier-004 gated.
 
 ---
 

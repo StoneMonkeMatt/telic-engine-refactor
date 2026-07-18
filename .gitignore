@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Rebuilt experiment products; permanent receipts live in docs and CI artifacts.
+experiments/emerge-ko-001/results/
+experiments/emerge-ko-001/*.generated.ts
