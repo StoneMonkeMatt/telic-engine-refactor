@@ -4,7 +4,7 @@
  */
 export const VERSIONING_SCHEMA = {
   lexicon: [
-    { version: "compass-v1", status: "Active", date: "2024-03-24", notes: "Initial canonical release." }
+    { version: "compass-v1", status: "Active", date: "2024-03-24", notes: "Initial reference release." }
   ],
   runSchema: [
     { version: "compass-run-v1", status: "Active", date: "2024-03-24", notes: "Standard JSON contract." },

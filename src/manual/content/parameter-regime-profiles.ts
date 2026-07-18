@@ -25,7 +25,7 @@ export const PARAMETER_REGIME_PROFILES = {
     { id: "permissive_observer", description: "Low threshold for early registration of signals." }
   ],
   constraint: [
-    { id: "canonical_10x60", description: "Max length 10, simulation depth 60." },
+    { id: "reference_10x60", description: "Max length 10, simulation depth 60." },
     { id: "extended_20x200", description: "Max length 20, simulation depth 200 for deep exploration." },
     { id: "compact_5x30", description: "Max length 5, simulation depth 30 for rapid convergence." }
   ]

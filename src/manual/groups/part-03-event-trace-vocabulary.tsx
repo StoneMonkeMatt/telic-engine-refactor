@@ -8,9 +8,9 @@ import { SUMMARY_FIELDS } from '../content/summary-fields';
 
 export const Part03EventTraceVocabulary: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Activity} 
-      title="Part III. Event and Trace Vocabulary" 
+    <ManualSectionDrawer
+      icon={Activity}
+      title="Part III. Event and Trace Vocabulary"
       subtitle="Standardized Logging and Summary Fields"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">
@@ -25,7 +25,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Events tracking modifications to the symbolic state.</p>
             {EVENT_VOCABULARY.filter(e => e.category === "State Transition").map((event, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={event.label}
                   dbLabel={event.id}
                   meaning={event.description}
@@ -42,7 +42,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Events tracking the stabilization of the run.</p>
             {EVENT_VOCABULARY.filter(e => e.category === "Convergence").map((event, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={event.label}
                   dbLabel={event.id}
                   meaning={event.description}
@@ -59,7 +59,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Events tracking emergent properties and observer interactions.</p>
             {EVENT_VOCABULARY.filter(e => e.category === "Emergence").map((event, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={event.label}
                   dbLabel={event.id}
                   meaning={event.description}
@@ -76,7 +76,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Events tracking risks and failures.</p>
             {EVENT_VOCABULARY.filter(e => e.category === "Integrity").map((event, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={event.label}
                   dbLabel={event.id}
                   meaning={event.description}
@@ -93,7 +93,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Key steps in the simulation timeline.</p>
             {SUMMARY_FIELDS.filter(f => f.category === "Temporal Milestones").map((field, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={field.label}
                   dbLabel={field.id}
                   meaning={field.description}
@@ -109,7 +109,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Tracking the last occurrences of key changes.</p>
             {SUMMARY_FIELDS.filter(f => f.category === "Finality & Persistence").map((field, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={field.label}
                   dbLabel={field.id}
                   meaning={field.description}
@@ -125,7 +125,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Aggregate counts of simulation events.</p>
             {SUMMARY_FIELDS.filter(f => f.category === "Cumulative Statistics").map((field, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={field.label}
                   dbLabel={field.id}
                   meaning={field.description}
@@ -141,7 +141,7 @@ export const Part03EventTraceVocabulary: React.FC = () => {
             <p className="text-[10px] text-white/40 italic mb-4">Ratios used to evaluate the quality of the run.</p>
             {SUMMARY_FIELDS.filter(f => f.category === "Performance Ratios").map((field, i) => (
               <div key={i}>
-                <LexiconItem 
+                <LexiconItem
                   label={field.label}
                   dbLabel={field.id}
                   meaning={field.description}

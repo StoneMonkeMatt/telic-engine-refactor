@@ -1,13 +1,13 @@
 import { MetricMapping } from "../manual.types";
 
 /**
- * Mapping of Compass engine metrics from UI labels to canonical keys and descriptions.
+ * Mapping of Compass engine metrics from UI labels to reference keys and descriptions.
  */
 export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "telic_score",
     label: "Telic Score",
-    canonicalName: "T",
+    referenceName: "T",
     family: "Composite Score",
     description: "The engine’s primary composite valuation of the current symbolic state, combining reward terms and penalties into a single decision-relevant score.",
     formula: "T = αI + γΦ + δE - βK + (0.2 * I * Φ)",
@@ -18,7 +18,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "resilience",
     label: "Resilience",
-    canonicalName: "R",
+    referenceName: "R",
     family: "Stability",
     description: "Measures how robustly the current state preserves structural integrity under local variation, perturbation, or adversarial pressure.",
     layer: "SimulationStep",
@@ -28,7 +28,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "telic_curvature",
     label: "Telic Curvature",
-    canonicalName: "kappa (κ)",
+    referenceName: "kappa (κ)",
     family: "Shape",
     description: "Measures the local shape or directional bending of the trajectory through symbolic state space under the telic objective.",
     formula: "κ = Φ * (1 + λ * ΔT)",
@@ -39,7 +39,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "path_integral",
     label: "Path Integral",
-    canonicalName: "P",
+    referenceName: "P",
     family: "Trajectory",
     description: "Aggregates the cumulative movement, work, or traversed significance of the run across steps rather than only inspecting the final state.",
     layer: "SimulationStep",
@@ -49,7 +49,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "mod97_value",
     label: "Mod97",
-    canonicalName: "mod97",
+    referenceName: "mod97",
     family: "Signature / Integrity",
     description: "A compact modular signature or checksum-like harmonic marker derived from the current state or run summary.",
     layer: "SimulationStep",
@@ -59,7 +59,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "compass_orientation",
     label: "Compass",
-    canonicalName: "compass",
+    referenceName: "compass",
     family: "Orientation",
     description: "A categorical orientation output mapping the state onto a directional interpretive frame within the ontology.",
     layer: "SimulationStep",
@@ -69,7 +69,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "consensus_score",
     label: "Consensus Score",
-    canonicalName: "C",
+    referenceName: "C",
     family: "Agreement",
     description: "Measures the degree of agreement, convergence, or internal alignment among the contributing evaluative signals in the current state.",
     layer: "SimulationStep",
@@ -79,7 +79,7 @@ export const METRICS_MAPPING: MetricMapping[] = [
   {
     key: "adversarial_status",
     label: "Adversarial Status",
-    canonicalName: "adversarialStatus",
+    referenceName: "adversarialStatus",
     family: "Stress Test Outcome",
     description: "Records whether the current state or run passes the system’s adversarial integrity test.",
     layer: "SimulationStep",

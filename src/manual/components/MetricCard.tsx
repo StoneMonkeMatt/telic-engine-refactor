@@ -1,11 +1,11 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 
-export function MetricCard({ title, value, unit, icon, desc, status }: { 
-  title: string, 
-  value: string | number, 
-  unit: string, 
-  icon: React.ReactNode, 
+export function MetricCard({ title, value, unit, icon, desc, status }: {
+  title: string,
+  value: string | number,
+  unit: string,
+  icon: React.ReactNode,
   desc: string,
   status?: 'success' | 'error'
 }) {

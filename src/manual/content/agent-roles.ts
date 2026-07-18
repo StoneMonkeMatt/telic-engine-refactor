@@ -1,6 +1,6 @@
 
 /**
- * Canonical agent roles defined in the Compass simulation protocol.
+ * Reference agent roles defined in the Compass simulation protocol.
  */
 export const AGENT_ROLES = [
   { role: "The Navigator", desc: "Responsible for compass alignment and directional drift." },

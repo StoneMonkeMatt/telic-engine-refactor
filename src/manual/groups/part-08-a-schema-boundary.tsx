@@ -4,9 +4,9 @@ import { ManualSectionDrawer } from '../components/ManualSectionDrawer';
 
 export const Part08ASchemaBoundary: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Shield} 
-      title="Part VIII-A. Schema Boundary" 
+    <ManualSectionDrawer
+      icon={Shield}
+      title="Part VIII-A. Schema Boundary"
       subtitle="Separation of Persistence and Execution"
     >
       <div className="space-y-6">
@@ -39,13 +39,13 @@ export const Part08ASchemaBoundary: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-            <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+            <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
             <p className="text-[10px] text-white/40 leading-relaxed">
               The schema should store the <code>seed</code> value used to initialize the PRNG. This allows the exact same sequence of "random" choices to be reproduced if the engine version and parameters are identical.
             </p>
           </div>
           <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-            <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Canonical Rule**</div>
+            <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Reference Rule**</div>
             <p className="text-[10px] text-white/40 leading-relaxed">
               The persistence schema records the run as executed. It does not require that the upstream preparation mechanism be identical across engine versions.
             </p>
@@ -77,9 +77,9 @@ export const Part08ASchemaBoundary: React.FC = () => {
         </div>
 
         <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-          <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Canonical Top-Level Blocks**</div>
+          <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Reference Top-Level Blocks**</div>
           <p className="text-[10px] text-white/40 leading-relaxed">
-            The canonical Compass run record should preserve the following top-level structural distinction:
+            The reference Compass run record should preserve the following top-level structural distinction:
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-2">
             {['metadata', 'probe', 'parameters', 'parameterProfiles', 'initialState', 'metrics', 'runSummary', 'structuralSummary', 'eventLog', 'debugTrace', 'adversarial', 'tags'].map(block => (

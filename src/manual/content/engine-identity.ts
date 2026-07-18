@@ -12,7 +12,7 @@ export const ENGINE_IDENTITY = {
   ontologyVersion: "compass-v1",
   architecture: "Stratified / Multi-Agent",
   defaultMode: "Stratified",
-  canonicalSeqLength: "10 Symbols",
+  referenceSeqLength: "10 Symbols",
   observerPersistence: "2 Steps",
   kernelPurityThreshold: "30%",
   observerThreshold: "0.8"

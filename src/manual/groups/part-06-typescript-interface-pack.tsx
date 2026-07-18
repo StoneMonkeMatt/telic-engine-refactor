@@ -2,25 +2,25 @@ import React from 'react';
 import { Code, Layers, Database, Workflow, FileJson, Shield } from 'lucide-react';
 import { ManualSectionDrawer } from '../components/ManualSectionDrawer';
 import { ManualDrawer } from '../components/ManualDrawer';
-import { 
-  VERSIONING_INTERFACES, 
-  PROBE_METADATA_INTERFACE, 
-  RUN_METADATA_INTERFACE, 
-  PARAMETER_TYPES_INTERFACE, 
-  PARAMETER_PROFILES_INTERFACE, 
-  PARAMETER_SPEC_INTERFACE, 
-  METRIC_TYPES_INTERFACE, 
-  METRIC_SPEC_INTERFACE, 
-  RUN_SUMMARY_METRICS_INTERFACE, 
-  INITIAL_STATE_INTERFACE, 
-  TRANSITION_TYPES_INTERFACE, 
-  DEBUG_TRACE_INTERFACE, 
-  EVENT_LOG_INTERFACE, 
-  STRUCTURAL_SUMMARY_INTERFACE, 
-  ADVERSARIAL_METADATA_INTERFACE, 
-  RUN_RECORD_INTERFACE, 
-  SUMMARY_ROW_INTERFACE, 
-  CONSTANT_MAPS_INTERFACE 
+import {
+  VERSIONING_INTERFACES,
+  PROBE_METADATA_INTERFACE,
+  RUN_METADATA_INTERFACE,
+  PARAMETER_TYPES_INTERFACE,
+  PARAMETER_PROFILES_INTERFACE,
+  PARAMETER_SPEC_INTERFACE,
+  METRIC_TYPES_INTERFACE,
+  METRIC_SPEC_INTERFACE,
+  RUN_SUMMARY_METRICS_INTERFACE,
+  INITIAL_STATE_INTERFACE,
+  TRANSITION_TYPES_INTERFACE,
+  DEBUG_TRACE_INTERFACE,
+  EVENT_LOG_INTERFACE,
+  STRUCTURAL_SUMMARY_INTERFACE,
+  ADVERSARIAL_METADATA_INTERFACE,
+  RUN_RECORD_INTERFACE,
+  SUMMARY_ROW_INTERFACE,
+  CONSTANT_MAPS_INTERFACE
 } from '../content/interface-definitions';
 import { INTERFACE_PACK_GOALS, VALIDATION_GUIDANCE, IMPLEMENTATION_NOTES } from '../content/implementation-guidance';
 import { CORE_SIMULATION_TYPES } from '../content/core-simulation-types';
@@ -31,9 +31,9 @@ import { BRIDGE_EVENT_TYPES } from '../content/bridge-event-types';
 
 export const Part06TypeScriptInterfacePack: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Code} 
-      title="Part VI. TypeScript Interface Pack" 
+    <ManualSectionDrawer
+      icon={Code}
+      title="Part VI. TypeScript Interface Pack"
       subtitle="Implementation-Ready Simulation Contract"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">

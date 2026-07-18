@@ -1,7 +1,7 @@
 import { DomainDefinition } from "../manual.types";
 
 /**
- * Registry of canonical domains in the Compass ontology.
+ * Registry of reference domains in the Compass ontology.
  */
 export const DOMAIN_REGISTRY: DomainDefinition[] = [
   // Formal & Mathematical Foundations

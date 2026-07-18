@@ -9,10 +9,10 @@ import { VERSIONING_SCHEMA } from '../content/versioning-schema';
 
 export const Part05ControlledVocabularySummary: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={List} 
-      title="Part V. Controlled Vocabulary Summary" 
-      subtitle="Canonical Mapping Reference"
+    <ManualSectionDrawer
+      icon={List}
+      title="Part V. Controlled Vocabulary Summary"
+      subtitle="Reference Mapping Reference"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">
         <p>
@@ -32,7 +32,7 @@ export const Part05ControlledVocabularySummary: React.FC = () => {
             <div className="space-y-1">
               {PARAMETERS_MAPPING.map((item, i) => (
                 <div key={i} className="grid grid-cols-4 gap-4 px-4 py-3 bg-white/5 rounded-lg border border-white/5 text-[10px] font-mono">
-                  <div className="text-cyan-400">{item.canonicalName}</div>
+                  <div className="text-cyan-400">{item.referenceName}</div>
                   <div className="text-white/80">{item.label}</div>
                   <div className="text-white/40">{item.family}</div>
                   <div className="text-white/60 italic">{item.key}</div>
@@ -53,7 +53,7 @@ export const Part05ControlledVocabularySummary: React.FC = () => {
             <div className="space-y-1">
               {METRICS_MAPPING.map((item, i) => (
                 <div key={i} className="grid grid-cols-4 gap-4 px-4 py-3 bg-white/5 rounded-lg border border-white/5 text-[10px] font-mono">
-                  <div className="text-cyan-400">{item.canonicalName}</div>
+                  <div className="text-cyan-400">{item.referenceName}</div>
                   <div className="text-white/80">{item.label}</div>
                   <div className="text-white/40">{item.family}</div>
                   <div className="text-white/60 italic">{item.key}</div>

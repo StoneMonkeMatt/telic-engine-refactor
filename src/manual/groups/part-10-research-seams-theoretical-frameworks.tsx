@@ -13,9 +13,9 @@ import { COMPASS_SYMBOL_LISTS_STATUS } from '../content/compass-symbol-lists';
 
 export const Part10ResearchSeamsTheoreticalFrameworks: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Layers} 
-      title="Part X. Research Seams & Theoretical Frameworks" 
+    <ManualSectionDrawer
+      icon={Layers}
+      title="Part X. Research Seams & Theoretical Frameworks"
       subtitle="Conceptual Foundations & Future Formalisms"
       keywords="theory, research, pyramid, triangle, consciousness, speculative, future, framework"
     >
@@ -37,7 +37,7 @@ export const Part10ResearchSeamsTheoreticalFrameworks: React.FC = () => {
           <div className="space-y-6">
             <div className="flex flex-col items-center space-y-1 py-4">
               {PYRAMID_LAYERS.map((layer, i) => (
-                <div 
+                <div
                   key={layer.label}
                   className={cn(
                     "w-full py-3 text-center text-[9px] font-bold uppercase tracking-[0.4em] transition-all hover:scale-105 rounded-lg",

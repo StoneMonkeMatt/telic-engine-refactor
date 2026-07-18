@@ -44,7 +44,7 @@ export function ParameterPanel({
     delta: "Controls the dynamic potential and drive within the sequence.",
     beta: "Penalizes overly convoluted or redundant symbolic structures.",
     lambda: "Adjusts the strength of interaction between information and coherence.",
-    maxSequenceLength: "Sets the maximum number of symbols allowed in a sequence. 10 is canonical, 16 is research, 24+ is stress.",
+    maxSequenceLength: "Sets the maximum number of symbols allowed in a sequence. 10 is reference, 16 is research, 24+ is stress.",
     threshold: "The duality level required for an 'Observer' to emerge.",
     eta: "Controls the strength of semantic binding between symbols.",
     epsilon: "The amount of random noise injected into the duality evolution.",
@@ -89,7 +89,7 @@ export function ParameterPanel({
 
           if (key === 'maxSequenceLength') {
             const val = value as number;
-            let status = "Canonical";
+            let status = "Reference";
             let statusColor = "text-emerald-400";
             if (val > 10 && val <= 16) {
               status = "Research";
@@ -124,7 +124,7 @@ export function ParameterPanel({
                 />
                 <div className="flex justify-between text-[7px] font-mono opacity-30 uppercase tracking-tighter">
                   <span>5</span>
-                  <span className={val === 10 ? "opacity-100 font-bold text-emerald-400" : ""}>10 (Canonical)</span>
+                  <span className={val === 10 ? "opacity-100 font-bold text-emerald-400" : ""}>10 (Reference)</span>
                   <span className={val === 16 ? "opacity-100 font-bold text-cyan-400" : ""}>16 (Research)</span>
                   <span>30 (Stress)</span>
                 </div>
@@ -154,13 +154,13 @@ export function ParameterPanel({
           );
         })}
 
-        <SeedControls 
+        <SeedControls
           seed={params.seed}
           autoRandomize={autoRandomize}
           setAutoRandomize={setAutoRandomize}
           setSeed={setSeed}
         />
-        
+
         <div className="space-y-3 pt-3 border-t border-white/10">
           <div className="flex justify-between items-center">
             <label className="text-[10px] font-bold uppercase tracking-widest opacity-40">Simulation Depth</label>

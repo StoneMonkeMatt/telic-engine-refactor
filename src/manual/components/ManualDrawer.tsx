@@ -5,16 +5,16 @@ import { cn } from '../../lib/utils';
 import { SearchContext } from './SearchContext';
 import { Highlight } from './Highlight';
 
-export function ManualDrawer({ 
-  title, 
-  children, 
-  keywords = "", 
-  defaultOpen = false 
-}: { 
-  title: string | React.ReactNode, 
-  children: React.ReactNode, 
-  keywords?: string, 
-  defaultOpen?: boolean 
+export function ManualDrawer({
+  title,
+  children,
+  keywords = "",
+  defaultOpen = false
+}: {
+  title: string | React.ReactNode,
+  children: React.ReactNode,
+  keywords?: string,
+  defaultOpen?: boolean
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const searchQuery = React.useContext(SearchContext);
@@ -34,7 +34,7 @@ export function ManualDrawer({
 
   return (
     <div className="border border-white/5 rounded-xl overflow-hidden">
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-4 bg-white/5 hover:bg-white/10 transition-colors text-left"
       >

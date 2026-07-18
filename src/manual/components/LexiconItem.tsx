@@ -2,22 +2,22 @@ import React from 'react';
 import { SearchContext } from './SearchContext';
 import { Highlight } from './Highlight';
 
-export const LexiconItem: React.FC<{ 
-  label: string, 
-  dbLabel: string, 
-  role?: string, 
-  meaning: string, 
-  effect?: string, 
+export const LexiconItem: React.FC<{
+  label: string,
+  dbLabel: string,
+  role?: string,
+  meaning: string,
+  effect?: string,
   notes?: string,
   question?: string,
   interpretation?: string,
   typicalValues?: string
-}> = ({ 
-  label, 
-  dbLabel, 
-  role, 
-  meaning, 
-  effect, 
+}> = ({
+  label,
+  dbLabel,
+  role,
+  meaning,
+  effect,
   notes,
   question,
   interpretation,
@@ -25,7 +25,7 @@ export const LexiconItem: React.FC<{
 }) => {
   const searchQuery = React.useContext(SearchContext);
 
-  const isMatch = !searchQuery || 
+  const isMatch = !searchQuery ||
     label.toLowerCase().includes(searchQuery.toLowerCase()) ||
     dbLabel.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (role && role.toLowerCase().includes(searchQuery.toLowerCase())) ||
@@ -53,7 +53,7 @@ export const LexiconItem: React.FC<{
           <Highlight text={role} query={searchQuery} />
         </div>
       )}
-      
+
       <div className="space-y-2">
         <p className="text-[10px] text-white/70 leading-relaxed">
           <span className="text-white/30 uppercase tracking-tighter mr-2">Meaning:</span>
