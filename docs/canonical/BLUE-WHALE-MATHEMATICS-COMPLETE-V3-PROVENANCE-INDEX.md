@@ -1,11 +1,11 @@
 # Blue Whale Mathematics V3 — Provenance and Association Index
 
-Status: active recovery audit — public lineages partially verified
+Status: all V3-named public and private repository lineages inspected
 Opened: 18 July 2026  
 Recovered source: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
 Recovery commit: `76871da`
 
-This index records what is associated with the recovered system-wide mathematics document. It distinguishes evidence verified in this clone from references that require another repository or source archive.
+This index records what is associated with the recovered system-wide mathematics document. The authenticated cross-repository findings are detailed in `BLUE-WHALE-V3-PUBLIC-PRIVATE-REPOSITORY-AUDIT-18JUL2026.md`.
 
 ## 1. Presence in this repository
 
@@ -51,21 +51,24 @@ The recovered document explicitly names these repository families:
 - `StoneMonkeMatt/Consciousness-`
 - `StoneMonkeMatt/Unicode`
 
-Only `StoneMonkeMatt/telic-engine-refactor` is the configured remote of this clone. References belonging to the other repositories remain unverified when their objects are absent here.
+All eight named repository families have now been inspected across every available ref. `StoneMonkeMatt/telic-engine-refactor` remains the configured remote of this working clone; the other repositories were inspected as authenticated mirrors.
 
-## 4. External or unavailable commit references
+## 4. Cross-repository commit references
 
-These cited identifiers do not resolve to commits in this clone:
+These cited identifiers are external to this clone and now resolve in their named repositories:
 
-- `d97fa9e23` — attributed to `blue-whale`, 12 March 2026
-- `d568dcab1` — attributed to `blue-whale-sim`, 19 March 2026
-- `8c39278470353d8400aa7962a6bb608dd1eac6b8` — attributed to the V4 source lineage, 4 May 2026
-- `853478e505f5933202445ce26953fa1aefc8a2dd` — attributed to a `src/logic/telos.ts` blob in that lineage
-- `4a5b0b4` — attributed to a CH20 draft addition
-- `69a826967` — attributed to a later V3 note
-- `8725797`, `92d6a88b5`, `966493b`, and `a734304` — cited historical identifiers requiring repository attribution and verification
+- `d97fa9e23` — `blue-whale` commit `d97fa9e235c3ec9b806931021099a8a75fb89369`
+- `d568dcab1` — `blue-whale-sim` commit `d568dcab12a2efecbb577f54961e91b75bfe4908`
+- `8c39278470353d8400aa7962a6bb608dd1eac6b8` — exact V4 repository commit
+- `853478e505f5933202445ce26953fa1aefc8a2dd` — exact V4 `src/logic/telos.ts` blob
+- `4a5b0b4` — `bluewhalememory` commit `4a5b0b46db531d0b903e5f8e69e783d25ad2f8de`
+- `69a826967` — `bluewhalememory` commit `69a8269676ff29829fc1300051ebbf4b4311e1d7`
+- `8725797` — `bluewhalememory` commit `87257972cc7eef6d7f0f854da2609a2ed58f7240`
+- `92d6a88b5` — `Consciousness-` commit `92d6a88b56fd063e2969c1908023447dc3f4703f`
+- `966493b` — `telic-engine` commit `966493b72a1219415f61cab2b050387f9f09fdaa`
+- `a734304` — `bluewhalememory` commit `a73430454111bca33e18ff55c48f131f9075de03`
 
-Their absence from this clone is unresolved provenance, not disproof.
+The detailed content findings and ref receipts are recorded in the authenticated audit.
 
 ## 4A. Public repository verification — 18 July 2026
 
@@ -91,9 +94,9 @@ These observations directly corroborate the principal `blue-whale-sim` claims in
 
 Neither public repository contains the exact V3 title, the restored-source preamble, or the truncated-tail phrase. They corroborate cited implementation archaeology but do not provide the missing document continuation.
 
-### Access boundary
+### Authenticated expansion
 
-At this checkpoint, unauthenticated Git access did not resolve `StoneMonkeMatt/blue-whale`, `StoneMonkeMatt/The-Compass-V4-Current-State-`, `StoneMonkeMatt/bluewhalememory`, `StoneMonkeMatt/Consciousness-`, or `StoneMonkeMatt/Unicode`. This is recorded only as an access boundary. It does not establish deletion or nonexistence.
+The later authenticated audit added `blue-whale`, `The-Compass-V4-Current-State-`, `bluewhalememory`, `Consciousness-`, and `Unicode`. It recovered the missing cited commits, the V4 source blob, CH20 and formula sources, and the Needle–Action provenance. It did not find the exact sealed V3 artifact or its missing continuation.
 
 ## 5. Named source files
 
@@ -101,18 +104,17 @@ Present in this clone:
 
 - `src/logic/telos.ts`
 
-Named by the recovered document but absent from this clone's current tree:
+Named by the recovered document, absent from this clone's current tree, and recovered in the authenticated repository set:
 
 - `codex-v9.1.ts`
 - `docs/CH20-MATHEMATICS-LIVING-REFERENCE-DRAFT-29JUN2026.md`
 - `docs/Key_Formulas.md`
 - `research/archive/UIA_Formula_Tree_V2.txt`
-- root-level `telos.ts`
-- `versions/v6`
-- `Key_Formulas.pdf`
-- `The_purpose_(1).txt`
+- V4 `src/logic/telos.ts`
+- `versions/v6` lineage material
+- `versions/knowledge/messy/the-purpose.txt`
 
-The recovered document itself already labels the last two items as named but inaccessible lineage material. The remaining absent paths may belong to other named repositories or historical revisions and must be checked there.
+The private history confirms that `Key_Formulas.pdf` and the exact filename `The_purpose_(1).txt` were cited but never present in that repository. Later recovered Markdown/text sources close much of that citation gap without retroactively creating those exact files.
 
 ## 6. Association with the emergence experiment ledger
 
@@ -125,9 +127,9 @@ The documents are linked and recorded as distinct sources:
 
 ## 7. Open recovery actions
 
-1. [ ] Acquire authenticated access to the unresolved named repositories and verify every remaining external commit and blob.
-2. [ ] Search their complete refs for this exact title, predecessor V2/V3 files, and a continuation after `It first appears with \`c`.
-3. [ ] Locate the CH20 draft, Key Formulas sources, UIA formula tree, V4 replay source, and named inaccessible files.
+1. [x] Inspect all V3-named public and private repositories and verify the cited commits and blobs.
+2. [x] Search their complete refs for the exact title, predecessor files, and the truncated ending; no continuation was recovered.
+3. [x] Locate the CH20 draft, Key Formulas source, UIA formula tree, V4 source, and later purpose text.
 4. [x] Build a core Part II section-to-source matrix instead of relying only on prose citations; expand it as external sources are recovered.
 5. [ ] Recover the missing tail without generating or inferring text.
 6. [x] Add a repository-level canonical-document index for direct discovery of this corpus.
