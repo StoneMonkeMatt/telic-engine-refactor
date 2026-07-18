@@ -1,16 +1,16 @@
 # EMERGE-CARRIER-003D — Complete-Sham Native Slope Audit Result
 
-Date: 17 July 2026  
-Status: completed complete-sham robustness experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Authoritative GitHub Actions run: `29614750232`  
-Crown line: **The engine can read direction, but the true direction did not yet prove more useful than an equal-information counterfeit.**
+Date: 17 July 2026
+Status: completed complete-sham robustness experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Recorded GitHub Actions run: `29614750232`
+Summary: **The engine can read direction, but the true direction did not yet prove more useful than an equal-information counterfeit.**
 
 ## Question
 
 Does the true chronological ordering of the model-native signed duality slope improve structural repair relative to the complete family of fourteen non-zero cyclic sham orderings?
 
-Carrier-003C established the reachable law:
+Carrier-003C established the reachable formula:
 
 \[
 v_t(c;h_t)=D_{t+1}^{EMA}(c;h_t)-h_t,
@@ -22,7 +22,7 @@ with fixed ranking weight:
 w_v=0.5.
 \]
 
-Carrier-003D preserved that law and changed only the temporal ordering of the first fifteen history values, while holding the terminal anchor fixed.
+Carrier-003D preserved that formula and changed only the temporal ordering of the first fifteen history values, while holding the terminal anchor fixed.
 
 ## Preregistered boundary
 
@@ -61,7 +61,7 @@ H=(h_1,\ldots,h_{15},h_{16}),\qquad h_{16}=D_0^{EMA}.
 
 Each sham rotated only the first fifteen values. Every arm preserved the same value multiset, exposure count, duration, capsule identity, microstate, wound, targets, random stream and terminal anchor.
 
-## Integrity gates
+## Integrity checks
 
 - pure projection versus native engine update: **exact**;
 - frozen V2.2 selector: **reproduced**;
@@ -75,7 +75,7 @@ Each sham rotated only the first fifteen values. Every arm preserved the same va
 - real-history projection receipt identical across all rotations: **passed**;
 - fourteen sham projection receipts distinct: **passed**.
 
-The first engineering attempts stopped before outcome generation at source-receipt or deterministic-assembly gates. The authoritative run executed only after those pre-outcome gates passed. No coefficient, estimand, experimental law or decision rule changed.
+The first engineering attempts stopped before outcome generation at source-receipt or deterministic-assembly checks. The recorded run executed only after those pre-outcome checks passed. No coefficient, estimand, experimental formula or decision rule changed.
 
 ## Mechanistic result
 
@@ -156,7 +156,7 @@ All fourteen rotation-specific intervals crossed zero. Leave-one-rotation-out an
 
 Every ensemble interval crossed zero. No stable feedback synergy, feedback interference, or state-specific timing effect was established.
 
-A directional pattern remains visible but unearned as a law: under feedback, **12/14** primary real-minus-sham point estimates were negative; the state-specific timing-by-feedback point estimate was negative in **13/14** rotations. The eight-pair intervals prevent promotion of either pattern.
+A directional pattern remains visible but unearned as a formula: under feedback, **12/14** primary real-minus-sham point estimates were negative; the state-specific timing-by-feedback point estimate was negative in **13/14** rotations. The eight-pair intervals prevent promotion of either pattern.
 
 ## Pair-level ensemble effects
 
@@ -187,17 +187,17 @@ Carrier-003D does **not** establish:
 - that true chronological slope generally harms repair;
 - that repair feedback reliably helps or interferes with slope timing;
 - that the latched history benefits more than the unlatched history;
-- that Carrier-004 held-out generalisation is admissible.
+- that Carrier-004 held-out generalisation is supported.
 
-The honest verdict is:
+The honest result is:
 
 \[
-\boxed{\text{directional timing causality established; true-slope usefulness not established; Carrier-004 remains gated}}
+\boxed{\text{directional timing causality established; true-slope usefulness not established; Carrier-004 remains pending}}
 \]
 
 The small positive state-specific recovery estimate from Carrier-003C did not survive the complete sham comparison. It was evidence that slope activation could alter repair outcomes, not evidence that the true chronology was the useful source of that alteration.
 
-## Next admissible work
+## Next supported work
 
 No retrospective tuning of `w_v=0.5` is permitted as a rescue of Carrier-003D.
 
@@ -212,7 +212,7 @@ A new carrier must again pass projection validity, zero-coupling neutrality, rea
 
 ## Receipts
 
-Authoritative workflow run:
+Recorded workflow run:
 
 ```text
 29614750232

@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-003C — Native Projected Signed-Slope Verification
 
-Date: 17 July 2026  
-Status: completed mechanistic verification experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **The engine can now judge a possible move by the direction it would carry the system, not only by the level it would occupy.**
+Date: 17 July 2026
+Status: completed mechanistic verification experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **The engine can now judge a possible move by the direction it would carry the system, not only by the level it would occupy.**
 
 ## Question
 
@@ -15,7 +15,7 @@ Carrier-003B established that temporal order changes behaviour across all cyclic
 v_t(c)=D_{t+1}^{EMA}(c)-D_t^{EMA}.
 \]
 
-No emergence declaration gate, feedback-strength change, forced mutation or coefficient sweep was introduced.
+No emergence declaration check, feedback-strength change, forced mutation or coefficient sweep was introduced.
 
 ## Preregistered boundary
 
@@ -38,7 +38,7 @@ It inherited:
 
 No directional recovery sign was preregistered.
 
-## Native projected law
+## Native projected formula
 
 For candidate `c`:
 
@@ -81,11 +81,11 @@ R_t^{A=1}(c)
 R_t^{A=0}(c)+0.5[L_{raw}(c)+v_t(c)].
 \]
 
-Both active and knockout branches updated their capsules through the native projected law after accepted transitions. Carrier activation changed ranking only.
+Both active and knockout branches updated their capsules through the native projected formula after accepted transitions. Carrier activation changed ranking only.
 
-## Integrity gates
+## Integrity checks
 
-Every preregistered gate passed.
+Every preregistered check passed.
 
 ### Projection equivalence
 
@@ -265,11 +265,11 @@ Carrier-003C does **not** establish:
 - that true chronological slope outperforms equal-distribution sham slopes;
 - that held-out generalisation is warranted.
 
-The honest verdict is:
+The honest result is:
 
 \[
 \boxed{
-\text{native directional carrier established; recovery usefulness not established; complete-sham slope audit now admissible}
+\text{native directional carrier established; recovery usefulness not established; complete-sham slope audit now supported}
 }
 \]
 

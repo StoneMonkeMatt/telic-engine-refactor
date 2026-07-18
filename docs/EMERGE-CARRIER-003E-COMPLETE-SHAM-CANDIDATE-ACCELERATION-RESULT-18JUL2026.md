@@ -1,16 +1,16 @@
 # EMERGE-CARRIER-003E — Complete-Sham Candidate Acceleration Result
 
-Date: 18 July 2026  
-Status: completed complete-sham higher-order directional audit  
-Branch: `agent/emerge-ko-001-sandbox`  
-Authoritative GitHub Actions run: `29621108507`  
-Crown line: **The engine can act on acceleration, but the true acceleration history did not prove more useful than equal-information counterfeit histories.**
+Date: 18 July 2026
+Status: completed complete-sham higher-order directional audit
+Branch: `agent/emerge-ko-001-sandbox`
+Recorded GitHub Actions run: `29621108507`
+Summary: **The engine can act on acceleration, but the true acceleration history did not prove more useful than equal-information counterfeit histories.**
 
 ## Question
 
 Does candidate-projected duality acceleration improve structural repair when it is computed from the true prior-slope chronology rather than any of the fourteen non-zero cyclic sham chronologies?
 
-Carrier-003E extended the fixed Carrier-003C signed-slope law by one bounded historical difference:
+Carrier-003E extended the fixed Carrier-003C signed-slope formula by one bounded historical difference:
 
 \[
 v_t(c)=D_{t+1}^{EMA}(c)-D_t^{EMA},
@@ -24,7 +24,7 @@ v_{t-1}=D_t^{EMA}-D_{t-1}^{EMA},
 a_t(c)=v_t(c)-v_{t-1}.
 \]
 
-The active ranking law was frozen as:
+The active ranking formula was frozen as:
 
 \[
 R_t^{active}(c)=R_t^{base}(c)+0.5v_t(c)+0.5a_t(c).
@@ -62,9 +62,9 @@ with the two-sided 95% interval across the eight matched-pair ensemble effects e
 - fixed repair feedback coefficient: **0.25**;
 - no coefficient sweep, declaration bonus or forced mutation.
 
-Each normalized capsule supplied sixteen EMA levels. Fifteen realized slopes were derived first. The complete sham family cyclically rotated only those fifteen slopes before candidate acceleration was computed. Every arm preserved slope multiset, exposure count, duration, capsule identity, current EMA anchor, microstate, wound, targets, random stream, feedback and admission law.
+Each normalized capsule supplied sixteen EMA levels. Fifteen realized slopes were derived first. The complete sham family cyclically rotated only those fifteen slopes before candidate acceleration was computed. Every arm preserved slope multiset, exposure count, duration, capsule identity, current EMA anchor, microstate, wound, targets, random stream, feedback and admission formula.
 
-## Integrity gates
+## Integrity checks
 
 - pure candidate acceleration algebra comparisons: **15,114**;
 - maximum acceleration projection error: **0**;
@@ -220,15 +220,15 @@ Carrier-003E does **not** establish:
 - that true prior-slope chronology improves repair;
 - that true prior-slope chronology generally harms repair;
 - that direct timing-by-feedback synergy or interference is stable;
-- that Carrier-004 held-out generalisation is admissible.
+- that Carrier-004 held-out generalisation is supported.
 
-The honest verdict is:
+The honest result is:
 
 \[
-\boxed{\text{acceleration causality established; true-history usefulness not established; Carrier-004 remains gated}}
+\boxed{\text{acceleration causality established; true-history usefulness not established; Carrier-004 remains pending}}
 \]
 
-## Next admissible work
+## Next supported work
 
 No retrospective tuning of `w_v=0.5` or `w_a=0.5` is permitted as a rescue.
 
@@ -238,11 +238,11 @@ The next architecture audit may examine the remaining model-native candidate fam
 - threshold-crossing direction;
 - inventory-event timing.
 
-Any new law must again pass projection validity, activation-off neutrality, reachable influence, complete-sham control and positive pair-generalised usefulness before Carrier-004 can open.
+Any new formula must again pass projection validity, activation-off neutrality, reachable influence, complete-sham control and positive pair-generalised usefulness before Carrier-004 can open.
 
 ## Receipts
 
-Authoritative workflow run:
+Recorded workflow run:
 
 ```text
 29621108507

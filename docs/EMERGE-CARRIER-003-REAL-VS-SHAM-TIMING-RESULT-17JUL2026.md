@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-003 — Real History vs Equal-Distribution Sham
 
-Date: 17 July 2026  
-Status: completed timing-causality experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **The order of memory changed the path, but the true order did not yet prove itself the better guide.**
+Date: 17 July 2026
+Status: completed timing-causality experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **The order of memory changed the path, but the true order did not yet prove itself the better guide.**
 
 ## Question
 
@@ -243,7 +243,7 @@ It does **not** establish:
 - that active repair feedback unlocks useful timing information;
 - that the observed negative timing × feedback interaction generalises beyond the chosen sham construction and frozen panel.
 
-The honest verdict is:
+The honest result is:
 
 \[
 \boxed{
@@ -253,11 +253,11 @@ The honest verdict is:
 
 This experiment used a bounded 16-step replay of EMA anchors. It is not evidence of consciousness, subjective recollection, or a complete autobiographical memory system.
 
-## Next admissible experiment
+## Next supported experiment
 
 # EMERGE-CARRIER-003B — Rotation-Complete Sham Robustness Audit
 
-The next test should hold the carrier, coefficient, wounds, panel, and feedback law fixed while replacing the single rotation-7 sham with a preregistered ensemble of all non-zero cyclic rotations of the first 15 history positions, preserving the terminal anchor.
+The next test should hold the carrier, coefficient, wounds, panel, and feedback formula fixed while replacing the single rotation-7 sham with a preregistered ensemble of all non-zero cyclic rotations of the first 15 history positions, preserving the terminal anchor.
 
 The central questions are:
 
@@ -269,9 +269,9 @@ Carrier-004 held-out generalisation remains premature because the preregistered 
 
 ## Execution record
 
-The first workflow attempt failed before outcome execution because one whitespace byte was absent at a split patch boundary. The source patch was rejected by its SHA-256 gate, and no Carrier-003 outcomes were generated. The boundary byte was restored and the authoritative run completed under the unchanged preregistration.
+The first workflow attempt failed before outcome execution because one whitespace byte was absent at a split patch boundary. The source patch was rejected by its SHA-256 check, and no Carrier-003 outcomes were generated. The boundary byte was restored and the recorded run completed under the unchanged preregistration.
 
-Authoritative GitHub Actions workflow run:
+Recorded GitHub Actions workflow run:
 
 ```text
 29575934765

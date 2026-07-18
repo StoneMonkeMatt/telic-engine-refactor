@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-003B — Rotation-Complete Sham Robustness Audit
 
-Date: 17 July 2026  
-Status: preregistered before outcome execution  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **A true timeline earns its claim only against every equally weighted cyclic alternative, not one chosen counterfeit.**
+Date: 17 July 2026
+Status: preregistered before outcome execution
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **A true timeline earns its claim only against every equally weighted cyclic alternative, not one chosen counterfeit.**
 
 ## Question
 
@@ -27,7 +27,7 @@ Carrier-003B inherits without refitting:
 - the same proposal, tie-breaking, admission, lesion, and branch random streams;
 - the 16-step bounded EMA-history replay used by Carrier-003.
 
-No coefficient, exposure-window, carrier, feedback-law, wound, or panel adjustment is permitted.
+No coefficient, exposure-window, carrier, feedback-formula, wound, or panel adjustment is permitted.
 
 ## Rotation-complete sham ensemble
 
@@ -58,7 +58,7 @@ For each rotation, position 16 remains the terminal checkpoint anchor. Every rea
 
 Only temporal alignment changes. Rotation 7 receives no analytical privilege.
 
-## Integrity gates
+## Integrity checks
 
 Before active outcomes are admitted:
 
@@ -67,9 +67,9 @@ Before active outcomes are admitted:
 3. with timing exposure disabled, real and sham payloads must reproduce the active Carrier-002C reference exactly;
 4. every matrix job must produce the same real-history projection receipt;
 5. all 14 sham projection receipts must be distinct;
-6. rotation 7 must exactly reproduce the sealed Carrier-003 estimators and mechanistic counts.
+6. rotation 7 must exactly reproduce the hash-recorded Carrier-003 estimators and mechanistic counts.
 
-Any failed gate aborts aggregation.
+Any failed check aborts aggregation.
 
 ## Execution design
 
@@ -188,7 +188,7 @@ Carrier-003B may establish one of four outcomes:
 3. **Feedback interference robustness:** direct advantage unestablished, but ensemble timing-by-feedback interval entirely below zero.
 4. **Timing influence without stable usefulness:** mechanistic effects persist but recovery and interaction intervals cross zero.
 
-Carrier-004 held-out generalisation is admissible only after a positive true-history advantage survives the complete sham ensemble.
+Carrier-004 held-out generalisation is supported only after a positive true-history advantage survives the complete sham ensemble.
 
 A robust negative timing-by-feedback interaction routes next to a separately preregistered feedback-mechanism decomposition rather than directly to held-out generalisation.
 

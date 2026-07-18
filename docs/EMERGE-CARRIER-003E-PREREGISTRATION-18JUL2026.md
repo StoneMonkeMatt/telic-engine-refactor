@@ -1,10 +1,10 @@
 # EMERGE-CARRIER-003E — Candidate-Projected Duality Acceleration Preregistration
 
-Date: 18 July 2026  
-Status: preregistered before outcome execution  
+Date: 18 July 2026
+Status: preregistered before outcome execution
 Branch: `agent/emerge-ko-001-sandbox`
 
-> **Carrier-003E asks whether change in model-native directional history carries useful repair information beyond the frozen first-order signed-slope law.**
+> **Carrier-003E asks whether change in model-native directional history carries useful repair information beyond the frozen first-order signed-slope formula.**
 
 ## 1. Background
 
@@ -16,7 +16,7 @@ v_t(c)=D_{t+1}^{EMA}(c)-D_t^{EMA}.
 
 Carrier-003D established that the temporal order of this directional channel is causally active, but true signed-slope chronology did not outperform the complete fourteen-rotation sham family under fixed \(w_v=0.5\).
 
-Carrier-003E keeps that first-order law fixed and adds its next discrete difference:
+Carrier-003E keeps that first-order formula fixed and adds its next discrete difference:
 
 \[
 v_{t-1}=D_t^{EMA}-D_{t-1}^{EMA},
@@ -39,7 +39,7 @@ Carrier-003E inherits without modification:
 - Carrier-002 macro-history capsules;
 - identical proposal frontiers;
 - exact deterministic tie resolution;
-- identical admission law;
+- identical admission formula;
 - identical branch random streams;
 - repair feedback coefficient \(\kappa=0.25\);
 - native EMA coefficient \(\alpha=0.2\);
@@ -51,7 +51,7 @@ Carrier-003E inherits without modification:
 
 The matched checkpoint pair remains the inferential unit. Replicates and sham rotations improve measurement but are not independent scientific substrates.
 
-## 3. Candidate acceleration law
+## 3. Candidate acceleration formula
 
 For candidate \(c\) at native current anchor \(D_t^{EMA}\):
 
@@ -78,7 +78,7 @@ v_t(c)=D_{t+1}^{EMA}(c)-D_t^{EMA},
 a_t(c)=v_t(c)-[D_t^{EMA}-D_{t-1}^{EMA}].
 \]
 
-The frozen Carrier-003C score is the base law. Carrier-003E adds one preregistered term:
+The frozen Carrier-003C score is the base formula. Carrier-003E adds one preregistered term:
 
 \[
 R_t^{003E}(c)=R_t^{003C}(c)+0.5a_t(c).
@@ -129,7 +129,7 @@ Thus every real/sham comparison preserves exactly:
 - fifteen exposure steps;
 - the same capsule and native current EMA anchor;
 - the same microstate, wound, targets and random stream;
-- the same signed-slope base law, feedback and admission law.
+- the same signed-slope base formula, feedback and admission formula.
 
 Only prior-slope chronology changes. Candidate acceleration is derived after the chronology intervention:
 
@@ -141,11 +141,11 @@ Precomputed acceleration values are not rotated.
 
 During steps 1 through 15, \(v_{t-1}\) comes from the real or sham schedule. Afterwards both arms use the endogenous previous velocity from their evolving capsule histories.
 
-## 5. Integrity gates
+## 5. Integrity checks
 
-The outcome sweep is inadmissible unless all gates pass:
+The outcome sweep is unsupported unless all checks pass:
 
-1. the sealed Carrier-003B runner and aggregate sources reproduce their recorded hashes;
+1. the hash-recorded Carrier-003B runner and aggregate sources reproduce their recorded hashes;
 2. the Carrier-003D assemblers reproduce generated runner SHA-256 `4a89285d5fdf9dc1510f381bc17be9194d09a562c4cea3078c4962d253d205ff` and aggregate SHA-256 `07faa44920f6c1cbba306e409c4b63f38fe741c3487835c4ae1f2fbf410688a2`;
 3. repository type-checking passes after deterministic Carrier-003E assembly;
 4. the original pure duality projection still reproduces the native engine update exactly;
@@ -162,13 +162,13 @@ The outcome sweep is inadmissible unless all gates pass:
 13. all fourteen sham projection receipts are distinct;
 14. acceleration-on versus acceleration-off mechanistic receipts are identical across rotations.
 
-Any failed gate stops efficacy interpretation.
+Any failed check stops efficacy interpretation.
 
 ## 6. Mechanistic endpoints
 
 ### 6.1 Acceleration reachability
 
-For the true schedule, compare the fixed Carrier-003C law with acceleration off against the fixed Carrier-003E law with acceleration on while pre-states match.
+For the true schedule, compare the fixed Carrier-003C formula with acceleration off against the fixed Carrier-003E formula with acceleration on while pre-states match.
 
 The preregistered reachability endpoint is:
 
@@ -240,10 +240,10 @@ These are secondary. Their signs are not preregistered.
 
 ## 9. Decision rule
 
-- Positive primary interval with both mechanistic gates passed: Carrier-004 held-out generalisation becomes admissible for this fixed acceleration law.
-- Negative primary interval: positive true-acceleration chronology usefulness closes for this fixed law.
+- Positive primary interval with both mechanistic checks passed: Carrier-004 held-out generalisation becomes supported for this fixed acceleration formula.
+- Negative primary interval: positive true-acceleration chronology usefulness closes for this fixed formula.
 - Interval crossing zero: usefulness remains unestablished; no retrospective adjustment of \(w_v\) or \(w_a\) is permitted.
-- Failed projection, neutrality or reachability gate: no efficacy interpretation.
+- Failed projection, neutrality or reachability check: no efficacy interpretation.
 
 ## 10. Claim boundary
 

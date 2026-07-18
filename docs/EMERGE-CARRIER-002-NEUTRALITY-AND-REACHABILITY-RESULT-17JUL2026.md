@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-002 — Capsule Neutrality and Native-Path Reachability
 
-Date: 17 July 2026  
-Status: completed staged carrier experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **A memory channel can be perfectly wired and still remain silent when the dynamics never visit its doorway.**
+Date: 17 July 2026
+Status: completed staged carrier experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **A memory channel can be perfectly wired and still remain silent when the dynamics never visit its doorway.**
 
 ## Experimental sequence
 
@@ -74,7 +74,7 @@ D_t^{EMA}
 
 For insertion candidates only, the experiment replaced the memoryless raw-duality loss with the carried EMA-continuity loss. The replacement differential was applied equally to proposal score and admission delta so both selection and admission could observe the carrier.
 
-The emergence declaration itself did not gate the mechanism, and feedback strength remained:
+The emergence declaration itself did not check the mechanism, and feedback strength remained:
 
 \[
 \kappa=0.25.
@@ -144,7 +144,7 @@ Carrier-002 supports four statements:
 3. the existing insertion-only duality-loss path is structurally silent in the equal-wound experiment;
 4. no inference about history efficacy follows from an active mechanism that received zero candidate exposure.
 
-The correct verdict is:
+The correct result is:
 
 \[
 \boxed{
@@ -176,7 +176,7 @@ No coefficient sweep is permitted on the confirmatory run.
 
 The carrier remains a loss of duality continuity, not an emergence declaration bonus:
 
-- no `if E=1` gate;
+- no `if E=1` check;
 - no change to \(\kappa\);
 - no forced mutation;
 - same two-bridge wounds;
@@ -252,8 +252,8 @@ A successful real-vs-sham mechanism must then replicate across unseen seeds, fre
 
 ## Artifact receipt
 
-GitHub Actions workflow run: `29568090469`  
-Workflow artifact: `EMERGE-CARRIER-002-results`  
+GitHub Actions workflow run: `29568090469`
+Workflow artifact: `EMERGE-CARRIER-002-results`
 Artifact SHA-256:
 
 ```text

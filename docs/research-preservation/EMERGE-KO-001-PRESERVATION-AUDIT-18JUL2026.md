@@ -14,9 +14,9 @@ The located EMERGE-KO-001 research is not held only in conversational memory.
 
 V1, V2, V2.1, V2.2 and Carriers 001, 002, 002C, 003, 003B, 003C, 003D, 003E and 003F have repository records. V2.2 through Carrier-003F also have persistent evidence archives with committed SHA-256 receipts.
 
-## Recovered sealed mathematics
+## Recovered hash-recorded mathematics
 
-The missing canonical document was recovered as the original stored file, not reconstructed:
+The missing reference document was recovered as the original stored file, not reconstructed:
 
 ~~~text
 docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md
@@ -34,7 +34,7 @@ The same seal also covers:
 34e68433d3a55b970d27687709d3d3ba9abcf2b1ea66952253df3da1c5f06a5e  V3-O2-COMPOUND-EMERGENCE-AUDIT-EXTRACT.md
 ~~~
 
-The V1 source of truth and the 14 July and 16 July V3 lineage updates were recovered alongside the sealed pair.
+The V1 reference source and the 14 July and 16 July V3 lineage updates were recovered alongside the hash-recorded pair.
 
 ## Experiment inventory
 
@@ -47,11 +47,11 @@ The V1 source of truth and the 14 July and 16 July V3 lineage updates were recov
 | Carrier-001 | result document and null runner | Verified Library ZIP |
 | Carrier-002 | result document, freezer and runner | Verified Library ZIP |
 | Carrier-002C | result document, runner and workflow | Verified Library ZIP |
-| Carrier-003 | preregistration, result, sealed source patches and workflow | Verified Library ZIP |
-| Carrier-003B | preregistration, result, sealed runner/aggregate parts and workflow | Verified Library ZIP |
+| Carrier-003 | preregistration, result, hash-recorded source patches and workflow | Verified Library ZIP |
+| Carrier-003B | preregistration, result, hash-recorded runner/aggregate parts and workflow | Verified Library ZIP |
 | Carrier-003C | preregistration, result, pure projector, assembler, verifier and workflow | Verified Library ZIP |
 | Carrier-003D | preregistration, result, runner/aggregate assemblers and workflow | Verified Library ZIP |
-| Carrier-003E | preregistration, result, acceleration verifier, assemblers and workflow | Verified Library ZIP recovered from authoritative run |
+| Carrier-003E | preregistration, result, acceleration verifier, assemblers and workflow | Verified Library ZIP recovered from recorded run |
 | Carrier-003F | preregistration, dark audit, final result, projector, audit tools, assemblers and workflow | Verified deterministic Library archive of the complete local evidence set |
 
 The machine-readable path inventory is:
@@ -81,7 +81,7 @@ Every file has an individual SHA-256 receipt in:
 docs/research-preservation/EMERGE-KO-001-RAW-EVIDENCE-SHA256-18JUL2026.txt
 ~~~
 
-The directory was also sealed into a deterministic archive:
+The directory was also hash-recorded into a deterministic archive:
 
 ~~~text
 EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz
@@ -91,7 +91,7 @@ EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz
 
 The archive is stored persistently in Library. Its checksum and complete contents register are stored in Git.
 
-## Authoritative archive receipts
+## Recorded archive receipts
 
 | Phase | Workflow run | Bytes | SHA-256 |
 | --- | ---: | ---: | --- |
@@ -119,7 +119,7 @@ The Carrier-003F official GitHub Actions rerun was still active when this checkp
 Future experiments are governed by:
 
 ~~~text
-docs/research-preservation/EXPERIMENT-COMPLETION-GATE.md
+docs/research-preservation/EXPERIMENT-COMPLETION-CHECK.md
 ~~~
 
 The preservation verifier and GitHub workflow make remote commit and evidence registration part of experiment completion rather than an afterthought.

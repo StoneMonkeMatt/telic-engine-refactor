@@ -1,13 +1,13 @@
 # EMERGE-CARRIER-002C — Reachable Hold/Swap Continuity Carrier
 
-Date: 17 July 2026  
-Status: completed mechanistic carrier experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **The system remembered what it had become, and that memory changed whether it held or moved.**
+Date: 17 July 2026
+Status: completed mechanistic carrier experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **The system remembered what it had become, and that memory changed whether it held or moved.**
 
 ## Question
 
-Does the retained macro-history capsule change any reachable `hold ↔ swap` winner or admission decision when the native EMA continuity loss is applied without an emergence gate, feedback-strength change, forced mutation, or coefficient sweep?
+Does the retained macro-history capsule change any reachable `hold ↔ swap` winner or admission decision when the native EMA continuity loss is applied without an emergence check, feedback-strength change, forced mutation, or coefficient sweep?
 
 The preregistered mechanistic endpoint was:
 
@@ -53,7 +53,7 @@ with the fixed coefficient:
 w_D=0.5.
 \]
 
-For insertion candidates the carried loss replaced the existing raw-duality loss. For reachable non-insertion candidates it entered as the same continuity penalty. The repair feedback law remained fixed at:
+For insertion candidates the carried loss replaced the existing raw-duality loss. For reachable non-insertion candidates it entered as the same continuity penalty. The repair feedback formula remained fixed at:
 
 \[
 \kappa=0.25.
@@ -197,7 +197,7 @@ Carrier-002C establishes that the remembered EMA state changes reachable proposa
 
 It does **not** establish that the `M1` history improves repair more than `M0`, nor that feedback selectively amplifies a history-specific recovery benefit. The recovery interactions remain small and their matched-pair intervals cross zero.
 
-The correct verdict is:
+The correct result is:
 
 \[
 \boxed{
@@ -209,7 +209,7 @@ This distinction is essential. The experiment has crossed from descriptive memor
 
 ## Next experiment
 
-The next admissible test is:
+The next supported test is:
 
 # EMERGE-CARRIER-003 — Real History vs Equal-Distribution Sham
 
@@ -231,8 +231,8 @@ The key question becomes:
 
 ## Artifact receipt
 
-GitHub Actions workflow run: `29572723082`  
-Workflow artifact: `EMERGE-CARRIER-002C-results`  
+GitHub Actions workflow run: `29572723082`
+Workflow artifact: `EMERGE-CARRIER-002C-results`
 Artifact SHA-256:
 
 ```text

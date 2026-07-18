@@ -1,7 +1,7 @@
 # EMERGE-CARRIER-003F — Dark Boundary-Transition Audit
 
 Date: 18 July 2026
-Status: full-trajectory dark density and co-occurrence audit completed locally; no active ranking law preregistered
+Status: full-trajectory dark density and co-occurrence audit completed locally; no active ranking formula preregistered
 Branch: `agent/emerge-ko-001-sandbox`
 
 ## Audit question
@@ -38,7 +38,7 @@ The verification harness is:
 experiments/emerge-ko-001/verify-duality-boundary-transition.ts
 ```
 
-## Threshold discrepancy caught by the first gate
+## Threshold discrepancy caught by the first check
 
 The proposed audit value was:
 
@@ -83,7 +83,7 @@ and the projected next-duality range was:
 
 ## Proposed threshold result: \(\theta=0.65\)
 
-The proposed threshold failed the reachability gate:
+The proposed threshold failed the reachability check:
 
 - history exits: **0**;
 - history entries: **0**;
@@ -105,7 +105,7 @@ Thus the proposed (0.65) boundary is not merely low-density; it is unreachable i
 \boxed{N_{boundary\ decisions}(0.65)=0}
 \]
 
-No active Carrier-003F experiment is admissible at (0.65) on this substrate.
+No active Carrier-003F experiment is supported at (0.65) on this substrate.
 
 ## Frozen native threshold result: \(\theta=0.6\)
 
@@ -132,7 +132,7 @@ Across exact step-one candidate frontiers for every frozen lesion and both capsu
 
 At a fixed current state all candidates begin on the same side of the threshold. A single frontier therefore cannot contain both (+1) and (-1). The valid control-density test is crossing versus no crossing: ({-1,0}) or ({+1,0}).
 
-The initial frozen-lesion frontier contains meaningful entry-versus-no-entry discrimination at (0.6), but no exit option. Exit reachability must be audited on later dynamic frontiers before any symmetric boundary law can be claimed.
+The initial frozen-lesion frontier contains meaningful entry-versus-no-entry discrimination at (0.6), but no exit option. Exit reachability must be audited on later dynamic frontiers before any symmetric boundary formula can be claimed.
 
 ## Darkness and baseline neutrality
 
@@ -142,7 +142,7 @@ Attaching the dark event receipt produced:
 - ranked frontier mismatches: **0**;
 - production call sites outside the projection module: **0**.
 
-The complete sealed Carrier-003C reference was then regenerated and replayed:
+The complete hash-recorded Carrier-003C reference was then regenerated and replayed:
 
 - generated source SHA-256: `b4d0ff5407735b2f01c7c0dd1d15a27b8dcb93342359cb787147741858764c0a`;
 - activation-off comparisons: **2,048**;
@@ -154,11 +154,11 @@ The complete sealed Carrier-003C reference was then regenerated and replayed:
 - changed admissions: **802**;
 - accepted slope-induced actions: **1,042**.
 
-These are the sealed Carrier-003C values. Production behavior remains unchanged while the boundary projector is dark.
+These are the hash-recorded Carrier-003C values. Production behavior remains unchanged while the boundary projector is dark.
 
 ## Full-trajectory dark frontier audit
 
-The exact sealed Carrier-003C run was replayed with the boundary projector attached at coefficient zero to every active candidate. The audit covered:
+The exact hash-recorded Carrier-003C run was replayed with the boundary projector attached at coefficient zero to every active candidate. The audit covered:
 
 - active decision frontiers: **204,800**;
 - candidate projections: **819,200**;
@@ -187,7 +187,7 @@ The selector chose an exit candidate **8,128** times and an entry candidate **3,
 
 ## Accepted-event inventory and persistence co-occurrence
 
-The sealed accepted trace contains **39,580** transitions. Every selected projection reproduced the recorded post-step EMA exactly:
+The hash-recorded accepted trace contains **39,580** transitions. Every selected projection reproduced the recorded post-step EMA exactly:
 
 - exact comparisons: **39,580**;
 - mismatches: **0**;
@@ -214,11 +214,11 @@ The accepted exits also cannot be called structural recoveries without qualifica
 | 0.5 | 719 |
 | 1 | 383 |
 
-Thus an exit is a numerical threshold event, not a proxy for complete target repair. It is also not an immediate inventory reset. In an undeclared state it seeds the native persistence counter; an entry resets that counter. Once latched, the existing update law leaves persistence unchanged.
+Thus an exit is a numerical threshold event, not a proxy for complete target repair. It is also not an immediate inventory reset. In an undeclared state it seeds the native persistence counter; an entry resets that counter. Once latched, the existing update formula leaves persistence unchanged.
 
 ## Exact replay preservation
 
-The dynamic audit preserved the sealed run at two independent levels:
+The dynamic audit preserved the hash-recorded run at two independent levels:
 
 - activation-off comparisons: **2,048/2,048**;
 - activation-off mismatches: **0**;
@@ -251,7 +251,7 @@ The earned conclusions are:
 \boxed{N_{candidate-divergent\ frontiers}=28{,}359>0}
 \]
 
-The full-trajectory reachability and co-occurrence gate is passed. Carrier-003F has still not established usefulness: no boundary coefficient has been activated and no sham schedule has been run. The next admissible work is to preregister one fixed active ranking coefficient and a complete-sham event schedule, then require positive eight-pair usefulness before opening Carrier-004.
+The full-trajectory reachability and co-occurrence check is passed. Carrier-003F has still not established usefulness: no boundary coefficient has been activated and no sham schedule has been run. The next supported work is to preregister one fixed active ranking coefficient and a complete-sham event schedule, then require positive eight-pair usefulness before opening Carrier-004.
 
 ## Local receipts
 
@@ -321,4 +321,4 @@ Consolidated dark dynamic result SHA-256:
 e75be896e45618ea93ff3a0027928a772def834b7b3e701c7c13d6706372dbf9
 ```
 
-> **The proposed boundary is dead. The native boundary is live on both later exit and entry frontiers, but usefulness remains untested until an active law defeats its complete shams.**
+> **The proposed boundary is dead. The native boundary is live on both later exit and entry frontiers, but usefulness remains untested until an active formula defeats its complete shams.**

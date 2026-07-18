@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-003C — Native Projected Signed-Slope Verification
 
-Date: 17 July 2026  
-Status: preregistered before outcome execution  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **A remembered level becomes directional control only when each possible move is judged by where it would carry the system next.**
+Date: 17 July 2026
+Status: preregistered before outcome execution
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **A remembered level becomes directional control only when each possible move is judged by where it would carry the system next.**
 
 ## Question
 
@@ -20,14 +20,14 @@ Carrier-003C inherits without refitting:
 - 16 symbolic microstates;
 - 512 exact two-bridge wounds;
 - the Carrier-002 macro-history capsules;
-- the same proposal frontier, tie resolver, admission law, lesions and branch random streams;
+- the same proposal frontier, tie resolver, admission formula, lesions and branch random streams;
 - repair feedback `kappa = 0.25`;
 - duality weight `w_D = 0.5`;
 - no emergence declaration bonus;
 - no forced mutation;
 - no coefficient sweep.
 
-## Native projected duality law
+## Native projected duality formula
 
 For candidate sequence `c`, the existing Telos force is:
 
@@ -110,9 +110,9 @@ Thus the experiment replaces raw static duality control rather than double-count
 
 ## Capsule evolution
 
-After every accepted transition, both active and knockout branches update the capsule through the same native projected duality law. Carrier activation changes ranking only. Capsule carriage and evolution are therefore matched across the intervention arms until their symbolic trajectories diverge.
+After every accepted transition, both active and knockout branches update the capsule through the same native projected duality formula. Carrier activation changes ranking only. Capsule carriage and evolution are therefore matched across the intervention arms until their symbolic trajectories diverge.
 
-## Integrity gates
+## Integrity checks
 
 Before an active result is admitted:
 
@@ -122,7 +122,7 @@ Before an active result is admitted:
 4. with slope activation disabled, all 2,048 capsule-bearing projections must reproduce Carrier-001 byte-for-byte;
 5. exact tie-resolved winners must agree with the selector output.
 
-Any failed gate aborts interpretation.
+Any failed check aborts interpretation.
 
 ## Primary mechanistic endpoint
 
@@ -165,10 +165,10 @@ A mechanistic pass does not establish usefulness.
 - **Projection mismatch:** implementation rejected.
 - **Neutrality mismatch:** experiment rejected.
 - **No changed reachable decision:** slope carrier not mechanically expressed; no sham sweep.
-- **Changed reachable decisions:** native signed-slope carrier established as executable; Carrier-003D complete-sham slope timing control becomes admissible.
+- **Changed reachable decisions:** native signed-slope carrier established as executable; Carrier-003D complete-sham slope timing control becomes supported.
 - **Recovery interval excluding zero:** recorded according to its sign, but still requires complete-sham timing control before any usefulness claim.
 
-## Next gate
+## Next check
 
 Only a passing Carrier-003C opens:
 

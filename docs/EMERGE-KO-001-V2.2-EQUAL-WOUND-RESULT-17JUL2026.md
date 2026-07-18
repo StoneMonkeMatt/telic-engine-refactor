@@ -1,19 +1,19 @@
 # EMERGE-KO-001 V2.2 — Equal Wound / Needle Repair
 
-Date: 17 July 2026  
-Status: completed matched-panel causal experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **Same wound. Same needle. Different state. Measure which one heals.**
+Date: 17 July 2026
+Status: completed matched-panel causal experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **Same wound. Same needle. Different state. Measure which one heals.**
 
 ## Experimental boundary
 
-V2.2 retained the constant feedback law:
+V2.2 retained the constant feedback formula:
 
 \[
 Q_t^{\mathrm{fb}}(c)=Q_t(c)+\kappa ZR_t(c),\qquad \kappa=0.25.
 \]
 
-No emergence threshold gate was introduced.
+No emergence threshold check was introduced.
 
 The selector executed before either treatment condition. It froze:
 
@@ -165,7 +165,7 @@ V2.2 supports four statements:
 3. Removing unequal target normalization changed the interaction from negative to positive.
 4. The positive panel mean remains uncertain because the pair-level interval crosses zero.
 
-The correct verdict is:
+The correct result is:
 
 \[
 \boxed{\text{directional positive evidence; state-specific efficacy not yet established.}}
@@ -185,8 +185,8 @@ It should preserve the same symbolic microstate, lesion, target bridges and rand
 
 ## Artifact receipt
 
-GitHub Actions workflow run: `29563428289`  
-Workflow artifact: `EMERGE-KO-001-v2.2-results`  
+GitHub Actions workflow run: `29563428289`
+Workflow artifact: `EMERGE-KO-001-v2.2-results`
 Artifact SHA-256:
 
 ```text

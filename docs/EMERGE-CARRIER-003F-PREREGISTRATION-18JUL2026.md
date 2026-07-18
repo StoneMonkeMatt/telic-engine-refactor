@@ -1,7 +1,7 @@
 # EMERGE-CARRIER-003F — Complete-Sham Native Boundary Preregistration
 
-Date: 18 July 2026  
-Status: preregistered before active boundary outcome execution  
+Date: 18 July 2026
+Status: preregistered before active boundary outcome execution
 Branch: `agent/emerge-ko-001-sandbox`
 
 > **Carrier-003F asks whether the true candidate assignment of a native boundary crossing carries useful repair information, not merely whether threshold events are reachable.**
@@ -39,7 +39,7 @@ Carrier-003F inherits without modification:
 - 512 frozen exact two-bridge lesions;
 - the V2.2 selector and wounds;
 - Carrier-002 macro-history capsules;
-- the Carrier-003C native signed-slope law at \(w_v=0.5\);
+- the Carrier-003C native signed-slope formula at \(w_v=0.5\);
 - repair feedback coefficient \(\kappa=0.25\);
 - native EMA coefficient \(\alpha=0.2\);
 - native boundary \(\theta=0.6\);
@@ -51,7 +51,7 @@ Carrier-003F inherits without modification:
 
 The matched checkpoint pair remains the inferential unit. Lesions, feedback cells and sham schedules improve measurement but are not independent scientific substrates.
 
-## 3. Active native-boundary law
+## 3. Active native-boundary formula
 
 Carrier-003C remains the base score. Carrier-003F adds exactly one signed event term:
 
@@ -67,7 +67,7 @@ The coefficient is fixed once at:
 \boxed{w_b=0.01}.
 \]
 
-Because a valid fixed-state frontier cannot contain both an entry and an exit, the maximum pairwise score differential introduced by the event law is \(0.01\), not \(0.02\). This is a one-percentage-point score perturbation and is below the maximum absolute signed-slope adjustment observed on the same frozen Carrier-003C substrate:
+Because a valid fixed-state frontier cannot contain both an entry and an exit, the maximum pairwise score differential introduced by the event formula is \(0.01\), not \(0.02\). This is a one-percentage-point score perturbation and is below the maximum absolute signed-slope adjustment observed on the same frozen Carrier-003C substrate:
 
 \[
 0.01<0.02771943834567009.
@@ -106,7 +106,7 @@ i
 ).
 \]
 
-The frontier receipt contains only the pair, microstate source, replicate, feedback cell, capsule, step, current-sequence hash and canonical candidate receipts. It contains no score, admission, repair outcome or future state.
+The frontier receipt contains only the pair, microstate source, replicate, feedback cell, capsule, step, current-sequence hash and reference candidate receipts. It contains no score, admission, repair outcome or future state.
 
 The sham label assigned to candidate \(c_i\) is:
 
@@ -114,7 +114,7 @@ The sham label assigned to candidate \(c_i\) is:
 b_{r,f}^{sham}(c_i)=b_f(c_{\pi_{r,f}(i)}).
 \]
 
-The sham ranking law is:
+The sham ranking formula is:
 
 \[
 R_{t,r}^{sham}(c)
@@ -143,14 +143,14 @@ Only the candidate-to-event assignment changes. Sham labels are explicit control
 
 The fourteen salts are the fixed two-digit strings `01` through `14`. No schedule may be selected or discarded after outcomes are observed.
 
-## 5. Integrity gates
+## 5. Integrity checks
 
-Outcome interpretation is inadmissible unless all gates pass:
+Outcome interpretation is unsupported unless all checks pass:
 
-1. the V2.2 panel, Carrier-001 result and Carrier-002 capsule selectors reproduce their sealed receipts;
+1. the V2.2 panel, Carrier-001 result and Carrier-002 capsule selectors reproduce their hash-recorded receipts;
 2. `projectDualityUpdate` and `projectDualityBoundaryTransition` reproduce exact algebra;
 3. the native threshold is exactly \(0.6\);
-4. boundary-off branches reproduce the sealed Carrier-003C active projections exactly;
+4. boundary-off branches reproduce the hash-recorded Carrier-003C active projections exactly;
 5. activation-off comparisons have zero mismatches;
 6. every sham frontier preserves the exact native ternary multiset;
 7. no sham frontier contains a sign unavailable in its real native vector;
@@ -158,17 +158,17 @@ Outcome interpretation is inadmissible unless all gates pass:
 9. every sham differs from the native candidate assignment on at least one divergent frontier;
 10. schedule 7 reproduces an independently executed reference exactly;
 11. the real-arm projection receipt is identical across schedule comparisons;
-12. the fixed true boundary law changes at least one exact winner or admission relative to boundary off;
+12. the fixed true boundary formula changes at least one exact winner or admission relative to boundary off;
 13. every sham changes at least one exact true-versus-sham winner or admission while pre-states match;
 14. repository type-checking and receipt validation pass.
 
-Any failed gate stops efficacy interpretation. The coefficient cannot be adjusted to repair a failed reachability or usefulness result.
+Any failed check stops efficacy interpretation. The coefficient cannot be adjusted to repair a failed reachability or usefulness result.
 
 ## 6. Mechanistic endpoints
 
-### 6.1 Boundary-law reachability
+### 6.1 Boundary-formula reachability
 
-Compare Carrier-003C boundary-off branches with the fixed true Carrier-003F law while their pre-states match. The gate is:
+Compare Carrier-003C boundary-off branches with the fixed true Carrier-003F formula while their pre-states match. The check is:
 
 \[
 \boxed{N_{boundary\ decisions}>0}.
@@ -236,10 +236,10 @@ and state-specific contrasts between `M1-latched` and `M0-unlatched`. Their sign
 
 ## 9. Decision rule
 
-- Positive primary interval with every integrity and mechanism gate passed: Carrier-004 held-out generalisation becomes admissible for the fixed native boundary law.
+- Positive primary interval with every integrity and mechanism check passed: Carrier-004 held-out generalisation becomes supported for the fixed native boundary formula.
 - Negative primary interval: positive true-boundary usefulness closes for \(w_b=0.01\).
 - Interval crossing zero: usefulness remains unestablished; no retrospective coefficient rescue is permitted.
-- Failed projection, neutrality, sham or reachability gate: no efficacy interpretation.
+- Failed projection, neutrality, sham or reachability check: no efficacy interpretation.
 
 ## 10. Claim boundary
 

@@ -1,14 +1,14 @@
 # EMERGE-CARRIER-003D — Complete-Sham Native Slope Audit Preregistration
 
-Date: 17 July 2026  
-Status: preregistered before outcome execution  
+Date: 17 July 2026
+Status: preregistered before outcome execution
 Branch: `agent/emerge-ko-001-sandbox`
 
 > **Carrier-003D asks whether the true ordering of model-native directional history contains useful repair information, not merely whether directional history can alter behaviour.**
 
 ## 1. Background
 
-Carrier-003C established that the existing Telos duality law can be projected before selection and used as a signed candidate velocity:
+Carrier-003C established that the existing Telos duality formula can be projected before selection and used as a signed candidate velocity:
 
 \[
 v_t(c;h_t)
@@ -31,7 +31,7 @@ Carrier-003D inherits without modification:
 - Carrier-002 macro-history capsules;
 - identical proposal frontiers;
 - exact deterministic tie resolution;
-- identical admission law;
+- identical admission formula;
 - identical branch random streams;
 - repair feedback coefficient \(\kappa=0.25\);
 - native EMA coefficient \(\alpha=0.2\);
@@ -42,7 +42,7 @@ Carrier-003D inherits without modification:
 
 The matched checkpoint pair remains the inferential unit. Replicates and rotations improve measurement but are not treated as independent scientific substrates.
 
-## 3. Native directional law
+## 3. Native directional formula
 
 For candidate \(c\) and the active history anchor \(h_t\):
 
@@ -136,21 +136,21 @@ Only temporal ordering changes.
 
 During steps \(1\) through \(16\), \(h_t\) is supplied by the real or sham schedule. After step \(16\), both arms use their endogenous Carrier-003C capsule state.
 
-## 5. Integrity gates
+## 5. Integrity checks
 
-The active rotation sweep is inadmissible unless all gates pass:
+The active rotation sweep is unsupported unless all checks pass:
 
-1. the assembled Carrier-003B base runner has SHA-256  
+1. the assembled Carrier-003B base runner has SHA-256
    `5c1f2fe37979ed500db7eb482d30a43b0a6121b791df051db7e42a73e55689ea`;
-2. the assembled Carrier-003B aggregate base has SHA-256  
+2. the assembled Carrier-003B aggregate base has SHA-256
    `df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6`;
-3. the Carrier-003C generated runner reproduces SHA-256  
+3. the Carrier-003C generated runner reproduces SHA-256
    `b4d0ff5407735b2f01c7c0dd1d15a27b8dcb93342359cb787147741858764c0a`;
-4. the committed Carrier-003D runner assembler has Git blob SHA  
+4. the committed Carrier-003D runner assembler has Git blob SHA
    `dca6a31d4271b40982f29cf985dd9fd490ae73cd`;
-5. the committed Carrier-003D aggregate assembler has Git blob SHA  
+5. the committed Carrier-003D aggregate assembler has Git blob SHA
    `9c18198e2639d85aec13c863d18bda3dff969925`;
-6. the committed pure duality projection has Git blob SHA  
+6. the committed pure duality projection has Git blob SHA
    `2e92f8018678c5f838fbfe717a58c7605a83bf7c`;
 7. repository type-checking passes after deterministic assembly;
 8. the pure duality projection still reproduces the native engine update exactly;
@@ -161,7 +161,7 @@ The active rotation sweep is inadmissible unless all gates pass:
 13. the real-history projection receipt is identical across all fourteen rotations;
 14. all fourteen sham projection receipts are distinct.
 
-Any failed gate stops interpretation.
+Any failed check stops interpretation.
 
 ## 6. Primary estimand
 
@@ -250,10 +250,10 @@ Mechanistic influence does not by itself establish usefulness.
 
 ## 9. Decision rule
 
-- Positive primary interval: Carrier-004 held-out generalisation becomes admissible.
-- Negative primary interval: positive true-slope chronology usefulness is closed for this fixed law.
+- Positive primary interval: Carrier-004 held-out generalisation becomes supported.
+- Negative primary interval: positive true-slope chronology usefulness is closed for this fixed formula.
 - Interval crossing zero: usefulness remains unestablished; no retrospective coefficient rescue is permitted.
-- Any failed integrity or reachability gate: no efficacy interpretation.
+- Any failed integrity or reachability check: no efficacy interpretation.
 
 ## 10. Claim boundary
 

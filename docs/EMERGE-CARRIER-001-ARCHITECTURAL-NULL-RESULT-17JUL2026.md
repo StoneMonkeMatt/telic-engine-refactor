@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-001 — Macro-History Architectural Null
 
-Date: 17 July 2026  
-Status: completed architectural null experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **A remembered state cannot cause anything until the transition kernel can carry it.**
+Date: 17 July 2026
+Status: completed architectural null experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **A remembered state cannot cause anything until the transition kernel can carry it.**
 
 ## Question
 
@@ -121,7 +121,7 @@ D_t^{EMA}
 \qquad \alpha=0.2.
 \]
 
-The proposal ranker also already contains a duality-loss penalty for harmful insertions. The narrowest non-arbitrary carrier design is therefore to carry `D_EMA` forward and let it replace the memoryless raw-duality comparison inside that existing penalty, rather than adding an emergence threshold gate or increasing feedback strength by declaration.
+The proposal ranker also already contains a duality-loss penalty for harmful insertions. The narrowest non-arbitrary carrier design is therefore to carry `D_EMA` forward and let it replace the memoryless raw-duality comparison inside that existing penalty, rather than adding an emergence threshold check or increasing feedback strength by declaration.
 
 # Bench roadmap
 
@@ -169,7 +169,7 @@ Use this carried value inside the ranker's already-existing duality-loss compari
 - identical microstates;
 - identical target bridges;
 - identical random streams;
-- the same feedback and admission laws.
+- the same feedback and admission formulas.
 
 Compare:
 
@@ -254,8 +254,8 @@ The unit of generalisation remains the independent matched microstate/history pa
 
 ## Artifact receipt
 
-GitHub Actions workflow run: `29565733958`  
-Workflow artifact: `EMERGE-CARRIER-001-results`  
+GitHub Actions workflow run: `29565733958`
+Workflow artifact: `EMERGE-CARRIER-001-results`
 Artifact SHA-256:
 
 ```text

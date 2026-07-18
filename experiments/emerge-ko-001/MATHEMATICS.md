@@ -1,18 +1,18 @@
 # Mathematics Ledger: The Compass of Emergent Causality
 
-> **The mathematics defines the causal claim; the experiment earns the right to make it.**
+> **The mathematics states the causal claim; the experiment measures whether the evidence supports it.**
 
-Date established: 17 July 2026  
-Last updated: 17 July 2026 — after EMERGE-CARRIER-003D  
-Status: canonical live mathematics ledger  
-Experiment bench: `experiments/emerge-ko-001/`  
+Date established: 17 July 2026
+Last updated: 17 July 2026 — after EMERGE-CARRIER-003D
+Status: reference live mathematics ledger
+Experiment bench: `experiments/emerge-ko-001/`
 Branch: `agent/emerge-ko-001-sandbox`
 
-This document is the canonical mathematical source of truth for the `emerge-ko-001` bench. Runners are executable implementations. Dated result documents are immutable scientific records. GitHub Actions artifacts contain raw selectors, receipts, traces and executed sources. This ledger states what the evidence currently permits us to claim.
+This document is the mathematical reference record for the `emerge-ko-001` bench. Runners are executable implementations. Dated result documents retain their original measurements. GitHub Actions artifacts contain raw selectors, receipts, traces and executed sources. This ledger states what the recorded evidence supports.
 
 ---
 
-## 0. Record-Keeping Doctrine
+## 0. Record-Keeping Method
 
 1. **Evidence remains chronological.** Earlier findings are not rewritten after later discoveries.
 2. **Invalid, null, inconclusive, directional, mechanistic and established results remain distinct.**
@@ -87,7 +87,7 @@ where:
 - \(I_t\in\{0,1\}\) records a qualifying inventory change;
 - \(H_t^D\) is a bounded ordered receipt of recent duality values.
 
-Provenance fields authenticate the capsule but are not causal variables unless explicitly introduced into a transition law.
+Provenance fields authenticate the capsule but are not causal variables unless explicitly introduced into a transition formula.
 
 ### 1.4 Interventions
 
@@ -134,7 +134,7 @@ At the experimental repair layer:
 \text{🪡}_{swap}.
 \]
 
-These labels remain experiment-local and are not promoted into the broader canonical needle-action inventory.
+These labels remain experiment-local and are not promoted into the broader reference needle-action inventory.
 
 ### 1.6 Recovery outcome
 
@@ -170,7 +170,7 @@ P(S_{t+1}\mid S_t,Z_t,M_t,A_t=0)
 P(S_{t+1}\mid S_t,Z_t).
 \]
 
-Carrier-001 and later zero-coupling gates verified this boundary under exact twin conditions.
+Carrier-001 and later zero-coupling checks verified this boundary under exact twin conditions.
 
 ### 2.2 Active state-carrying kernel
 
@@ -228,7 +228,7 @@ At each step:
 \mathcal C_t=\mathcal F(S_t,\xi_t).
 \]
 
-Candidates are ranked, exact ties are resolved deterministically, and the selected candidate passes through the frozen stochastic admission law.
+Candidates are ranked, exact ties are resolved deterministically, and the selected candidate passes through the frozen stochastic admission formula.
 
 Every carrier or timing experiment must report separately:
 
@@ -284,12 +284,12 @@ R_t^{A=0}(c)-w_D L_D(c;M_t).
 
 The carrier remains a continuity loss rather than an emergence declaration bonus:
 
-- no `if E=1` gate;
+- no `if E=1` check;
 - no change to \(\kappa\);
 - no forced mutation;
 - no threshold-triggered action;
 - no coefficient sweep;
-- identical wounds, targets, microstates, seeds, proposal frontier and admission law.
+- identical wounds, targets, microstates, seeds, proposal frontier and admission formula.
 
 ### 3.3 Native Telos target and signed candidate slope
 
@@ -352,7 +352,7 @@ Carrier-003C verified that the pure projection reproduces the engine-native upda
 
 ---
 
-## 4. Repair Feedback Law
+## 4. Repair Feedback Formula
 
 For candidate \(c\):
 
@@ -535,9 +535,9 @@ Carrier-003, all fourteen Carrier-003B rotations and all fourteen Carrier-003D s
 | **Carrier-003** | \(\Delta_{Z=1}=-0.0161133\), CI \([-0.0375980,0.0053714]\) | **Timing causality established; positive primary unsupported** | One equal-distribution sham changed 1,615 winners, 1,280 admissions and 1,260 accepted actions. A secondary negative timing×feedback interval excluded zero under rotation 7 only. |
 | **Carrier-003B** | \(\overline\Delta_{Z=1}=-0.0157645\), CI \([-0.0338455,0.0023164]\) | **Complete-sham timing robustness completed** | All 14 rotations changed decisions; all 14 recovery point estimates were negative; the eight-pair ensemble interval crossed zero. The rotation-7 feedback-interference signal did not survive the complete ensemble. Positive timing usefulness is closed for the current carrier. |
 | **Carrier-003C** | 1,325 changed winners; 802 changed admissions; 1,042 accepted actions | **Native directional carrier established** | Candidate-projected signed Telos slope changed reachable hold/swap decisions while 2,048 zero-activation projections remained exact. Recovery estimates were slightly positive, but every matched-pair interval crossed zero. |
-| **Carrier-003D** | \(\overline\Delta_{Z=1}=-0.0055106\), CI \([-0.0193342,0.0083130]\) | **Complete-sham signed-slope robustness completed** | All 14 rotations changed reachable decisions. Twelve of fourteen recovery point estimates were negative, but every rotation interval and the eight-pair ensemble interval crossed zero. True signed-slope chronology did not establish repair usefulness; Carrier-004 remains gated. |
+| **Carrier-003D** | \(\overline\Delta_{Z=1}=-0.0055106\), CI \([-0.0193342,0.0083130]\) | **Complete-sham signed-slope robustness completed** | All 14 rotations changed reachable decisions. Twelve of fourteen recovery point estimates were negative, but every rotation interval and the eight-pair ensemble interval crossed zero. True signed-slope chronology did not establish repair usefulness; Carrier-004 remains pending. |
 | **Carrier-003E** | \(\overline\Delta_{Z=1}=-0.0089634\), CI \([-0.0256051,0.0076782]\) | **Complete-sham acceleration robustness completed** | Acceleration changed reachable decisions and all 14 prior-slope shams were active. The complete-ensemble interval crossed zero; true acceleration chronology did not establish repair usefulness. |
-| **Carrier-003F** | \(\overline\Delta_{Z=1}=+0.0018834\), CI \([-0.0054898,0.0092565]\) | **Complete-sham native-boundary robustness completed** | The fixed \(w_b=0.01\) law changed 501 winners and 407 admissions. All 14 equal-exposure candidate-label shams were active and exact. The eight-pair interval crossed zero; true native boundary assignment did not establish repair usefulness. |
+| **Carrier-003F** | \(\overline\Delta_{Z=1}=+0.0018834\), CI \([-0.0054898,0.0092565]\) | **Complete-sham native-boundary robustness completed** | The fixed \(w_b=0.01\) formula changed 501 winners and 407 admissions. All 14 equal-exposure candidate-label shams were active and exact. The eight-pair interval crossed zero; true native boundary assignment did not establish repair usefulness. |
 
 ---
 
@@ -627,9 +627,9 @@ The primary positive true-history hypothesis was unsupported. The negative inter
 - sham rotations: **14**;
 - active branch executions: **57,344**;
 - accepted trace records: **1,089,484**;
-- rotation-7 exact reproduction gate: **passed**;
-- repeated real-history receipt identity gate: **passed**;
-- distinct sham-receipt gate: **passed**.
+- rotation-7 exact reproduction check: **passed**;
+- repeated real-history receipt identity check: **passed**;
+- distinct sham-receipt check: **passed**.
 
 ### 9.2 Mechanistic robustness
 
@@ -711,7 +711,7 @@ All fourteen interaction point estimates were negative, but the complete-ensembl
 
 All state-specific intervals cross zero.
 
-### 9.6 Verdict
+### 9.6 Result
 
 \[
 \boxed{
@@ -773,7 +773,7 @@ Every interval crosses zero.
 
 \[
 \boxed{
-\text{native directional carrier established; recovery usefulness not established; complete-sham slope audit admissible}
+\text{native directional carrier established; recovery usefulness not established; complete-sham slope audit supported}
 }
 \]
 
@@ -858,15 +858,15 @@ Twelve of fourteen rotation-specific point estimates were negative and two were 
 
 Every ensemble interval crosses zero. No stable feedback synergy, feedback interference or state-specific timing effect was established.
 
-### 11.5 Verdict
+### 11.5 Result
 
 \[
 \boxed{
-\text{directional timing causality established; true-slope usefulness not established; Carrier-004 remains gated}
+\text{directional timing causality established; true-slope usefulness not established; Carrier-004 remains pending}
 }
 \]
 
-No retrospective adjustment of \(w_v=0.5\) is admissible as a rescue of this result.
+No retrospective adjustment of \(w_v=0.5\) is supported as a rescue of this result.
 
 ---
 
@@ -908,7 +908,7 @@ No retrospective adjustment of \(w_v=0.5\) is admissible as a rescue of this res
 ### Closed for the current carrier
 
 - The claim that true EMA-level chronology improves repair relative to equal-distribution cyclic shams.
-- The claim that true signed-slope chronology improves repair relative to the complete cyclic-sham family under the fixed \(w_v=0.5\) law.
+- The claim that true signed-slope chronology improves repair relative to the complete cyclic-sham family under the fixed \(w_v=0.5\) formula.
 - The claim that the Carrier-003 negative timing×feedback interaction is robust across sham choice.
 - Direct progression of either completed timing carrier to held-out generalisation.
 
@@ -916,11 +916,11 @@ No retrospective adjustment of \(w_v=0.5\) is admissible as a rescue of this res
 
 - Whether bounded-history curvature or acceleration carries useful repair information beyond first-order slope.
 - Whether persistence-state transition direction, threshold-crossing direction or inventory-event timing yields positive complete-sham-controlled usefulness.
-- Held-out generalisation of any mechanism that first clears the complete-sham usefulness gate.
+- Held-out generalisation of any mechanism that first clears the complete-sham usefulness check.
 
 ### Invalidated or rejected
 
-- V1's positive estimate is inadmissible evidence.
+- V1's positive estimate is unsupported evidence.
 - A raw checkpoint-class difference is not proof of retained-history causation.
 - A zero result from zero mechanism exposure is not evidence of inefficacy.
 - Influence alone is not proof of adaptive value.
@@ -961,7 +961,7 @@ a_t(c)
 
 Carrier-003E freezes the Carrier-003C signed-slope coefficient at \(w_v=0.5\) and preregisters one additive acceleration coefficient \(w_a=0.5\). Fifteen realised slopes are derived from each normalized sixteen-value EMA history. The complete sham family cyclically rotates those same fifteen slopes before candidate acceleration is derived, preserving slope multiset, exposure, capsule, current EMA anchor, wounds, random streams, feedback and admission.
 
-The preregistered sequence passed its integrity and mechanism gates:
+The preregistered sequence passed its integrity and mechanism checks:
 
 1. acceleration projection algebra was exact across 15,114 comparisons;
 2. 4,096 acceleration-off comparisons reproduced Carrier-003C with zero mismatches;
@@ -994,7 +994,7 @@ Permanent records:
 - `docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md`
 - `docs/EMERGE-CARRIER-003E-COMPLETE-SHAM-CANDIDATE-ACCELERATION-RESULT-18JUL2026.md`
 
-No retrospective adjustment of (w_v=0.5) or (w_a=0.5) is admissible as a rescue. The next architecture audit may examine persistence-transition direction, threshold-crossing direction or inventory-event timing. Carrier-004 remains gated.
+No retrospective adjustment of (w_v=0.5) or (w_a=0.5) is supported as a rescue. The next architecture audit may examine persistence-transition direction, threshold-crossing direction or inventory-event timing. Carrier-004 remains pending.
 
 ### Completed: EMERGE-CARRIER-003F — Native Boundary Assignment
 
@@ -1012,7 +1012,7 @@ b_t(c)
 
 At coefficient zero, the projector was exact and baseline-neutral across 204,800 active Carrier-003C frontiers and 819,200 candidates. It exposed 28,359 candidate-divergent frontiers, including 13,423 later frontiers with exit options. The accepted trace contained 1,716 exits and 1,509 entries; every accepted crossing was an inventory-stable swap and no crossing directly declared observer state.
 
-Carrier-003F keeps the Carrier-003C signed-slope law fixed and preregisters one active event term:
+Carrier-003F keeps the Carrier-003C signed-slope formula fixed and preregisters one active event term:
 
 \[
 R_t^{003F}(c)=R_t^{003C}(c)+w_b b_t(c),
@@ -1022,7 +1022,7 @@ R_t^{003F}(c)=R_t^{003C}(c)+w_b b_t(c),
 
 The one-percentage-point event perturbation is below the maximum absolute signed-slope adjustment observed on the same substrate, \(0.02771943834567009\). The coefficient is fixed before active boundary outcomes, with no sweep or retrospective rescue.
 
-The fourteen geometry-safe shams do not rotate EMA history. At each realized frontier they apply a deterministic SHA-256-derived bijection to the valid native ternary labels among the four canonical candidate slots:
+The fourteen geometry-safe shams do not rotate EMA history. At each realized frontier they apply a deterministic SHA-256-derived bijection to the valid native ternary labels among the four reference candidate slots:
 
 \[
 b_{r,f}^{sham}(c_i)=b_f(c_{\pi_{r,f}(i)}),
@@ -1034,9 +1034,9 @@ Therefore every sham preserves the exact per-frontier multiset of \(+1\), \(0\) 
 Carrier-003F requires:
 
 1. exact native projection and boundary algebra;
-2. boundary-off reproduction of sealed Carrier-003C;
+2. boundary-off reproduction of hash-recorded Carrier-003C;
 3. exact per-frontier sham exposure equality and fourteen distinct assignment receipts;
-4. non-zero true-law decision influence;
+4. non-zero true-formula decision influence;
 5. non-zero true-versus-sham decision influence for all fourteen schedules;
 6. exact independent schedule-7 reproduction;
 7. positive complete-ensemble eight-pair usefulness under feedback before Carrier-004.
@@ -1060,18 +1060,18 @@ The primary endpoint is the mean of the fourteen within-pair sham contrasts unde
 \right].
 \]
 
-Useful native boundary information is established only if its point estimate is positive and its two-sided 95% interval across the eight matched-pair ensemble effects lies entirely above zero. No individual sham, pair, capsule or secondary contrast can substitute for this gate.
+Useful native boundary information is established only if its point estimate is positive and its two-sided 95% interval across the eight matched-pair ensemble effects lies entirely above zero. No individual sham, pair, capsule or secondary contrast can substitute for this check.
 
 Permanent preregistration:
 
 - `docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md`
 
-All fourteen active schedules passed their integrity and mechanism gates:
+All fourteen active schedules passed their integrity and mechanism checks:
 
 1. 28,672 Carrier-001 neutrality comparisons had zero mismatches;
 2. 28,672 Carrier-003C boundary-off comparisons had zero mismatches;
 3. 2,867,200 sham frontiers preserved their exact native ternary multiset with zero mismatches;
-4. the fixed true law changed 501 winners, 407 admissions and 399 accepted actions;
+4. the fixed true formula changed 501 winners, 407 admissions and 399 accepted actions;
 5. all fourteen shams changed reachable decisions;
 6. true-versus-sham assignment changed 10,504 winners, 14,905 admissions and 8,232 accepted actions across the complete ensemble;
 7. all fourteen sham assignment and projection receipts were distinct;
@@ -1087,7 +1087,7 @@ The primary complete-sham estimate was:
 
 The point estimate favored the true native assignment by approximately 0.188 percentage points, but the eight-pair interval crossed zero. Five pair effects were positive and three were negative. Eight of fourteen schedule point estimates were positive, three were zero and three were negative. Schedule 13 had an individually positive interval, but no individual sham can substitute for the preregistered complete-ensemble endpoint.
 
-No secondary ensemble interval excluded zero. The fixed native boundary law and candidate assignment are causal inputs, but positive repair usefulness is not established. No retrospective adjustment of \(w_b=0.01\), sham salt, subgroup, capsule, action family or feedback cell is admissible as a rescue. Carrier-004 remains gated.
+No secondary ensemble interval excluded zero. The fixed native boundary formula and candidate assignment are causal inputs, but positive repair usefulness is not established. No retrospective adjustment of \(w_b=0.01\), sham salt, subgroup, capsule, action family or feedback cell is supported as a rescue. Carrier-004 remains pending.
 
 Permanent result:
 
@@ -1095,9 +1095,9 @@ Permanent result:
 
 ### Carrier-004 — held-out generalisation
 
-Status: **gated**.
+Status: **pending**.
 
-Carrier-004 becomes admissible only after a model-native mechanism establishes a positive pair-generalised benefit against its complete sham family.
+Carrier-004 becomes supported only after a model-native mechanism establishes a positive pair-generalised benefit against its complete sham family.
 
 ## 14. Evidence and Receipt Index
 
@@ -1336,7 +1336,7 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 
 ### 17 July 2026 — Ledger established
 
-- Defined canonical objects, kernels, outcomes, feedback law, carrier loss and estimators.
+- Defined reference objects, kernels, outcomes, feedback formula, carrier loss and estimators.
 - Recorded V1 through Carrier-002B without promoting findings beyond their evidence.
 
 ### 17 July 2026 — Carrier-002C completed
@@ -1359,7 +1359,7 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Recorded uniformly negative feedback recovery point estimates across all rotations while preserving the eight-pair interval crossing zero.
 - Removed rotation-7 privilege and closed the feedback-interference claim as non-robust.
 - Closed positive timing usefulness for the current EMA-level continuity carrier.
-- Gated held-out generalisation pending a new model-native mechanism that earns positive complete-sham-controlled usefulness.
+- Pending held-out generalisation pending a new model-native mechanism that earns positive complete-sham-controlled usefulness.
 
 ### 17 July 2026 — Carrier-003C completed
 
@@ -1368,7 +1368,7 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Verified 2,048 zero-activation comparisons with zero mismatches.
 - Established reachable signed-slope influence through 1,325 changed winners, 802 changed admissions and 1,042 accepted induced actions.
 - Preserved the recovery-usefulness boundary because all matched-pair intervals crossed zero.
-- Opened Carrier-003D complete-sham native slope testing while keeping Carrier-004 gated.
+- Opened Carrier-003D complete-sham native slope testing while keeping Carrier-004 pending.
 
 ### 17 July 2026 — Carrier-003D completed
 
@@ -1378,12 +1378,12 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Established signed-slope timing causality through 9,813 changed winners, 6,090 changed admissions and 7,309 accepted timing-induced actions.
 - Recorded a primary real-minus-mean-sham estimate of \(-0.0055106\) with eight-pair interval crossing zero.
 - Preserved the boundary that twelve negative rotation point estimates do not establish general harm.
-- Closed positive true-slope chronology usefulness for the fixed first-order law and kept Carrier-004 gated.
-- Opened a higher-order model-native directional law audit without retrospective coefficient tuning.
+- Closed positive true-slope chronology usefulness for the fixed first-order formula and kept Carrier-004 pending.
+- Opened a higher-order model-native directional formula audit without retrospective coefficient tuning.
 
 ### 18 July 2026 — Carrier-003E preregistered
 
-- Selected candidate-projected duality acceleration as the cleanest higher-order native law.
+- Selected candidate-projected duality acceleration as the cleanest higher-order native formula.
 - Defined \(a_t(c)=v_t(c)-v_{t-1}\) using the existing pure candidate projection and frozen EMA histories.
 - Kept the signed-slope coefficient fixed at \(w_v=0.5\) and preregistered \(w_a=0.5\) without a sweep.
 - Defined fourteen cyclic shams over the same fifteen realised slope values, deriving acceleration only after the chronology intervention.
@@ -1398,9 +1398,9 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Established prior-slope chronology causality in 14/14 rotations through 17,515 changed winners, 15,169 changed admissions and 13,710 accepted chronology-induced actions.
 - Recorded a primary true-minus-mean-sham estimate of \(-0.00896345\) with the eight-pair interval crossing zero.
 - Preserved one positive secondary state-specific timing-by-feedback contrast without promoting it into the failed direct usefulness claim.
-- Closed positive true-history usefulness for the fixed acceleration law and kept Carrier-004 gated.
+- Closed positive true-history usefulness for the fixed acceleration formula and kept Carrier-004 pending.
 
-### 18 July 2026 — Carrier-003F dark audit completed and active law preregistered
+### 18 July 2026 — Carrier-003F dark audit completed and active formula preregistered
 
 - Rejected the proposed \(0.65\) boundary as non-native and unreachable on the frozen substrate.
 - Verified exact native \(\theta=0.6\) boundary algebra across 15,114 comparisons.
@@ -1408,25 +1408,25 @@ ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
 - Audited 204,800 active frontiers and 819,200 candidates at coefficient zero.
 - Established 28,359 crossing-versus-no-crossing frontiers and 13,423 later exit-option frontiers.
 - Established that all 3,225 accepted crossings were inventory-stable swaps following a previously remembered qualifying inventory change.
-- Preregistered the fixed law \(R^{003F}=R^{003C}+0.01b_t(c)\) without a sweep.
+- Preregistered the fixed formula \(R^{003F}=R^{003C}+0.01b_t(c)\) without a sweep.
 - Defined fourteen SHA-256-derived within-frontier candidate-label permutations preserving the exact native ternary multiset at every evaluated frontier.
-- Kept Carrier-004 gated pending non-zero mechanism expression and positive complete-sham eight-pair usefulness.
+- Kept Carrier-004 pending pending non-zero mechanism expression and positive complete-sham eight-pair usefulness.
 
 ### 18 July 2026 — Carrier-003F completed
 
 - Completed 57,344 active Needle branch runs across all fourteen equal-exposure sham schedules.
-- Verified 28,672 Carrier-001 neutrality comparisons and 28,672 sealed Carrier-003C boundary-off comparisons with zero mismatches.
+- Verified 28,672 Carrier-001 neutrality comparisons and 28,672 hash-recorded Carrier-003C boundary-off comparisons with zero mismatches.
 - Preserved the exact native ternary multiset across 2,867,200 sham frontiers with zero mismatches.
 - Reassigned 624,370 candidate event labels while retaining fourteen distinct sham assignment and projection receipts.
-- Established fixed-law reachability through 501 changed winners, 407 changed admissions and 399 accepted boundary-induced actions.
+- Established fixed-formula reachability through 501 changed winners, 407 changed admissions and 399 accepted boundary-induced actions.
 - Established candidate-assignment causality in 14/14 shams through 10,504 changed winners, 14,905 changed admissions and 8,232 accepted assignment-induced actions.
 - Reproduced independent schedule 7 exactly.
 - Recorded a primary true-minus-mean-sham estimate of \(+0.00188337\) with eight-pair interval \([-0.00548980,0.00925654]\).
-- Preserved the boundary that one individually positive sham comparison cannot substitute for the failed complete-ensemble gate.
-- Closed positive native-boundary usefulness for the fixed \(w_b=0.01\) law and kept Carrier-004 gated.
+- Preserved the boundary that one individually positive sham comparison cannot substitute for the failed complete-ensemble check.
+- Closed positive native-boundary usefulness for the fixed \(w_b=0.01\) formula and kept Carrier-004 pending.
 
 ---
 
-## Crown
+## Summary
 
 > **The mathematics is preserved here; the tests must answer to it, and every claim must answer to the tests.**

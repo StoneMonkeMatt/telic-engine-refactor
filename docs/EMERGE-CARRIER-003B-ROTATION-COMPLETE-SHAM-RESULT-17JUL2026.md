@@ -1,9 +1,9 @@
 # EMERGE-CARRIER-003B — Rotation-Complete Sham Robustness Audit
 
-Date: 17 July 2026  
-Status: completed rotation-complete timing robustness experiment  
-Branch: `agent/emerge-ko-001-sandbox`  
-Crown line: **Every counterfeit timeline changed the path; none made the true timeline a proven better guide.**
+Date: 17 July 2026
+Status: completed rotation-complete timing robustness experiment
+Branch: `agent/emerge-ko-001-sandbox`
+Summary: **Every counterfeit timeline changed the path; none made the true timeline a proven better guide.**
 
 ## Question
 
@@ -41,9 +41,9 @@ r\in\{1,2,\ldots,14\}.
 
 For every rotation, the experiment preserved the exact value multiset, schedule duration, total exposure and terminal `dEma` anchor. Only temporal alignment changed.
 
-## Integrity gates
+## Integrity checks
 
-All preregistered integrity gates passed:
+All preregistered integrity checks passed:
 
 - source assembly SHA-256 checks passed;
 - repository type-check passed;
@@ -55,7 +55,7 @@ All preregistered integrity gates passed:
 - every sham preserved its real schedule's multiset, duration and terminal anchor;
 - every repeated real-history branch produced the same projection receipt;
 - all 14 sham projection receipts were distinct;
-- rotation 7 exactly reproduced the sealed Carrier-003 estimators and mechanistic counts.
+- rotation 7 exactly reproduced the hash-recorded Carrier-003 estimators and mechanistic counts.
 
 Thus:
 
@@ -252,7 +252,7 @@ It does **not** establish:
 - that latched history has a distinct timing benefit;
 - that the current EMA continuity carrier should advance to held-out generalisation as a useful repair mechanism.
 
-The honest verdict is:
+The honest result is:
 
 \[
 \boxed{
@@ -262,7 +262,7 @@ The honest verdict is:
 
 This result closes the question that Carrier-003 left open. The system distinguishes temporal order across every cyclic alternative, but the current carrier does not convert the true order into a demonstrated repair advantage.
 
-## Next admissible work
+## Next supported work
 
 Carrier-004 held-out generalisation remains premature because no positive true-history advantage survived the complete sham ensemble.
 
@@ -272,7 +272,7 @@ The next bench-design question is:
 
 \[
 \boxed{
-\text{Which existing Telos state law can use historical direction or change, rather than only historical level?}
+\text{Which existing Telos state formula can use historical direction or change, rather than only historical level?}
 }
 \]
 

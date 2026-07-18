@@ -1,7 +1,7 @@
 # EMERGE-CARRIER-003F — Complete-Sham Native Boundary Result
 
-Date: 18 July 2026  
-Status: completed complete-sham native boundary-assignment audit  
+Date: 18 July 2026
+Status: completed complete-sham native boundary-assignment audit
 Branch: `agent/emerge-ko-001-sandbox`
 
 > **The engine can act on a native boundary stitch, but the true candidate assignment did not establish a repair advantage over fourteen geometry-safe equal-exposure counterfeits.**
@@ -20,7 +20,7 @@ b_t(c)
 
 improve pair-generalised target repair under feedback relative to a complete family of shams that preserves the exact \(+1/0/-1\) exposure at every realized frontier?
 
-## 2. Frozen law
+## 2. Frozen formula
 
 Carrier-003F retained the Carrier-003C signed-slope score and added:
 
@@ -28,11 +28,11 @@ Carrier-003F retained the Carrier-003C signed-slope score and added:
 R_t^{003F}(c)=R_t^{003C}(c)+0.01b_t(c).
 \]
 
-The boundary coefficient \(w_b=0.01\), threshold \(\theta=0.6\), feedback law, admission law, wounds, capsules, selectors, random streams and inferential units were frozen before active outcome execution. No coefficient sweep, adaptive weight, declaration bonus, forced action or feedback-strength change was permitted.
+The boundary coefficient \(w_b=0.01\), threshold \(\theta=0.6\), feedback formula, admission formula, wounds, capsules, selectors, random streams and inferential units were frozen before active outcome execution. No coefficient sweep, adaptive weight, declaration bonus, forced action or feedback-strength change was permitted.
 
 ## 3. Geometry-safe sham
 
-No EMA history was rotated. At each realized frontier, the four candidates were placed in a canonical SHA-256 order. For each fixed salt `01` through `14`, a deterministic bijection reassigned the valid native ternary labels among those candidates:
+No EMA history was rotated. At each realized frontier, the four candidates were placed in a reference SHA-256 order. For each fixed salt `01` through `14`, a deterministic bijection reassigned the valid native ternary labels among those candidates:
 
 \[
 b_{r,f}^{sham}(c_i)=b_f(c_{\pi_{r,f}(i)}).
@@ -50,7 +50,7 @@ Only candidate ownership of the crossing label changed. Sham labels were control
 
 ## 4. Integrity result
 
-Every preregistered gate passed:
+Every preregistered check passed:
 
 - active Needle branch runs: **57,344**;
 - Carrier-001 neutrality comparisons: **28,672**;
@@ -84,9 +84,9 @@ The two schedule-7 accepted traces were also byte-identical.
 
 ## 5. Mechanism result
 
-### Fixed true boundary law versus boundary off
+### Fixed true boundary formula versus boundary off
 
-The fixed \(w_b=0.01\) law was reachable:
+The fixed \(w_b=0.01\) formula was reachable:
 
 - comparable same-pre-state steps: **161,300**;
 - changed winners: **501**;
@@ -186,7 +186,7 @@ No secondary ensemble interval excluded zero:
 | State-specific boundary, \(Z=1\) | +0.008510044642857 | [-0.004415442389139, 0.021435531674853] |
 | State × boundary × feedback | -0.000558035714286 | [-0.006980044395096, 0.005863972966525] |
 
-These descriptive signals cannot rescue the failed primary usefulness gate.
+These descriptive signals cannot rescue the failed primary usefulness check.
 
 ## 9. Claim boundary
 
@@ -208,7 +208,7 @@ It does not establish:
 
 The inventory-stable swap signature remains a precise mechanical analogue of a local stitch. This experiment does not establish that the D1 Needle symbol caused the behavior or that its true native mapping repairs better than equally exposed counterfeit mappings.
 
-No retrospective change to \(w_b=0.01\), the sham salts, subgroup, capsule, action family or feedback cell is admissible as a rescue. Carrier-004 remains gated.
+No retrospective change to \(w_b=0.01\), the sham salts, subgroup, capsule, action family or feedback cell is supported as a rescue. Carrier-004 remains pending.
 
 ## 10. Permanent receipts
 

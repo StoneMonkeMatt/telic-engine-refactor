@@ -1,8 +1,8 @@
 # EMERGE-KO-001 V2.1 Trajectory Audit
 
-Date: 17 July 2026  
-Status: completed diagnostic audit  
-Branch: `agent/emerge-ko-001-sandbox`  
+Date: 17 July 2026
+Status: completed diagnostic audit
+Branch: `agent/emerge-ko-001-sandbox`
 Causal dynamics: unchanged from audited v2
 
 ## Validity receipt
@@ -113,7 +113,7 @@ This supports the topological-turning-point hypothesis: sparse decisions have lo
 
 ## Finding 4 — the sign is not robust to the outcome scale
 
-The preregistered fractional-overlap estimator remains the authoritative v2 result. Two post-hoc diagnostics expose the normalization sensitivity:
+The preregistered fractional-overlap estimator remains the recorded v2 result. Two post-hoc diagnostics expose the normalization sensitivity:
 
 ### Absolute recovered-bridge count
 
@@ -145,6 +145,6 @@ V2.1 supports three statements:
 2. The current recovery functional and outcome normalization favour the two-bridge target.
 3. Topological rigidity is not yet established as the explanation for the emergent state's lower fractional-overlap gain.
 
-The clean next experiment is a preregistered difficulty-matched design with equal target-bridge counts and an outcome normalized by the number of bridges actually destroyed by the lesion. The constant \(\kappa\) feedback law should remain unchanged for that test.
+The clean next experiment is a preregistered difficulty-matched design with equal target-bridge counts and an outcome normalized by the number of bridges actually destroyed by the lesion. The constant \(\kappa\) feedback formula should remain unchanged for that test.
 
 The retained-macro-history twin experiment follows after the difficulty-matched result.
