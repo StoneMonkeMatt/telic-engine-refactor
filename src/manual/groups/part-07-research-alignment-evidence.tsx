@@ -7,9 +7,9 @@ import { RESEARCH_ALIGNMENT_MAPPING, RESEARCH_QUESTIONS, EVIDENCE_CHECKLIST, RES
 
 export const Part07ResearchAlignmentEvidence: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={BookOpen} 
-      title="Part VII. Research Alignment & Evidence" 
+    <ManualSectionDrawer
+      icon={BookOpen}
+      title="Part VII. Research Alignment & Evidence"
       subtitle="Bridging Simulation and Theoretical Claims"
     >
       <div className="space-y-4">

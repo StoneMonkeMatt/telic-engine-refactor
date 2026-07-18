@@ -3,8 +3,8 @@
  * Standard event vocabulary used in the Telos v0.9 engine.
  */
 export const EVENT_VOCABULARY = [
-  { 
-    id: "new_best", 
+  {
+    id: "new_best",
     label: "New Best",
     category: "State Transition",
     trigger: "Score Delta > 0",
@@ -12,8 +12,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the engine find a superior state?",
     interpretation: "Indicates successful optimization progress."
   },
-  { 
-    id: "inventory_change", 
+  {
+    id: "inventory_change",
     label: "Inventory Change",
     category: "State Transition",
     trigger: "Symbol Addition/Removal",
@@ -21,8 +21,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the available symbols evolve?",
     interpretation: "Indicates structural exploration of the lexicon."
   },
-  { 
-    id: "order_change", 
+  {
+    id: "order_change",
     label: "Order Change",
     category: "State Transition",
     trigger: "Symbol Re-ordering",
@@ -30,8 +30,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the sequence structure shift?",
     interpretation: "Indicates local re-ordering or permutation."
   },
-  { 
-    id: "meaningful_order_change", 
+  {
+    id: "meaningful_order_change",
     label: "Meaningful Order Change",
     category: "State Transition",
     trigger: "Score Delta > 0.01",
@@ -39,8 +39,8 @@ export const EVENT_VOCABULARY = [
     question: "When did a significant structural reorganization occur?",
     interpretation: "Indicates a major shift in the state's logic."
   },
-  { 
-    id: "plateau_start", 
+  {
+    id: "plateau_start",
     label: "Plateau Start",
     category: "Convergence",
     trigger: "Score Stagnation",
@@ -48,8 +48,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the engine stop finding improvements?",
     interpretation: "Indicates the beginning of convergence."
   },
-  { 
-    id: "sequence_stabilized", 
+  {
+    id: "sequence_stabilized",
     label: "Sequence Stabilized",
     category: "Convergence",
     trigger: "Local Optimum Reached",
@@ -57,8 +57,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the structure stop oscillating?",
     interpretation: "Indicates a high-confidence final state."
   },
-  { 
-    id: "bridge_event", 
+  {
+    id: "bridge_event",
     label: "Bridge Event",
     category: "Emergence",
     trigger: "Cross-Domain Alignment",
@@ -66,8 +66,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the engine jump between state families?",
     interpretation: "Indicates a non-local optimization leap."
   },
-  { 
-    id: "observer_candidate", 
+  {
+    id: "observer_candidate",
     label: "Observer Candidate",
     category: "Emergence",
     trigger: "Duality > Threshold",
@@ -75,8 +75,8 @@ export const EVENT_VOCABULARY = [
     question: "When did the state become interesting enough to watch?",
     interpretation: "Indicates high complexity or novelty."
   },
-  { 
-    id: "observer_emerged", 
+  {
+    id: "observer_emerged",
     label: "Observer Emerged",
     category: "Emergence",
     trigger: "Persistence Met",
@@ -84,8 +84,8 @@ export const EVENT_VOCABULARY = [
     question: "When did a coherent pattern manifest?",
     interpretation: "Indicates the birth of a stable emergent feature."
   },
-  { 
-    id: "structural_warning", 
+  {
+    id: "structural_warning",
     label: "Structural Warning",
     category: "Integrity",
     trigger: "Boundary Proximity",
@@ -93,8 +93,8 @@ export const EVENT_VOCABULARY = [
     question: "Is the state becoming unstable?",
     interpretation: "Indicates a risk of structural collapse."
   },
-  { 
-    id: "collapse_warning", 
+  {
+    id: "collapse_warning",
     label: "Collapse Warning",
     category: "Integrity",
     trigger: "Critical Instability",
@@ -102,8 +102,8 @@ export const EVENT_VOCABULARY = [
     question: "Is the simulation about to fail?",
     interpretation: "High-priority warning of imminent failure."
   },
-  { 
-    id: "adversarial_failure", 
+  {
+    id: "adversarial_failure",
     label: "Adversarial Failure",
     category: "Integrity",
     trigger: "Stress Test Failure",

@@ -8,9 +8,9 @@ import { METRIC_FAMILIES } from '../content/core-ontology-structures';
 
 export const Part02OutputMetricsOntology: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Activity} 
-      title="Part II. Output Metrics Ontology" 
+    <ManualSectionDrawer
+      icon={Activity}
+      title="Part II. Output Metrics Ontology"
       subtitle="Classification of Simulation Results"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">
@@ -32,11 +32,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Top-line valuation of the current symbolic state.</p>
             {METRICS_MAPPING.filter(m => m.family === "Composite Score").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="How strong is this state overall under the active parameter regime?"
                 interpretation="More favoured under the active scoring regime."
                 notes="Composite preference signal, not an absolute truth metric."
@@ -49,11 +49,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Measures of persistence and robustness.</p>
             {METRICS_MAPPING.filter(m => m.family === "Stability").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="How well does this state hold together?"
                 interpretation="Greater robustness or persistence."
                 notes="Must remain distinct from telic score."
@@ -66,12 +66,12 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Measures of local structural or geometric form.</p>
             {METRICS_MAPPING.filter(m => m.family === "Shape").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                role={metric.canonicalName}
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                role={metric.referenceName}
+                meaning={metric.description}
                 question="What is the local geometric character of the run?"
                 interpretation="Stronger local directional shaping, sharper attractor geometry, or more pronounced trajectory bending."
                 notes="Should not drift into a generic importance metric."
@@ -84,12 +84,12 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Measures of cumulative movement through the run.</p>
             {METRICS_MAPPING.filter(m => m.family === "Trajectory").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                role={metric.canonicalName}
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                role={metric.referenceName}
+                meaning={metric.description}
                 question="How much meaningful trajectory has the run accumulated?"
                 interpretation="Longer, richer, or more substantial cumulative traversal."
                 notes="Distinct from terminal score."
@@ -102,11 +102,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Compact arithmetic or harmonic identifiers.</p>
             {METRICS_MAPPING.filter(m => m.family === "Signature / Integrity").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="What compact arithmetic signature does this state resolve to?"
                 notes="Best treated as a signature and comparison aid unless later theory sharpens its role."
               />
@@ -118,11 +118,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Categorical directional interpretation.</p>
             {METRICS_MAPPING.filter(m => m.family === "Orientation").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="Which directional regime does this state currently align with?"
                 typicalValues="North, South, East, West, None"
                 notes="Requires a formal derivation rule in engine documentation."
@@ -135,11 +135,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Alignment among evaluative components.</p>
             {METRICS_MAPPING.filter(m => m.family === "Agreement").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="How strongly do the engine’s evaluative components agree on this state?"
                 interpretation="Stronger internal agreement."
                 notes="Keep distinct from telic score and resilience."
@@ -152,11 +152,11 @@ export const Part02OutputMetricsOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Pass/fail or test-result fields under adversarial pressure.</p>
             {METRICS_MAPPING.filter(m => m.family === "Stress Test Outcome").map(metric => (
-              <LexiconItem 
+              <LexiconItem
                 key={metric.key}
-                label={metric.label} 
-                dbLabel={metric.key} 
-                meaning={metric.description} 
+                label={metric.label}
+                dbLabel={metric.key}
+                meaning={metric.description}
                 question="Does the state survive adversarial challenge?"
                 typicalValues="passed, failed"
                 notes="Should ideally be accompanied by test name, version, and failure reason."

@@ -1,0 +1,245 @@
+    throw new Error('Carrier-002C result and V2.2 panel have different selector receipts.');
+  }
+  if (result.capsuleSelectorSha256 !== capsuleSelectorSha256) {
+    throw new Error('Carrier-002C result and frozen capsules have different selector receipts.');
+  }
+  return result;
+}
+
+function referenceKey(
+  pairId: string,
+  microstateSource: MicrostateSource,
+  replicate: number,
+  feedback: 0 | 1,
+  capsuleId: CapsuleId,
+): string {
+  return `${pairId}|${microstateSource}|${replicate}|${feedback}|${capsuleId}`;
+}
+
+function normalizedHistory(capsule: MacroHistoryCapsule, length = 16): number[] {
+  const source = capsule.boundedDualityHistory.slice(-length);
+  if (source.length === 0) throw new Error(`Capsule ${capsule.capsuleId} has no history.`);
+  const padded = [...Array(Math.max(0, length - source.length)).fill(source[0]), ...source];
+  const schedule = padded.slice(-length);
+  if (Math.abs(schedule[schedule.length - 1] - capsule.dEma) > 1e-12) {
+    throw new Error(`Capsule ${capsule.capsuleId} history does not terminate at dEma.`);
+  }
+  return schedule;
+}
+
+function rotatePreterminal(values: number[], offset: number): number[] {
+  if (values.length < 3) throw new Error('Timing schedule must contain at least three values.');
+  const terminal = values[values.length - 1];
+  const prefixValues = values.slice(0, -1);
+  const shift = ((offset % prefixValues.length) + prefixValues.length) % prefixValues.length;
+  if (shift === 0) throw new Error('Sham rotation must be non-zero.');
+  return [...prefixValues.slice(shift), ...prefixValues.slice(0, shift), terminal];
+}
+
+function sortedNumeric(values: number[]): number[] {
+  return [...values].sort((a, b) => a - b);
+}
+
+function buildTimingSchedules(capsule: MacroHistoryCapsule, rotation: number) {
+  if (!Number.isInteger(rotation) || rotation < 1 || rotation > 14) {
+    throw new Error(`Carrier-003B rotation must be an integer from 1 to 14; received ${rotation}.`);
+  }
+  const real = normalizedHistory(capsule, 16);
+  const sham = rotatePreterminal(real, rotation);
+  if (JSON.stringify(sortedNumeric(real)) !== JSON.stringify(sortedNumeric(sham))) {
+    throw new Error('Real and sham timing schedules do not preserve the same value multiset.');
+  }
+  if (real[real.length - 1] !== sham[sham.length - 1]) {
+    throw new Error('Real and sham timing schedules do not preserve the terminal anchor.');
+  }
+  return {
+    real,
+    sham,
+    realSha256: stableHash(real),
+    shamSha256: stableHash(sham),
+    rotation,
+  };
+}
+
+function deterministicWinner(
+  ranked: CarrierCandidate[],
+  tieBreakContext: ReturnType<typeof createTieBreakContext>,
+): CarrierCandidate {
+  const maxScore = Math.max(...ranked.map(candidate => candidate.score));
+  const eligible = ranked.filter(candidate => candidate.score === maxScore);
+  return resolveTie(eligible, tieBreakContext).selected as CarrierCandidate;
+}
+
+function updateCapsule(
+  state: CapsuleState,
+  rawDuality: number,
+  inventoryChanged: boolean,
+  config: CarrierConfig,
+  emaAlpha: number,
+  historyWindow: number,
+): CapsuleState {
+  const dEma = state.dEma + emaAlpha * (rawDuality - state.dEma);
+  const qualifyingInventoryChangeSeen =
+    state.qualifyingInventoryChangeSeen || inventoryChanged;
+  let persistenceCounter = state.persistenceCounter;
+  let declaredObserverState = state.declaredObserverState;
+
+  if (declaredObserverState === 0 && qualifyingInventoryChangeSeen) {
+    if (dEma >= config.theta) {
+      persistenceCounter++;
+      if (persistenceCounter >= config.observerPersistence) declaredObserverState = 1;
+    } else {
+      persistenceCounter = 0;
+    }
+  }
+
+  return {
+    ...state,
+    declaredObserverState,
+    dEma,
+    persistenceCounter,
+    qualifyingInventoryChangeSeen,
+    boundedDualityHistory: [...state.boundedDualityHistory, dEma].slice(-historyWindow),
+  };
+}
+
+function runBranch(
+  config: CarrierConfig,
+  codex: Codex,
+  pairId: string,
+  microstateSource: MicrostateSource,
+  checkpoint: FrozenCheckpoint,
+  lesion: FrozenLesion,
+  feedback: 0 | 1,
+  capsule: MacroHistoryCapsule,
+  timingMode: TimingMode,
+  timingActive: TimingActive,
+  timingSchedule: number[],
+  emaAlpha: number,
+  historyWindow: number,
+): BranchRun {
+  const telos = new Telos(codex, {
+    seed: lesion.branchSeed,
+    threshold: config.theta,
+    observerPersistence: config.observerPersistence,
+  });
+  const rng = new SeededRandom(lesion.branchSeed);
+  const targets = checkpoint.targetBridgeSignatures;
+  let current = [...lesion.sequence];
+  let capsuleState = cloneCapsule(capsule);
+  let acceptedSteps = 0;
+  let feedbackChangedWinnerSteps = 0;
+  let carrierAdjustedCandidates = 0;
+  let carrierAdjustmentSum = 0;
+  let maxAbsCarrierAdjustment = 0;
+  let timingExposureSteps = 0;
+  const timingScheduleSha256 = stableHash(timingSchedule);
+  const candidateExposures: Record<string, number> = {};
+  const carrierAdjustedByAction: Record<string, number> = {};
+  const trajectoryKeys = [current.join('|')];
+  const decisions: StepDecision[] = [];
+  const acceptedTrace: Record<string, unknown>[] = [];
+
+  if (multisetRecall(targets, bridgeSignatures(codex, current)) !== 0) {
+    throw new Error(
+      `${pairId}/${microstateSource}/${capsule.capsuleId}/replicate=${lesion.replicate} did not begin at Y=0.`,
+    );
+  }
+
+  for (let step = 1; step <= config.horizon; step++) {
+    const beforeSequence = [...current];
+    const beforeSequenceSha256 = stableHash(beforeSequence);
+    const frontier = buildProposalFrontier(current, step, {
+      codex,
+      rng,
+      maxSequenceLength: 10,
+      architectureMode: 'stratified',
+    });
+    const ranked = rankProposals(frontier, telos);
+    const currentRawDuality = telos.computeRawDuality(current);
+    const currentCoherence = telos.coherence(current);
+    const currentBridgeRate = bridgeRate(codex, current);
+    const tieBreakContext = createTieBreakContext(lesion.branchSeed, step, current);
+    const historyAnchor =
+      timingActive === 1 && step <= timingSchedule.length
+        ? timingSchedule[step - 1]
+        : capsuleState.dEma;
+    if (timingActive === 1 && step <= timingSchedule.length) timingExposureSteps++;
+
+    const carrierRanked: CarrierCandidate[] = ranked.map(candidate => {
+      increment(candidateExposures, actionLabel(candidate.type));
+      const isInsert = candidate.sequence.length > current.length;
+      const rawDualityLoss = isInsert
+        ? Math.max(0, currentRawDuality - candidate.rawDuality)
+        : 0;
+      const candidateDema =
+        historyAnchor + emaAlpha * (candidate.rawDuality - historyAnchor);
+      const carriedDualityLoss = Math.max(0, historyAnchor - candidateDema);
+      const carrierAdjustment = 0.5 * (rawDualityLoss - carriedDualityLoss);
+
+      if (Math.abs(carrierAdjustment) > 1e-15) {
+        carrierAdjustedCandidates++;
+        increment(carrierAdjustedByAction, actionLabel(candidate.type));
+      }
+      carrierAdjustmentSum += carrierAdjustment;
+      maxAbsCarrierAdjustment = Math.max(
+        maxAbsCarrierAdjustment,
+        Math.abs(carrierAdjustment),
+      );
+
+      return {
+        ...candidate,
+        score: candidate.score + carrierAdjustment,
+        deltaScore: candidate.deltaScore + carrierAdjustment,
+        carrierAdjustment,
+        carriedDualityLoss,
+        candidateDema,
+        historyAnchor,
+      };
+    });
+
+    const augmentFeedback = (candidates: CarrierCandidate[]): CarrierCandidate[] =>
+      candidates.map(candidate => {
+        const candidateCoherence = telos.coherence(candidate.sequence);
+        const candidateBridgeRate = bridgeRate(codex, candidate.sequence);
+        const targetRecovery = multisetRecall(
+          targets,
+          bridgeSignatures(codex, candidate.sequence),
+        );
+        const structuralLoss = 1 - targetRecovery;
+        const recovery =
+          config.recoveryWeights.coherenceDelta *
+            (candidateCoherence - currentCoherence) +
+          config.recoveryWeights.bridgeDelta *
+            (candidateBridgeRate - currentBridgeRate) -
+          config.recoveryWeights.structuralLoss * structuralLoss;
+
+        return {
+          ...candidate,
+          score: candidate.score + config.kappa * feedback * recovery,
+        };
+      });
+
+    const zeroCarrier = ranked.map(candidate => ({
+      ...candidate,
+      carrierAdjustment: 0,
+      carriedDualityLoss: 0,
+      candidateDema: capsuleState.dEma,
+      historyAnchor: capsuleState.dEma,
+    })) as CarrierCandidate[];
+    const baselineAugmented = augmentFeedback(zeroCarrier);
+    const activeAugmented = augmentFeedback(carrierRanked);
+
+    const rawWinner = [...ranked].sort((a, b) => b.score - a.score)[0];
+    const feedbackWinner = [...baselineAugmented].sort(
+      (a, b) => b.score - a.score,
+    )[0];
+    if (
+      rawWinner &&
+      feedbackWinner &&
+      rawWinner.sequence.join('|') !== feedbackWinner.sequence.join('|')
+    ) {
+      feedbackChangedWinnerSteps++;
+    }
+
+    const exactWinner = deterministicWinner(activeAugmented, tieBreakContext);

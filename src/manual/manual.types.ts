@@ -2,13 +2,13 @@
  * Shared TypeScript types and interfaces for the Compass Build Manual subsystem.
  */
 
-export type ManualAuthority = "canonical" | "current-engine" | "example" | "speculative";
+export type ManualSourceType = "reference" | "current-engine" | "example" | "speculative";
 
 export interface ManualSectionMeta {
   id: string;
   title: string;
   subtitle?: string;
-  authority: ManualAuthority;
+  sourceType: ManualSourceType;
   isLive: boolean;
   keywords: string[];
   related?: string[];
@@ -26,13 +26,13 @@ export interface GlossaryEntry {
   forbiddenMeanings?: string[];
   relatedTerms?: string[];
   sourceSectionIds?: string[];
-  authority: ManualAuthority;
+  sourceType: ManualSourceType;
 }
 
 export interface DivergenceEntry {
   id: string;
   topic: string;
-  canonicalPosition: string;
+  referencePosition: string;
   currentEnginePosition: string;
   divergence: string;
   severity: "low" | "medium" | "high" | "critical";
@@ -78,7 +78,7 @@ export interface BridgeDefinition {
 export interface ParameterMapping {
   key: string;
   label: string;
-  canonicalName: string;
+  referenceName: string;
   family: string;
   description: string;
   range: string;
@@ -91,7 +91,7 @@ export interface ParameterMapping {
 export interface MetricMapping {
   key: string;
   label: string;
-  canonicalName: string;
+  referenceName: string;
   family: string;
   description: string;
   formula?: string;

@@ -1,0 +1,217 @@
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+
+interface Interval {
+  mean: number;
+  standardError: number;
+  degreesOfFreedom: number;
+  interval95: [number, number];
+}
+
+interface PairEffect {
+  pairId: string;
+  deltaRealMinusShamZ0: number;
+  deltaRealMinusShamZ1: number;
+  timingFeedbackInteraction: number;
+  stateSpecificTimingZ0: number;
+  stateSpecificTimingZ1: number;
+  stateTimingFeedbackInteraction: number;
+}
+
+interface RotationSummary {
+  schemaVersion: string;
+  experimentId: string;
+  rotation: number;
+  runMode: string;
+  sourceSelectorSha256: string;
+  capsuleSelectorSha256: string;
+  carrier002CReferenceSha256: string;
+  realProjectionReceiptSha256: string;
+  shamProjectionReceiptSha256: string;
+  estimators: Omit<PairEffect, 'pairId'>;
+  uncertainty: Record<keyof Omit<PairEffect, 'pairId'>, Interval>;
+  pairEffects: PairEffect[];
+  dynamics: {
+    comparablePreStateSteps: number;
+    changedWinnerSteps: number;
+    changedAdmissionSteps: number;
+    acceptedTimingInducedActions: number;
+    shamHoldToRealSwap: number;
+    shamSwapToRealHold: number;
+    shamSwapToDifferentRealSwap: number;
+    otherWinnerChanges: number;
+    realStateDivergenceCount: number;
+    realReconvergenceCount: number;
+    reconvergenceEvents: number;
+    mechanisticTimingEndpointMet: boolean;
+  };
+  scale: {
+    totalBranchRuns: number;
+    activeTimingBranchRuns: number;
+    acceptedTraceRecords: number;
+  };
+  scheduleReceipts: unknown[];
+}
+
+const METRICS = [
+  'deltaRealMinusShamZ0',
+  'deltaRealMinusShamZ1',
+  'timingFeedbackInteraction',
+  'stateSpecificTimingZ0',
+  'stateSpecificTimingZ1',
+  'stateTimingFeedbackInteraction',
+] as const;
+type Metric = (typeof METRICS)[number];
+
+function stableHash(value: unknown): string {
+  return createHash('sha256').update(JSON.stringify(value)).digest('hex');
+}
+
+function mean(values: number[]): number {
+  return values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
+}
+
+function sampleStandardDeviation(values: number[]): number {
+  if (values.length < 2) return 0;
+  const center = mean(values);
+  return Math.sqrt(
+    values.reduce((sum, value) => sum + Math.pow(value - center, 2), 0) /
+      (values.length - 1),
+  );
+}
+
+function tCritical95(degreesOfFreedom: number): number {
+  const table: Record<number, number> = {
+    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+    6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+    11: 2.201, 12: 2.179, 13: 2.16, 14: 2.145, 15: 2.131,
+    16: 2.12, 17: 2.11, 18: 2.101, 19: 2.093, 20: 2.086,
+    21: 2.08, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.06,
+    26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042,
+  };
+  return table[Math.min(Math.max(degreesOfFreedom, 1), 30)] ?? 1.96;
+}
+
+function interval(values: number[]): Interval {
+  const center = mean(values);
+  const standardError = sampleStandardDeviation(values) / Math.sqrt(Math.max(values.length, 1));
+  const degreesOfFreedom = Math.max(values.length - 1, 0);
+  const critical = tCritical95(degreesOfFreedom);
+  return {
+    mean: center,
+    standardError,
+    degreesOfFreedom,
+    interval95: [center - critical * standardError, center + critical * standardError],
+  };
+}
+
+function assertClose(label: string, actual: number, expected: number, tolerance = 1e-12): void {
+  if (Math.abs(actual - expected) > tolerance) {
+    throw new Error(`${label} drifted: expected ${expected}, observed ${actual}.`);
+  }
+}
+
+function sign(value: number): 'negative' | 'zero' | 'positive' {
+  if (value < 0) return 'negative';
+  if (value > 0) return 'positive';
+  return 'zero';
+}
+
+function intervalSign(value: Interval): 'negative' | 'crosses-zero' | 'positive' {
+  if (value.interval95[1] < 0) return 'negative';
+  if (value.interval95[0] > 0) return 'positive';
+  return 'crosses-zero';
+}
+
+function main(): void {
+  const resultsDirectory = resolve(
+    process.argv[2] ?? 'experiments/emerge-ko-001/results',
+  );
+  const neutralityPath = resolve(
+    process.argv[3] ?? `${resultsDirectory}/EMERGE-CARRIER-003B-neutrality-summary.json`,
+  );
+  const summaryPath = resolve(
+    process.argv[4] ?? `${resultsDirectory}/EMERGE-CARRIER-003B-aggregate-summary.json`,
+  );
+  const manifestPath = resolve(
+    process.argv[5] ?? `${resultsDirectory}/EMERGE-CARRIER-003B-aggregate-manifest.json`,
+  );
+
+  const neutrality = JSON.parse(readFileSync(neutralityPath, 'utf8')) as {
+    sourceSelectorSha256: string;
+    capsuleSelectorSha256: string;
+    carrier002CReferenceSha256: string;
+    neutrality: { comparisons: number; mismatches: number; passed: boolean };
+    scheduleValidation: Record<string, unknown>;
+  };
+  if (!neutrality.neutrality.passed || neutrality.neutrality.mismatches !== 0) {
+    throw new Error('Carrier-003B neutrality check did not pass.');
+  }
+
+  const files = readdirSync(resultsDirectory)
+    .filter(name => /^EMERGE-CARRIER-003B-rotation-\d+-summary\.json$/.test(name))
+    .sort((a, b) => {
+      const ra = Number(a.match(/rotation-(\d+)/)?.[1]);
+      const rb = Number(b.match(/rotation-(\d+)/)?.[1]);
+      return ra - rb;
+    });
+  const summaries = files.map(name =>
+    JSON.parse(readFileSync(resolve(resultsDirectory, name), 'utf8')) as RotationSummary,
+  );
+  const observedRotations = summaries.map(summary => summary.rotation);
+  const expectedRotations = Array.from({ length: 14 }, (_, index) => index + 1);
+  if (JSON.stringify(observedRotations) !== JSON.stringify(expectedRotations)) {
+    throw new Error(`Carrier-003B requires rotations 1..14; observed ${observedRotations.join(',')}.`);
+  }
+
+  for (const summary of summaries) {
+    if (summary.experimentId !== 'EMERGE-CARRIER-003B' || summary.runMode !== 'active') {
+      throw new Error(`Rotation ${summary.rotation} is not an active Carrier-003B summary.`);
+    }
+    if (
+      summary.sourceSelectorSha256 !== neutrality.sourceSelectorSha256 ||
+      summary.capsuleSelectorSha256 !== neutrality.capsuleSelectorSha256 ||
+      summary.carrier002CReferenceSha256 !== neutrality.carrier002CReferenceSha256
+    ) {
+      throw new Error(`Rotation ${summary.rotation} does not share the frozen substrate receipts.`);
+    }
+    if (summary.pairEffects.length !== 8) {
+      throw new Error(`Rotation ${summary.rotation} did not return eight matched-pair effects.`);
+    }
+  }
+
+  const realReceipts = new Set(summaries.map(summary => summary.realProjectionReceiptSha256));
+  if (realReceipts.size !== 1) {
+    throw new Error('Real-history projection receipts differ across sham rotations.');
+  }
+  const shamReceipts = new Set(summaries.map(summary => summary.shamProjectionReceiptSha256));
+  if (shamReceipts.size !== 14) {
+    throw new Error('Carrier-003B did not produce 14 distinct sham projection receipts.');
+  }
+
+  // Rotation 7 must exactly reproduce the recorded Carrier-003 point estimates and diagnostics.
+  const rotation7 = summaries.find(summary => summary.rotation === 7)!;
+  const rotation7Expected = {
+    deltaRealMinusShamZ0: 0.0068359375,
+    deltaRealMinusShamZ1: -0.01611328125,
+    timingFeedbackInteraction: -0.02294921875,
+    stateSpecificTimingZ0: -0.009765625,
+    stateSpecificTimingZ1: -0.0048828125,
+    stateTimingFeedbackInteraction: 0.0048828125,
+    changedWinnerSteps: 1615,
+    changedAdmissionSteps: 1280,
+    acceptedTimingInducedActions: 1260,
+  };
+  for (const metric of METRICS) {
+    assertClose(`Rotation 7 ${metric}`, rotation7.estimators[metric], rotation7Expected[metric]);
+  }
+  for (const key of ['changedWinnerSteps', 'changedAdmissionSteps', 'acceptedTimingInducedActions'] as const) {
+    if (rotation7.dynamics[key] !== rotation7Expected[key]) {
+      throw new Error(`Rotation 7 ${key} drifted from Carrier-003.`);
+    }
+  }
+
+  const pairIds = summaries[0].pairEffects.map(pair => pair.pairId);
+  const ensemblePairEffects = pairIds.map(pairId => {
+    const rotationPairs = summaries.map(summary => {

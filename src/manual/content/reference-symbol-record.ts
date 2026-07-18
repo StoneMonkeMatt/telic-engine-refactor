@@ -1,7 +1,7 @@
 /**
- * Defines the canonical structure of a symbol record in the Compass ontology.
+ * Defines the reference structure of a symbol record in the Compass ontology.
  */
-export const CANONICAL_SYMBOL_RECORD_FIELDS = [
+export const REFERENCE_SYMBOL_RECORD_FIELDS = [
   {
     field: "glyph",
     description: "The visual representation (emoji or character)",

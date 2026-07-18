@@ -5,22 +5,22 @@ export const CORE_ONTOLOGY_STRUCTURES = [
   {
     key: "symbols",
     description: "The full symbolic registry (~450 symbols)",
-    status: "canonical"
+    status: "reference"
   },
   {
     key: "domains",
     description: "The domain-to-symbol registry (70+ domains)",
-    status: "canonical"
+    status: "reference"
   },
   {
     key: "compass",
     description: "The 7-point navigational ontology",
-    status: "canonical"
+    status: "reference"
   },
   {
     key: "cross_domain_bridges",
-    description: "The canonical bridge registry (50+ bridges)",
-    status: "canonical"
+    description: "The reference bridge registry (50+ bridges)",
+    status: "reference"
   }
 ];
 

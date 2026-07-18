@@ -31,7 +31,7 @@ export const DEVELOPMENT_NOTES = [
           "src/types.ts (minimal new types)"
         ],
         constraints: [
-          "Do not change canonical schema or exported run format unless required.",
+          "Do not change reference schema or exported run format unless required.",
           "Do not change user-facing UI behavior during the first extraction.",
           "Treat this phase as an internal architectural refactor.",
           "Avoid introducing speculative schema changes during Phases 1–2 unless required by the extracted proposal pipeline."
@@ -54,7 +54,7 @@ export const DEVELOPMENT_NOTES = [
         successCriteria: [
           "Candidate selection is stable under the same seed and inputs.",
           "Tie-break behavior is explicit and reproducible.",
-          "Reproducibility metadata is available without altering canonical export requirements unless later adopted."
+          "Reproducibility metadata is available without altering reference export requirements unless later adopted."
         ],
         completionNote: {
           achieved: [

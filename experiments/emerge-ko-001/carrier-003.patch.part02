@@ -1,0 +1,234 @@
+ate, 'M0-unlatched', 'real', feedback) -
++                branchValue(pair.pairId, microstateSource, replicate, 'M0-unlatched', 'sham', feedback)),
+           );
+         }
+       }
+-      return mean(replicateEffects);
++      return mean(effects);
+     };
+-
+-    const gammaZ0 = effect(0);
+-    const gammaZ1 = effect(1);
++    const delta0 = delta(0);
++    const delta1 = delta(1);
++    const theta0 = theta(0);
++    const theta1 = theta(1);
+     return {
+       pairId: pair.pairId,
+-      gammaAFeedback0: gammaZ0,
+-      gammaAFeedback1: gammaZ1,
+-      tripleInteraction: gammaZ1 - gammaZ0,
++      deltaRealMinusShamZ0: delta0,
++      deltaRealMinusShamZ1: delta1,
++      timingFeedbackInteraction: delta1 - delta0,
++      stateSpecificTimingZ0: theta0,
++      stateSpecificTimingZ1: theta1,
++      stateTimingFeedbackInteraction: theta1 - theta0,
+     };
+   });
+ 
+@@ -931,21 +1085,25 @@
+       mean: center,
+       standardError,
+       degreesOfFreedom: Math.max(values.length - 1, 0),
+-      interval95: [
+-        center - critical * standardError,
+-        center + critical * standardError,
+-      ],
++      interval95: [center - critical * standardError, center + critical * standardError],
+     };
+   };
+ 
+   const uncertainty = {
+-    gammaAFeedback0: interval(pairEffects.map(pair => pair.gammaAFeedback0)),
+-    gammaAFeedback1: interval(pairEffects.map(pair => pair.gammaAFeedback1)),
+-    tripleInteraction: interval(pairEffects.map(pair => pair.tripleInteraction)),
++    deltaRealMinusShamZ0: interval(pairEffects.map(pair => pair.deltaRealMinusShamZ0)),
++    deltaRealMinusShamZ1: interval(pairEffects.map(pair => pair.deltaRealMinusShamZ1)),
++    timingFeedbackInteraction: interval(pairEffects.map(pair => pair.timingFeedbackInteraction)),
++    stateSpecificTimingZ0: interval(pairEffects.map(pair => pair.stateSpecificTimingZ0)),
++    stateSpecificTimingZ1: interval(pairEffects.map(pair => pair.stateSpecificTimingZ1)),
++    stateTimingFeedbackInteraction: interval(
++      pairEffects.map(pair => pair.stateTimingFeedbackInteraction),
++    ),
+   };
+ 
+-  const activeBranches = branches.filter(branch => branch.active === 1);
+-  const paired = activeBranches
++  const realActiveBranches = branches.filter(
++    branch => branch.timingMode === 'real' && branch.timingActive === 1,
++  );
++  const paired = realActiveBranches
+     .map(branch => branch.pairedDiagnostics)
+     .filter((entry): entry is PairedDiagnostics => entry !== null);
+ 
+@@ -964,56 +1122,47 @@
+     >,
+   ): number => paired.reduce((sum, entry) => sum + entry[key], 0);
+ 
+-  const candidateExposures: Record<string, number> = {};
+-  const carrierAdjustedByAction: Record<string, number> = {};
+-  let carrierAdjustedCandidates = 0;
+-  let maxAbsCarrierAdjustment = 0;
+-  for (const branch of activeBranches) {
+-    for (const [action, count] of Object.entries(branch.diagnostics.candidateExposures)) {
+-      candidateExposures[action] = (candidateExposures[action] ?? 0) + count;
+-    }
+-    for (const [action, count] of Object.entries(branch.diagnostics.carrierAdjustedByAction)) {
+-      carrierAdjustedByAction[action] = (carrierAdjustedByAction[action] ?? 0) + count;
+-    }
+-    carrierAdjustedCandidates += branch.diagnostics.carrierAdjustedCandidates;
+-    maxAbsCarrierAdjustment = Math.max(
+-      maxAbsCarrierAdjustment,
+-      branch.diagnostics.maxAbsCarrierAdjustment,
+-    );
+-  }
+-
+   const changedWinnerSteps = sumPaired('changedWinnerSteps');
+   const changedAdmissionSteps = sumPaired('changedAdmissionSteps');
+-  const acceptedCarrierInducedActions = sumPaired('acceptedCarrierInducedActions');
+-  const mechanisticEndpointMet =
+-    changedWinnerSteps > 0 ||
+-    changedAdmissionSteps > 0 ||
+-    acceptedCarrierInducedActions > 0;
+-
+-  const primaryInterval = uncertainty.gammaAFeedback1.interval95;
+-  const primaryClearsZero = primaryInterval[0] > 0 || primaryInterval[1] < 0;
+-
+-  const interpretation = !mechanisticEndpointMet
+-    ? 'Carrier-002C reached hold/swap candidates but did not change any exact winner or admission decision. Recovery efficacy is not interpretable.'
+-    : primaryClearsZero
+-      ? 'Carrier-002C changed reachable decisions and produced a pair-generalised state-specific recovery effect under feedback. Direction follows the signed interval.'
+-      : 'Carrier-002C changed reachable hold/swap decisions, establishing a functioning macro-history carrier. The pair-level recovery interval still crosses zero, so state-specific recovery efficacy is not established.';
++  const acceptedTimingInducedActions = sumPaired('acceptedCarrierInducedActions');
++  const mechanisticTimingEndpointMet =
++    changedWinnerSteps > 0 || changedAdmissionSteps > 0 || acceptedTimingInducedActions > 0;
++
++  const directionalInterval = uncertainty.deltaRealMinusShamZ1.interval95;
++  const trueTimelineImproves = directionalInterval[0] > 0;
++  const trueTimelineHarms = directionalInterval[1] < 0;
++
++  const interpretation = !mechanisticTimingEndpointMet
++    ? 'The real and equal-distribution sham schedules produced no exact decision or trajectory differences. Temporal ordering was not functionally expressed at this resolution.'
++    : trueTimelineImproves
++      ? 'Temporal ordering was functionally causal and the true ordered history improved pair-generalised target recovery under feedback relative to the equal-distribution sham.'
++      : trueTimelineHarms
++        ? 'Temporal ordering was functionally causal, but the true ordered history reduced pair-generalised target recovery under feedback relative to the equal-distribution sham.'
++        : 'Temporal ordering changed reachable decisions and trajectories, but the pair-level recovery interval crosses zero. Timing is influential; useful control information is not established.';
+ 
+   const traceText = traceLines.length ? `${traceLines.join('\n')}\n` : '';
+   const traceGzip = gzipSync(traceText, { level: 9 });
+ 
+   const summary = {
+-    schemaVersion: 'emerge-carrier-002c-v1',
+-    experimentId: 'EMERGE-CARRIER-002C',
++    schemaVersion: 'emerge-carrier-003-v1',
++    experimentId: 'EMERGE-CARRIER-003',
+     generatedAt: new Date().toISOString(),
+     sourceSelectorSha256: panel.selectorSha256,
+     capsuleSelectorSha256: capsules.capsuleSelectorSha256,
++    carrier002CReferenceSha256: stableHash(carrier002C.branches),
+     preregistration: {
+-      primaryMechanisticEndpoint:
+-        'At least one exact paired hold/swap winner or admission decision must change while the branches share the same pre-state.',
+-      directionalRecoverySign: 'none',
+-      carriedLoss:
+-        'L_D(c;M_t)=max(0,D_EMA-[D_EMA+0.2*(Dhat(c)-D_EMA)])',
++      primaryDirectionalEndpoint:
++        'Pair-level mean target recovery difference under feedback: Delta_Z1 = Y(real ordered history)-Y(equal-distribution sham history), preregistered positive.',
++      mechanisticEndpoint:
++        'At least one exact paired winner or admission decision changes while real and sham branches share the same pre-state.',
++      scheduleLength: 16,
++      exposureSteps: 16,
++      shamConstruction:
++        'Left-pad each capsule EMA history to 16 with its earliest value; rotate the first 15 positions left by 7; preserve the terminal dEma exactly.',
++      marginalEquality:
++        'Real and sham schedules have the exact same value multiset, duration, total exposure and terminal anchor.',
++      postExposureDynamics:
++        'After step 16, both branches continue with the endogenous Carrier-002C capsule update.',
+       coefficient: 0.5,
+       emaAlpha,
+       kappa: config.kappa,
+@@ -1030,7 +1179,7 @@
+       frozenLesions: panel.frozen.pairs.length * 2 * config.replicates,
+       neutralityComparisons,
+       totalBranchRuns: branches.length,
+-      activeBranchRuns: activeBranches.length,
++      activeTimingBranchRuns: branches.filter(branch => branch.timingActive === 1).length,
+       acceptedTraceRecords: traceLines.length,
+     },
+     neutrality: {
+@@ -1038,53 +1187,57 @@
+       mismatches: neutralityMismatches,
+       passed: neutralityMismatches === 0,
+     },
++    scheduleReceipts,
+     cells,
+     estimators: {
+-      gammaAFeedback0,
+-      gammaAFeedback1,
+-      tripleInteraction,
++      deltaRealMinusShamZ0: deltaZ0,
++      deltaRealMinusShamZ1: deltaZ1,
++      timingFeedbackInteraction,
++      stateSpecificTimingZ0: thetaZ0,
++      stateSpecificTimingZ1: thetaZ1,
++      stateTimingFeedbackInteraction,
+     },
+     uncertainty,
+     pairEffects,
+     dynamics: {
+-      candidateExposures,
+-      carrierAdjustedCandidates,
+-      carrierAdjustedByAction,
+-      maxAbsCarrierAdjustment,
+       comparablePreStateSteps: sumPaired('comparablePreStateSteps'),
+       changedWinnerSteps,
+       changedAdmissionSteps,
+-      acceptedCarrierInducedActions,
+-      holdToSwap: sumPaired('holdToSwap'),
+-      swapToHold: sumPaired('swapToHold'),
+-      swapToSwap: sumPaired('swapToSwap'),
++      acceptedTimingInducedActions,
++      shamHoldToRealSwap: sumPaired('holdToSwap'),
++      shamSwapToRealHold: sumPaired('swapToHold'),
++      shamSwapToDifferentRealSwap: sumPaired('swapToSwap'),
+       otherWinnerChanges: sumPaired('otherWinnerChanges'),
+-      activeStateDivergenceCount: paired.filter(
++      realStateDivergenceCount: paired.filter(
+         entry => entry.firstStateDivergenceStep !== null,
+       ).length,
+-      activeReconvergenceCount: paired.filter(entry => entry.everReconverged).length,
++      realReconvergenceCount: paired.filter(entry => entry.everReconverged).length,
+       reconvergenceEvents: sumPaired('reconvergenceEvents'),
+-      mechanisticEndpointMet,
++      mechanisticTimingEndpointMet,
+     },
+     interpretation,
+-    nextExperiment: mechanisticEndpointMet
+-      ? 'EMERGE-CARRIER-003: freeze real and equal-distribution sham histories, preserving marginal capsule exposure while permuting temporal alignment.'
+-      : 'Carrier-002D sensitivity audit: measure score margins and the minimum continuity coefficient required to alter a reachable decision without changing the confirmatory coefficient retrospectively.',
++    nextExperiment: trueTimelineImproves
++      ? 'EMERGE-CARRIER-004: held-out generalisation across fresh seeds, microstates, wounds, inventories and ontology perturbations.'
++      : mechanisticTimingEndpointMet
++        ? 'EMERGE-CARRIER-003B: preregister a timing-resolution audit on the same coefficient, testing alternative non-adaptive sham permutations and exposure windows before held-out generalisation.'
++        : 'EMERGE-CARRIER-003B sensitivity audit: verify schedule exposure magnitude and whether any bounded-history ordering can alter the reachable carrier without tuning the confirmatory result.',
+     branches,
+   };
+ 
+   const manifest = {
+-    schemaVersion: 'emerge-carrier-002c-manifest-v1',
++    schemaVersion: 'emerge-carrier-003-manifest-v1',
+     experimentId: summary.experimentId,
+     sourceSelectorSha256: summary.sourceSelectorSha256,
+     capsuleSelectorSha256: summary.capsuleSelectorSha256,
++    carrier002CReferenceSha256: summary.carrier002CReferenceSha256,
+     summarySha256: stableHash(summary),
+     traceSha256: createHash('sha256').update(traceGzip).digest('hex'),
+     traceRecords: traceLines.length,
+     traceUncompressedBytes: Buffer.byteLength(traceText),
+     traceCompressedBytes: traceGzip.byteLength,
+     neutralityPassed: summary.neutrality.passed,
+-    mechanisticEndpointMet,
++    mechanisticTimingEndpointMet,
++    primaryDirectionalInterval: direct

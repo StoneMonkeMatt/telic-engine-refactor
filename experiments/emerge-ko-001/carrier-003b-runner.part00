@@ -1,0 +1,313 @@
+import { createHash } from 'node:crypto';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
+import { Codex } from '../../src/logic/codex';
+import { Telos } from '../../src/logic/telos';
+import { SeededRandom } from '../../src/logic/random';
+import { buildProposalFrontier } from '../../src/logic/proposals/frontier';
+import { rankProposals } from '../../src/logic/proposals/rank';
+import { selectProposal } from '../../src/logic/proposals/select';
+import { resolveTie } from '../../src/logic/selection/tiebreak';
+import { createTieBreakContext } from '../../src/logic/benchmarks/reproducibility';
+import {
+  bridgeRate,
+  bridgeSignatures,
+  multisetRecall,
+} from './criticalBridgePermutation';
+import { ExactTargetBridgeLesionReceipt } from './exactTargetBridgeLesion';
+
+interface CarrierConfig {
+  experimentId: string;
+  initialSequence: string[];
+  baselineSteps: number;
+  replicates: number;
+  panelPairs: number;
+  horizon: number;
+  theta: number;
+  observerPersistence: number;
+  kappa: number;
+  recoveryWeights: {
+    coherenceDelta: number;
+    bridgeDelta: number;
+    structuralLoss: number;
+  };
+}
+
+interface FrozenLesion {
+  sequence: string[];
+  receipt: ExactTargetBridgeLesionReceipt;
+  replicate: number;
+  branchSeed: number;
+}
+
+interface FrozenCheckpoint {
+  measuredEmergence: 0 | 1;
+  sourceSeed: number;
+  sourceStep: number;
+  sequence: string[];
+  duality: number;
+  coherence: number;
+  bridgeRate: number;
+  targetBridgeSignatures: string[];
+  lesions: FrozenLesion[];
+}
+
+interface FrozenPair {
+  pairId: string;
+  nonEmergent: FrozenCheckpoint;
+  emergent: FrozenCheckpoint;
+}
+
+interface FrozenPanel {
+  selectorSha256: string;
+  frozen: {
+    config: CarrierConfig;
+    pairs: FrozenPair[];
+  };
+}
+
+type CapsuleId = 'M0-unlatched' | 'M1-latched';
+type MicrostateSource = 'nonEmergent' | 'emergent';
+type TimingMode = 'real' | 'sham';
+type TimingActive = 0 | 1;
+
+interface MacroHistoryCapsule {
+  schemaVersion: 'emerge-carrier-capsule-v1';
+  capsuleId: CapsuleId;
+  declaredObserverState: 0 | 1;
+  sourcePairId: string;
+  sourceSeed: number;
+  sourceStep: number;
+  dEma: number;
+  rawDuality: number;
+  persistenceCounter: number;
+  qualifyingInventoryChangeSeen: boolean;
+  threshold: number;
+  requiredPersistence: number;
+  historyWindow: number;
+  boundedDualityHistory: number[];
+  sourceSequenceSha256: string;
+  reconstructionVerified: boolean;
+}
+
+interface FrozenCarrierPair {
+  pairId: string;
+  m0: MacroHistoryCapsule;
+  m1: MacroHistoryCapsule;
+}
+
+interface FrozenCarrierCapsules {
+  capsuleSelectorSha256: string;
+  frozen: {
+    schemaVersion: string;
+    experimentId: string;
+    sourceSelectorSha256: string;
+    historyWindow: number;
+    emaAlpha: number;
+    couplingDoctrine: Record<string, unknown>;
+    pairs: FrozenCarrierPair[];
+  };
+}
+
+interface Carrier002CReferenceBranch {
+  pairId: string;
+  microstateSource: MicrostateSource;
+  replicate: number;
+  feedback: 0 | 1;
+  capsuleId: CapsuleId;
+  active: 0 | 1;
+  projectionSha256: string;
+}
+
+interface Carrier002CReference {
+  sourceSelectorSha256: string;
+  capsuleSelectorSha256: string;
+  branches: Carrier002CReferenceBranch[];
+}
+
+interface CapsuleState {
+  capsuleId: CapsuleId;
+  declaredObserverState: 0 | 1;
+  dEma: number;
+  persistenceCounter: number;
+  qualifyingInventoryChangeSeen: boolean;
+  boundedDualityHistory: number[];
+}
+
+interface KernelProjection {
+  finalTargetRecovery: number;
+  finalCoherence: number;
+  finalBridgeRate: number;
+  acceptedSteps: number;
+  feedbackChangedWinnerSteps: number;
+  finalSequence: string[];
+}
+
+interface StepDecision {
+  step: number;
+  beforeSequenceSha256: string;
+  winnerSequenceSha256: string;
+  winnerType: string;
+  accepted: boolean;
+  afterSequenceSha256: string;
+}
+
+interface BranchDiagnostics {
+  candidateExposures: Record<string, number>;
+  carrierAdjustedCandidates: number;
+  carrierAdjustedByAction: Record<string, number>;
+  carrierAdjustmentSum: number;
+  maxAbsCarrierAdjustment: number;
+  acceptedTransitions: number;
+  timingExposureSteps: number;
+  timingScheduleSha256: string;
+  finalCapsule: CapsuleState;
+}
+
+interface BranchRun {
+  projection: KernelProjection;
+  diagnostics: BranchDiagnostics;
+  trajectoryKeys: string[];
+  decisions: StepDecision[];
+  acceptedTrace: Record<string, unknown>[];
+}
+
+interface PairedDiagnostics {
+  comparablePreStateSteps: number;
+  changedWinnerSteps: number;
+  changedAdmissionSteps: number;
+  acceptedCarrierInducedActions: number;
+  holdToSwap: number;
+  swapToHold: number;
+  swapToSwap: number;
+  otherWinnerChanges: number;
+  firstDecisionDifferenceStep: number | null;
+  firstStateDivergenceStep: number | null;
+  reconvergenceEvents: number;
+  everReconverged: boolean;
+}
+
+interface BranchSummary {
+  pairId: string;
+  microstateSource: MicrostateSource;
+  replicate: number;
+  feedback: 0 | 1;
+  capsuleId: CapsuleId;
+  timingMode: TimingMode;
+  timingActive: TimingActive;
+  branchSeed: number;
+  projection: KernelProjection;
+  diagnostics: BranchDiagnostics;
+  projectionSha256: string;
+  pairedDiagnostics: PairedDiagnostics | null;
+}
+
+type RankedCandidate = ReturnType<typeof rankProposals>[number];
+type CarrierCandidate = RankedCandidate & {
+  carrierAdjustment: number;
+  carriedDualityLoss: number;
+  candidateDema: number;
+  historyAnchor: number;
+};
+
+function stableHash(value: unknown): string {
+  return createHash('sha256').update(JSON.stringify(value)).digest('hex');
+}
+
+function mean(values: number[]): number {
+  return values.reduce((sum, value) => sum + value, 0) / Math.max(values.length, 1);
+}
+
+function sampleStandardDeviation(values: number[]): number {
+  if (values.length < 2) return 0;
+  const center = mean(values);
+  return Math.sqrt(
+    values.reduce((sum, value) => sum + Math.pow(value - center, 2), 0) /
+      (values.length - 1),
+  );
+}
+
+function tCritical95(degreesOfFreedom: number): number {
+  const table: Record<number, number> = {
+    1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571,
+    6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262, 10: 2.228,
+    11: 2.201, 12: 2.179, 13: 2.16, 14: 2.145, 15: 2.131,
+    16: 2.12, 17: 2.11, 18: 2.101, 19: 2.093, 20: 2.086,
+    21: 2.08, 22: 2.074, 23: 2.069, 24: 2.064, 25: 2.06,
+    26: 2.056, 27: 2.052, 28: 2.048, 29: 2.045, 30: 2.042,
+  };
+  return table[Math.min(Math.max(degreesOfFreedom, 1), 30)] ?? 1.96;
+}
+
+function multisetKey(sequence: string[]): string {
+  const counts = new Map<string, number>();
+  for (const symbol of sequence) counts.set(symbol, (counts.get(symbol) ?? 0) + 1);
+  return [...counts.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([symbol, count]) => `${symbol}:${count}`)
+    .join('|');
+}
+
+function actionLabel(type: string): string {
+  return type === 'none' ? 'hold' : type;
+}
+
+function increment(record: Record<string, number>, key: string): void {
+  record[key] = (record[key] ?? 0) + 1;
+}
+
+function cloneCapsule(capsule: MacroHistoryCapsule): CapsuleState {
+  return {
+    capsuleId: capsule.capsuleId,
+    declaredObserverState: capsule.declaredObserverState,
+    dEma: capsule.dEma,
+    persistenceCounter: capsule.persistenceCounter,
+    qualifyingInventoryChangeSeen: capsule.qualifyingInventoryChangeSeen,
+    boundedDualityHistory: [...capsule.boundedDualityHistory],
+  };
+}
+
+function capsuleSnapshot(state: CapsuleState): Record<string, unknown> {
+  return {
+    capsuleId: state.capsuleId,
+    declaredObserverState: state.declaredObserverState,
+    dEma: state.dEma,
+    persistenceCounter: state.persistenceCounter,
+    qualifyingInventoryChangeSeen: state.qualifyingInventoryChangeSeen,
+    boundedDualityHistory: [...state.boundedDualityHistory],
+  };
+}
+
+function loadPanel(path: string): FrozenPanel {
+  const panel = JSON.parse(readFileSync(path, 'utf8')) as FrozenPanel;
+  const observed = stableHash(panel.frozen);
+  if (observed !== panel.selectorSha256) {
+    throw new Error(
+      `Frozen V2.2 panel hash mismatch: expected ${panel.selectorSha256}, observed ${observed}.`,
+    );
+  }
+  return panel;
+}
+
+function loadCapsules(path: string, sourceSelectorSha256: string): FrozenCarrierCapsules {
+  const capsules = JSON.parse(readFileSync(path, 'utf8')) as FrozenCarrierCapsules;
+  const observed = stableHash(capsules.frozen);
+  if (observed !== capsules.capsuleSelectorSha256) {
+    throw new Error(
+      `Frozen carrier capsule hash mismatch: expected ${capsules.capsuleSelectorSha256}, observed ${observed}.`,
+    );
+  }
+  if (capsules.frozen.sourceSelectorSha256 !== sourceSelectorSha256) {
+    throw new Error('Carrier capsules were not frozen from the supplied V2.2 panel.');
+  }
+  return capsules;
+}
+
+function loadCarrier002C(
+  path: string,
+  sourceSelectorSha256: string,
+  capsuleSelectorSha256: string,
+): Carrier002CReference {
+  const result = JSON.parse(readFileSync(path, 'utf8')) as Carrier002CReference;
+  if (result.sourceSelectorSha256 !== sourceSelectorSha256) {

@@ -14,23 +14,23 @@ import { PROTOCOL_SYMBOLS } from '../content/protocol-symbols';
 import { ROSETTA_AMINO_MAPPINGS } from '../content/rosetta-amino-mappings';
 import { DESIGN_PRINCIPLES } from '../content/design-principles';
 import { AGENT_ROLES } from '../content/agent-roles';
-import { CANONICAL_SYMBOL_RECORD_FIELDS } from '../content/canonical-symbol-record';
+import { REFERENCE_SYMBOL_RECORD_FIELDS } from '../content/reference-symbol-record';
 import { VERSIONING_SCHEMA } from '../content/versioning-schema';
 
 export const Part01ParameterOntology: React.FC = () => {
   return (
     <>
-    <ManualSectionDrawer 
-      icon={FileText} 
-      title="Compass Parameter & Metrics Lexicon V1" 
+    <ManualSectionDrawer
+      icon={FileText}
+      title="Compass Parameter & Metrics Lexicon V1"
       subtitle="Version 1.0 // Release 2026.03"
     >
         <div className="space-y-4 text-sm text-white/60 leading-relaxed">
           <p>
-            This lexicon defines the canonical vocabulary for The Compass simulation. Its purpose is to keep the same meanings aligned across the simulation UI, the engine and scoring logic, exported JSON schema, database storage, experiment records, and research writing.
+            This lexicon defines the reference vocabulary for The Compass simulation. Its purpose is to keep the same meanings aligned across the simulation UI, the engine and scoring logic, exported JSON schema, database storage, experiment records, and research writing.
           </p>
           <p>
-            The goal is simple: each parameter and each metric should have one stable meaning, one primary role, and one canonical database label.
+            The goal is simple: each parameter and each metric should have one stable meaning, one primary role, and one reference database label.
           </p>
         </div>
 
@@ -53,12 +53,12 @@ export const Part01ParameterOntology: React.FC = () => {
               <ManualDrawer title="Engine Parameters (Inputs)">
                 <div className="space-y-4">
                   {PARAMETERS_MAPPING.filter(p => ["information_weight", "coherence_weight", "energy_weight", "complexity_penalty", "coupling_factor"].includes(p.key)).map(param => (
-                    <LexiconItem 
+                    <LexiconItem
                       key={param.key}
-                      label={param.label} 
-                      dbLabel={param.key} 
-                      role={param.canonicalName} 
-                      meaning={param.description} 
+                      label={param.label}
+                      dbLabel={param.key}
+                      role={param.referenceName}
+                      meaning={param.description}
                       effect={param.effect}
                     />
                   ))}
@@ -68,25 +68,25 @@ export const Part01ParameterOntology: React.FC = () => {
               <ManualDrawer title="Simulation Metrics (Outputs)">
                 <div className="space-y-4">
                   {METRICS_MAPPING.filter(m => ["telic_score", "resilience", "mod97_value"].includes(m.key)).map(metric => (
-                    <LexiconItem 
+                    <LexiconItem
                       key={metric.key}
-                      label={metric.label} 
-                      dbLabel={metric.key} 
-                      role={metric.canonicalName} 
-                      meaning={metric.description} 
+                      label={metric.label}
+                      dbLabel={metric.key}
+                      role={metric.referenceName}
+                      meaning={metric.description}
                     />
                   ))}
-                  <LexiconItem 
-                    label="Duality" 
-                    dbLabel="duality" 
-                    role="Consciousness Index" 
-                    meaning="The average awareness weight of the sequence, used to trigger Observer emergence." 
+                  <LexiconItem
+                    label="Duality"
+                    dbLabel="duality"
+                    role="Consciousness Index"
+                    meaning="The average awareness weight of the sequence, used to trigger Observer emergence."
                   />
-                  <LexiconItem 
-                    label="Kernel Purity" 
-                    dbLabel="kernelPurity" 
-                    role="Foundational Ratio" 
-                    meaning="The percentage of the sequence composed of Invariant Kernel symbols." 
+                  <LexiconItem
+                    label="Kernel Purity"
+                    dbLabel="kernelPurity"
+                    role="Foundational Ratio"
+                    meaning="The percentage of the sequence composed of Invariant Kernel symbols."
                   />
                 </div>
               </ManualDrawer>
@@ -94,11 +94,11 @@ export const Part01ParameterOntology: React.FC = () => {
               <ManualDrawer title="Agent Roles">
                 <div className="space-y-4">
                   {AGENT_ROLES.map((role, i) => (
-                    <LexiconItem 
+                    <LexiconItem
                       key={i}
-                      label={role.role} 
-                      dbLabel={role.role.toLowerCase().replace(" ", "_")} 
-                      meaning={role.desc} 
+                      label={role.role}
+                      dbLabel={role.role.toLowerCase().replace(" ", "_")}
+                      meaning={role.desc}
                     />
                   ))}
                 </div>
@@ -107,12 +107,12 @@ export const Part01ParameterOntology: React.FC = () => {
               <ManualDrawer title="System Constraints">
                 <div className="space-y-4">
                   {PARAMETERS_MAPPING.filter(p => ["observer_threshold", "max_sequence_length", "max_simulation_depth", "architecture_mode"].includes(p.key)).map(param => (
-                    <LexiconItem 
+                    <LexiconItem
                       key={param.key}
-                      label={param.label} 
-                      dbLabel={param.key} 
-                      role={param.canonicalName} 
-                      meaning={param.description} 
+                      label={param.label}
+                      dbLabel={param.key}
+                      role={param.referenceName}
+                      meaning={param.description}
                       effect={param.key === "max_sequence_length" ? "Allows richer or more expressive states, but also increases the chance of noise and bloat." : param.key === "max_simulation_depth" ? "Allows longer convergence, deeper exploration, and more post-plateau churn." : undefined}
                     />
                   ))}
@@ -123,14 +123,14 @@ export const Part01ParameterOntology: React.FC = () => {
         </div>
     </ManualSectionDrawer>
 
-    <ManualSectionDrawer 
-      icon={Cpu} 
-      title="Part I. Parameter Ontology" 
+    <ManualSectionDrawer
+      icon={Cpu}
+      title="Part I. Parameter Ontology"
       subtitle="Classification of Engine Variables"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">
         <p>
-          This ontology categorizes the parameters of the Compass engine into functional families. Each family governs a specific aspect of the simulation's behavior, from state evaluation to structural boundaries.
+          This ontology categorizes the parameters of the Compass engine into functional families. Each family defines a specific aspect of the simulation's behavior, from state evaluation to structural boundaries.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
           {PARAMETER_FAMILIES.map((distinction, i) => (
@@ -193,12 +193,12 @@ export const Part01ParameterOntology: React.FC = () => {
             <div className="space-y-4">
               <p className="text-[10px] text-white/40 italic mb-4">Other Evaluation Parameters:</p>
               {PARAMETERS_MAPPING.filter(p => p.family === "Evaluation" && !["information_weight", "coherence_weight", "energy_weight", "complexity_penalty"].includes(p.key)).map(param => (
-                <LexiconItem 
+                <LexiconItem
                   key={param.key}
-                  label={param.label} 
-                  dbLabel={param.key} 
-                  role={param.canonicalName} 
-                  meaning={param.description} 
+                  label={param.label}
+                  dbLabel={param.key}
+                  role={param.referenceName}
+                  meaning={param.description}
                   effect={param.effect}
                 />
               ))}
@@ -210,12 +210,12 @@ export const Part01ParameterOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Parameters that shape how symbols couple, bind, or stabilize into structure.</p>
             {PARAMETERS_MAPPING.filter(p => p.family === "Relational Dynamics").map(param => (
-              <LexiconItem 
+              <LexiconItem
                 key={param.key}
-                label={param.label} 
-                dbLabel={param.key} 
-                role={param.canonicalName} 
-                meaning={param.description} 
+                label={param.label}
+                dbLabel={param.key}
+                role={param.referenceName}
+                meaning={param.description}
                 effect={param.effect}
                 notes={param.key === "binding_strength" ? "More local and stabilizing than coupling factor." : undefined}
               />
@@ -227,12 +227,12 @@ export const Part01ParameterOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Parameters that shape exploration, stochasticity, and movement through state space.</p>
             {PARAMETERS_MAPPING.filter(p => p.family === "Search Dynamics").map(param => (
-              <LexiconItem 
+              <LexiconItem
                 key={param.key}
-                label={param.label} 
-                dbLabel={param.key} 
-                role={param.canonicalName} 
-                meaning={param.description} 
+                label={param.label}
+                dbLabel={param.key}
+                role={param.referenceName}
+                meaning={param.description}
                 effect={param.effect}
                 notes={param.key === "experiment_seed" ? "Identity parameter, not a tuning weight." : undefined}
               />
@@ -244,12 +244,12 @@ export const Part01ParameterOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Parameters that determine when a condition qualifies as crossing a boundary.</p>
             {PARAMETERS_MAPPING.filter(p => p.family === "Thresholds").map(param => (
-              <LexiconItem 
+              <LexiconItem
                 key={param.key}
-                label={param.label} 
-                dbLabel={param.key} 
-                role={param.canonicalName} 
-                meaning={param.description} 
+                label={param.label}
+                dbLabel={param.key}
+                role={param.referenceName}
+                meaning={param.description}
                 effect={param.effect}
                 notes={param.key === "observer_threshold" ? "Keep separate from future acceptance, plateau, and warning thresholds." : undefined}
               />
@@ -261,12 +261,12 @@ export const Part01ParameterOntology: React.FC = () => {
           <div className="space-y-4">
             <p className="text-[10px] text-white/40 italic mb-4">Parameters that mechanically bound the run.</p>
             {PARAMETERS_MAPPING.filter(p => p.family === "Structural Constraints").map(param => (
-              <LexiconItem 
+              <LexiconItem
                 key={param.key}
-                label={param.label} 
-                dbLabel={param.key} 
-                role={param.canonicalName} 
-                meaning={param.description} 
+                label={param.label}
+                dbLabel={param.key}
+                role={param.referenceName}
+                meaning={param.description}
                 effect={param.effect}
                 notes={param.key === "architecture_mode" ? "Treated as a categorical configuration field." : undefined}
               />
@@ -276,22 +276,22 @@ export const Part01ParameterOntology: React.FC = () => {
       </div>
     </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={BookOpen} 
-        title="Part I-A. Symbolic Ontology Source (library.ts)" 
-        subtitle="The Canonical Symbolic Contract"
+      <ManualSectionDrawer
+        icon={BookOpen}
+        title="Part I-A. Symbolic Ontology Source (library.ts)"
+        subtitle="The Reference Symbolic Contract"
       >
         <div className="space-y-6">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">Purpose</h4>
             <p>
-              This section defines the canonical symbolic ontology used by Compass. The ontology is sourced from <code>library.ts</code> and provides the authoritative registry for symbols, domains, compass orientations, and cross-domain bridge relations. The simulation may operationalize only a subset of these structures at any given engine version, but the ontology source remains canonical.
+              This section describes the symbolic ontology used by Compass. The ontology is sourced from <code>library.ts</code> and records symbols, domains, compass orientations, and cross-domain bridge relations. Each engine version may use a subset of these structures.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-              <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+              <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
                 The <code>library.ts</code> file is the single source of truth for all symbolic definitions. It contains the full registry of symbols, their weights, and their domain associations.
               </p>
@@ -305,7 +305,7 @@ export const Part01ParameterOntology: React.FC = () => {
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Current Runtime Constraint**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                The present engine uses a glyph-first lookup model in <code>codex.ts</code>. In the live runtime, symbol identity is resolved by glyph rather than by composite symbolic identity. This keeps the engine lightweight, but it also means that repeated glyphs across conceptual contexts are not yet represented as distinct runtime records. The ontology source remains canonical, but the current kernel operationalizes a simplified glyph-indexed view of it.
+                The present engine uses a glyph-first lookup model in <code>codex.ts</code>. In the live runtime, symbol identity is resolved by glyph rather than by composite symbolic identity. This keeps the engine lightweight, but it also means that repeated glyphs across conceptual contexts are not yet represented as distinct runtime records. The ontology source remains reference, but the current kernel operationalizes a simplified glyph-indexed view of it.
               </p>
             </div>
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
@@ -316,11 +316,11 @@ export const Part01ParameterOntology: React.FC = () => {
             </div>
           </div>
 
-          <ManualDrawer title="1. Canonical Symbol Record">
+          <ManualDrawer title="1. Reference Symbol Record">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
               <p>Each symbol in the ontology is defined as a structured record with the following fields:</p>
               <ul className="list-disc pl-5 space-y-1">
-                {CANONICAL_SYMBOL_RECORD_FIELDS.map((field, i) => (
+                {REFERENCE_SYMBOL_RECORD_FIELDS.map((field, i) => (
                   <li key={i}><code>{field.field}</code> — {field.description}</li>
                 ))}
               </ul>
@@ -336,27 +336,27 @@ export const Part01ParameterOntology: React.FC = () => {
                   <li key={i}><code>{struct.key}</code> — {struct.description}</li>
                 ))}
               </ul>
-              <p>These structures should be treated as the canonical symbolic source for the Build Manual.</p>
+              <p>These structures should be treated as the reference symbolic source for the Build Manual.</p>
             </div>
           </ManualDrawer>
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Layers} 
-        title="Part I-B. Domain Registry" 
-        subtitle="Canonical Symbolic World of Compass"
+      <ManualSectionDrawer
+        icon={Layers}
+        title="Part I-B. Domain Registry"
+        subtitle="Reference Symbolic World of Compass"
       >
         <div className="space-y-6">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">Purpose</h4>
             <p>
-              The domain registry defines the canonical symbolic world of Compass. Each domain groups symbols into a named conceptual family. The registry includes the foundational kernel and a large multi-domain periphery spanning scientific, technical, cognitive, social, and expressive domains. 
+              The domain registry defines the reference symbolic world of Compass. Each domain groups symbols into a named conceptual family. The registry includes the foundational kernel and a large multi-domain periphery spanning scientific, technical, cognitive, social, and expressive domains.
             </p>
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Current Usage Note**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                Domains are canonical ontology groupings. The current runtime may operationalize only part of this richness through glyph-level lookup and local bridge evaluation. Domain completeness in the manual is intentional and should not be reduced to match temporary engine limits.
+                Domains are reference ontology groupings. The current runtime may operationalize only part of this richness through glyph-level lookup and local bridge evaluation. Domain completeness in the manual is intentional and should not be reduced to match temporary engine limits.
               </p>
             </div>
           </div>
@@ -423,9 +423,9 @@ export const Part01ParameterOntology: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Anchor} 
-        title="Part I-C. Core Kernel Definition" 
+      <ManualSectionDrawer
+        icon={Anchor}
+        title="Part I-C. Core Kernel Definition"
         subtitle="Invariant Symbolic Anchor"
       >
         <div className="space-y-6">
@@ -437,12 +437,12 @@ export const Part01ParameterOntology: React.FC = () => {
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Current Engine Note**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                The canonical kernel is broader than the live implementation heuristic. In the current Telos engine, kernel status is operationalized through a hardcoded runtime subset used for measures such as <code>kernelPurity</code>, <code>kernelDivergence</code>, and invariant leakage flags. These current-engine metrics should be understood as operational approximations to the broader canonical kernel concept.
+                The reference kernel is broader than the live implementation heuristic. In the current Telos engine, kernel status is operationalized through a hardcoded runtime subset used for measures such as <code>kernelPurity</code>, <code>kernelDivergence</code>, and invariant leakage flags. These current-engine metrics should be understood as operational approximations to the broader reference kernel concept.
               </p>
             </div>
           </div>
 
-          <ManualDrawer title="Canonical Kernel Symbols">
+          <ManualDrawer title="Reference Kernel Symbols">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {KERNEL_SYMBOLS.map((s, i) => (
@@ -458,26 +458,26 @@ export const Part01ParameterOntology: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={CompassIcon} 
-        title="Part I-D. Compass Ontology" 
-        subtitle="Canonical 7-Point Navigational Ontology"
+      <ManualSectionDrawer
+        icon={CompassIcon}
+        title="Part I-D. Compass Ontology"
+        subtitle="Reference 7-Point Navigational Ontology"
       >
         <div className="space-y-6">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">Purpose</h4>
             <p>
-              The compass defines the canonical 7-point navigational ontology of V9. Each pole has a name, an associated symbol set, and a <code>mod97</code> harmonic value. 
+              The compass defines the reference 7-point navigational ontology of V9. Each pole has a name, an associated symbol set, and a <code>mod97</code> harmonic value.
             </p>
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Current Engine Usage**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                The compass remains the canonical navigational ontology. In the current engine, <code>mod97</code> and compass matching provide an operational orientation mechanism. Compass interpretation is therefore active in the live build, but still represents a simplified runtime use of the broader navigational layer.
+                The compass remains the reference navigational ontology. In the current engine, <code>mod97</code> and compass matching provide an operational orientation mechanism. Compass interpretation is therefore active in the live build, but still represents a simplified runtime use of the broader navigational layer.
               </p>
             </div>
           </div>
 
-          <ManualDrawer title="Canonical Compass Poles">
+          <ManualDrawer title="Reference Compass Poles">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
               <div className="space-y-3">
                 {COMPASS_POLES.map((p, i) => (
@@ -499,32 +499,32 @@ export const Part01ParameterOntology: React.FC = () => {
 
           <ManualDrawer title="Interpretation">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
-              <p>The compass should be documented as a canonical navigational structure, not merely a UI motif. It defines named symbolic clusters and harmonic signatures that the simulation may use in whole or in part depending on engine version.</p>
+              <p>The compass should be documented as a reference navigational structure, not merely a UI motif. It defines named symbolic clusters and harmonic signatures that the simulation may use in whole or in part depending on engine version.</p>
             </div>
           </ManualDrawer>
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Workflow} 
-        title="Part I-E. Cross-Domain Bridge Ontology" 
-        subtitle="Canonical Symbolic Transitions"
+      <ManualSectionDrawer
+        icon={Workflow}
+        title="Part I-E. Cross-Domain Bridge Ontology"
+        subtitle="Reference Symbolic Transitions"
       >
         <div className="space-y-6">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-cyan-400">Purpose</h4>
             <p>
-              The bridge registry defines canonical symbolic transitions between domains. Each bridge record contains a <code>from</code> domain, a <code>to</code> domain, a <code>symbol</code>, and a <code>function</code>. This makes the bridge ontology an explicit relational layer, not just an inferred property of adjacent symbols.
+              The bridge registry defines reference symbolic transitions between domains. Each bridge record contains a <code>from</code> domain, a <code>to</code> domain, a <code>symbol</code>, and a <code>function</code>. This makes the bridge ontology an explicit relational layer, not just an inferred property of adjacent symbols.
             </p>
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Current Engine Usage**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                The bridge ontology remains canonical and explicit. In the current engine, bridges are used operationally through local adjacency checks, bridge activation summaries, and event-level bridge traces. The canonical bridge layer is therefore broader than the current runtime bridge evaluation behavior.
+                The bridge ontology remains reference and explicit. In the current engine, bridges are used operationally through local adjacency checks, bridge activation summaries, and event-level bridge traces. The reference bridge layer is therefore broader than the current runtime bridge evaluation behavior.
               </p>
             </div>
           </div>
 
-          <ManualDrawer title="Example Canonical Bridges">
+          <ManualDrawer title="Example Reference Bridges">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
               <div className="grid grid-cols-1 gap-2">
                 {BRIDGE_EXAMPLES.map((b, i) => (
@@ -546,15 +546,15 @@ export const Part01ParameterOntology: React.FC = () => {
 
           <ManualDrawer title="Interpretation">
             <div className="space-y-4 text-xs text-white/60 leading-relaxed">
-              <p>The bridge registry should be treated as the canonical source of allowed or meaningful cross-domain relations. The simulation may operationalize only part of this structure, but the ontology source defines the full bridge vocabulary.</p>
+              <p>The bridge registry should be treated as the reference source of allowed or meaningful cross-domain relations. The simulation may operationalize only part of this structure, but the ontology source defines the full bridge vocabulary.</p>
             </div>
           </ManualDrawer>
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Cpu} 
-        title="Part I-F. Protocol & Mapping Symbols" 
+      <ManualSectionDrawer
+        icon={Cpu}
+        title="Part I-F. Protocol & Mapping Symbols"
         subtitle="V8.2 Whale Song & Rosetta Amino Mappings"
       >
         <div className="space-y-6">

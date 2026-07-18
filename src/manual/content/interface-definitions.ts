@@ -66,7 +66,7 @@ export const PARAMETER_SPEC_INTERFACE = `export interface ParameterSpec {
   label: string;
   family: ParameterFamily;
   dbLabel: string;
-  canonicalMeaning: string;
+  referenceMeaning: string;
   higherValueEffect?: string;
   notes?: string;
 }`;
@@ -96,7 +96,7 @@ export const METRIC_SPEC_INTERFACE = `export interface MetricSpec {
   label: string;
   family: MetricFamily;
   dbLabel: string;
-  canonicalMeaning: string;
+  referenceMeaning: string;
   analyticQuestion: string;
   notes?: string;
 }`;

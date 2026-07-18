@@ -1,0 +1,4 @@
+ionalInterval,
+   };
+ 
+   mkdirSync(dirname(summaryPath), { recursive: true });

@@ -1,0 +1,174 @@
+      const pair = summary.pairEffects.find(entry => entry.pairId === pairId);
+      if (!pair) throw new Error(`Rotation ${summary.rotation} is missing ${pairId}.`);
+      return pair;
+    });
+    const output: PairEffect = {
+      pairId,
+      deltaRealMinusShamZ0: 0,
+      deltaRealMinusShamZ1: 0,
+      timingFeedbackInteraction: 0,
+      stateSpecificTimingZ0: 0,
+      stateSpecificTimingZ1: 0,
+      stateTimingFeedbackInteraction: 0,
+    };
+    for (const metric of METRICS) output[metric] = mean(rotationPairs.map(pair => pair[metric]));
+    return output;
+  });
+
+  const ensembleUncertainty = Object.fromEntries(
+    METRICS.map(metric => [metric, interval(ensemblePairEffects.map(pair => pair[metric]))]),
+  ) as Record<Metric, Interval>;
+  const ensembleEstimators = Object.fromEntries(
+    METRICS.map(metric => [metric, ensembleUncertainty[metric].mean]),
+  ) as Record<Metric, number>;
+
+  const leaveOneRotationOut = summaries.map(omitted => {
+    const retained = summaries.filter(summary => summary.rotation !== omitted.rotation);
+    const pairEffects = pairIds.map(pairId => {
+      const entry = { pairId } as PairEffect;
+      for (const metric of METRICS) {
+        entry[metric] = mean(retained.map(summary => summary.pairEffects.find(pair => pair.pairId === pairId)![metric]));
+      }
+      return entry;
+    });
+    return {
+      omittedRotation: omitted.rotation,
+      deltaRealMinusShamZ1: interval(pairEffects.map(pair => pair.deltaRealMinusShamZ1)),
+      timingFeedbackInteraction: interval(pairEffects.map(pair => pair.timingFeedbackInteraction)),
+    };
+  });
+
+  const rotationRows = summaries.map(summary => ({
+    rotation: summary.rotation,
+    estimators: summary.estimators,
+    uncertainty: summary.uncertainty,
+    dynamics: summary.dynamics,
+    realProjectionReceiptSha256: summary.realProjectionReceiptSha256,
+    shamProjectionReceiptSha256: summary.shamProjectionReceiptSha256,
+    summaryFile: files[summary.rotation - 1],
+  }));
+
+  const rotationSensitivity = Object.fromEntries(
+    METRICS.map(metric => {
+      const values = summaries.map(summary => summary.estimators[metric]);
+      const intervalStatuses = summaries.map(summary => intervalSign(summary.uncertainty[metric]));
+      return [
+        metric,
+        {
+          meanAcrossRotations: mean(values),
+          minimum: Math.min(...values),
+          maximum: Math.max(...values),
+          negativePointEstimates: values.filter(value => value < 0).length,
+          zeroPointEstimates: values.filter(value => value === 0).length,
+          positivePointEstimates: values.filter(value => value > 0).length,
+          negativeIntervals: intervalStatuses.filter(value => value === 'negative').length,
+          crossingIntervals: intervalStatuses.filter(value => value === 'crosses-zero').length,
+          positiveIntervals: intervalStatuses.filter(value => value === 'positive').length,
+          byRotation: summaries.map(summary => ({
+            rotation: summary.rotation,
+            value: summary.estimators[metric],
+            pointSign: sign(summary.estimators[metric]),
+            interval95: summary.uncertainty[metric].interval95,
+            intervalSign: intervalSign(summary.uncertainty[metric]),
+          })),
+        },
+      ];
+    }),
+  );
+
+  const dynamics = {
+    rotationsWithMechanisticTimingEndpoint: summaries.filter(
+      summary => summary.dynamics.mechanisticTimingEndpointMet,
+    ).length,
+    totalComparablePreStateSteps: summaries.reduce(
+      (sum, summary) => sum + summary.dynamics.comparablePreStateSteps,
+      0,
+    ),
+    totalChangedWinnerSteps: summaries.reduce(
+      (sum, summary) => sum + summary.dynamics.changedWinnerSteps,
+      0,
+    ),
+    totalChangedAdmissionSteps: summaries.reduce(
+      (sum, summary) => sum + summary.dynamics.changedAdmissionSteps,
+      0,
+    ),
+    totalAcceptedTimingInducedActions: summaries.reduce(
+      (sum, summary) => sum + summary.dynamics.acceptedTimingInducedActions,
+      0,
+    ),
+    totalActiveBranchRuns: summaries.reduce(
+      (sum, summary) => sum + summary.scale.activeTimingBranchRuns,
+      0,
+    ),
+    totalAcceptedTraceRecords: summaries.reduce(
+      (sum, summary) => sum + summary.scale.acceptedTraceRecords,
+      0,
+    ),
+  };
+
+  const primary = ensembleUncertainty.deltaRealMinusShamZ1;
+  const interference = ensembleUncertainty.timingFeedbackInteraction;
+  const trueHistoryAdvantageEstablished = primary.interval95[0] > 0;
+  const trueHistoryHarmEstablished = primary.interval95[1] < 0;
+  const feedbackInterferenceRobust = interference.interval95[1] < 0;
+  const feedbackSynergyRobust = interference.interval95[0] > 0;
+
+  const interpretation = trueHistoryAdvantageEstablished
+    ? 'Across the complete cyclic-rotation sham ensemble, true chronology produced a pair-generalised repair advantage under feedback.'
+    : trueHistoryHarmEstablished
+      ? 'Across the complete cyclic-rotation sham ensemble, true chronology produced lower pair-generalised repair under feedback.'
+      : feedbackInterferenceRobust
+        ? 'True chronology did not establish a repair advantage over the complete sham ensemble, while the negative timing-by-feedback interaction remained pair-generalised across the ensemble.'
+        : feedbackSynergyRobust
+          ? 'True chronology did not establish a direct repair advantage, but feedback produced a positive pair-generalised timing interaction across the complete sham ensemble.'
+          : 'Temporal order remained mechanistically active across the rotation ensemble, but neither a true-history repair advantage nor a stable feedback interaction was established.';
+
+  const nextExperiment = trueHistoryAdvantageEstablished
+    ? 'EMERGE-CARRIER-004: preregister held-out generalisation across fresh seeds, microstates, wounds, inventories and ontology perturbations.'
+    : feedbackInterferenceRobust
+      ? 'EMERGE-CARRIER-003C: preregister a feedback-mechanism decomposition to locate why the fixed repair term interferes with chronological history before held-out generalisation.'
+      : 'Close the positive timing-usefulness claim for the current carrier and preregister the next model-native carrier mechanism before held-out generalisation.';
+
+  const summary = {
+    schemaVersion: 'emerge-carrier-003b-aggregate-v1',
+    experimentId: 'EMERGE-CARRIER-003B',
+    generatedAt: new Date().toISOString(),
+    sourceSelectorSha256: neutrality.sourceSelectorSha256,
+    capsuleSelectorSha256: neutrality.capsuleSelectorSha256,
+    carrier002CReferenceSha256: neutrality.carrier002CReferenceSha256,
+    neutrality: neutrality.neutrality,
+    scheduleValidation: neutrality.scheduleValidation,
+    preregistration: {
+      rotations: expectedRotations,
+      primaryEstimand:
+        'For each matched pair, real-history recovery minus the mean recovery across all 14 non-zero cyclic sham rotations under Z=1; inference across eight pair-level ensemble effects.',
+      interferenceEstimand:
+        'Ensemble real-minus-mean-sham effect under Z=1 minus the corresponding effect under Z=0.',
+      rotation7ReplicationGate: true,
+      realReceiptIdentityGate: true,
+      noRotationSelection: true,
+      noCoefficientSweep: true,
+    },
+    scale: {
+      rotations: summaries.length,
+      matchedPairs: pairIds.length,
+      activeBranchRuns: dynamics.totalActiveBranchRuns,
+      setupNeutralityComparisons: neutrality.neutrality.comparisons,
+      acceptedTraceRecords: dynamics.totalAcceptedTraceRecords,
+    },
+    receipts: {
+      realProjectionReceiptSha256: [...realReceipts][0],
+      shamProjectionReceiptsSha256: stableHash(
+        summaries.map(summary => ({
+          rotation: summary.rotation,
+          receipt: summary.shamProjectionReceiptSha256,
+        })),
+      ),
+      rotationSummarySetSha256: stableHash(
+        summaries.map(summary => ({
+          rotation: summary.rotation,
+          summarySha256: stableHash(summary),
+        })),
+      ),
+    },
+    rotation7Replication: {

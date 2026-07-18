@@ -3,30 +3,30 @@
  * Mapping of simulation data structures to research evidence for the Telos v0.9 paper.
  */
 export const RESEARCH_ALIGNMENT_MAPPING = [
-  { 
-    key: "eventLog", 
-    value: "Evidence of transition structure (order vs inventory changes).", 
-    ref: "Part VI.15" 
+  {
+    key: "eventLog",
+    value: "Evidence of transition structure (order vs inventory changes).",
+    ref: "Part VI.15"
   },
-  { 
-    key: "runSummary", 
-    value: "Evidence of phase structure (growth vs plateau).", 
-    ref: "Part VI.9" 
+  {
+    key: "runSummary",
+    value: "Evidence of phase structure (growth vs plateau).",
+    ref: "Part VI.9"
   },
-  { 
-    key: "structuralSummary", 
-    value: "Evidence of invariant vs expansion (kernel vs periphery).", 
-    ref: "Part VI.16" 
+  {
+    key: "structuralSummary",
+    value: "Evidence of invariant vs expansion (kernel vs periphery).",
+    ref: "Part VI.16"
   },
-  { 
-    key: "parameterProfiles", 
-    value: "Evidence of causal conditions (regime-based outcomes).", 
-    ref: "Part VI.4" 
+  {
+    key: "parameterProfiles",
+    value: "Evidence of causal conditions (regime-based outcomes).",
+    ref: "Part VI.4"
   },
-  { 
-    key: "probeMetadata", 
-    value: "Evidence of input design (starting state influence).", 
-    ref: "Part VI.2" 
+  {
+    key: "probeMetadata",
+    value: "Evidence of input design (starting state influence).",
+    ref: "Part VI.2"
   }
 ];
 
@@ -34,21 +34,21 @@ export const RESEARCH_ALIGNMENT_MAPPING = [
  * Core research questions and their evidence checklist.
  */
 export const RESEARCH_QUESTIONS = [
-  { 
-    title: "Kernel Pressure", 
-    description: "Does a compact kernel appear repeatedly across different seeds?" 
+  {
+    title: "Kernel Pressure",
+    description: "Does a compact kernel appear repeatedly across different seeds?"
   },
-  { 
-    title: "Navigational Control", 
-    description: "Does the observer emerge at specific parameter thresholds?" 
+  {
+    title: "Navigational Control",
+    description: "Does the observer emerge at specific parameter thresholds?"
   },
-  { 
-    title: "Expressive Expansion", 
-    description: "How does the sequence length correlate with telic curvature?" 
+  {
+    title: "Expressive Expansion",
+    description: "How does the sequence length correlate with telic curvature?"
   },
-  { 
-    title: "Observer Behavior", 
-    description: "Does observer emergence correlate with specific structural transitions?" 
+  {
+    title: "Observer Behavior",
+    description: "Does observer emergence correlate with specific structural transitions?"
   }
 ];
 

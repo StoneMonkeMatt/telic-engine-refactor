@@ -1,7 +1,7 @@
 import { CompassPole } from "../manual.types";
 
 /**
- * The 7 canonical poles of the Compass navigational ontology.
+ * The 7 reference poles of the Compass navigational ontology.
  */
 export const COMPASS_POLES: CompassPole[] = [
   { pole: 'North', name: 'Eternal_Banquet', symbols: ["🐋", "🌿", "⚓"], mod97: 28 },

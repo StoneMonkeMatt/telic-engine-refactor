@@ -1,0 +1,197 @@
+name: EMERGE-KO-001
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'experiments/emerge-ko-001/**'
+      - '.github/workflows/emerge-ko-001.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-feedback-knockout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Run audited EMERGE-KO-001 v2 baseline
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/run-v2.ts \
+            experiments/emerge-ko-001/config.example.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.json
+
+      - name: Run V2.1 trajectory audit
+        run: |
+          npx tsx experiments/emerge-ko-001/run-v2-1.ts \
+            experiments/emerge-ko-001/config.example.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json
+
+      - name: Verify trace neutrality
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const v2 = JSON.parse(fs.readFileSync('experiments/emerge-ko-001/results/EMERGE-KO-001-v2.json', 'utf8'));
+          const v21 = JSON.parse(fs.readFileSync('experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json', 'utf8'));
+          const stable = value => JSON.stringify(value);
+          for (const field of ['checkpoints', 'cells', 'gamma', 'replicateGammas', 'gammaStandardError', 'gamma95']) {
+            if (stable(v2[field]) !== stable(v21[field])) {
+              throw new Error(`Trace instrumentation changed ${field}.`);
+            }
+          }
+          const core = result => ({
+            measuredEmergence: result.measuredEmergence,
+            feedback: result.feedback,
+            replicate: result.replicate,
+            branchSeed: result.branchSeed,
+            perturbation: result.perturbation,
+            initialBridgeOverlap: result.initialBridgeOverlap,
+            finalBridgeOverlap: result.finalBridgeOverlap,
+            initialCoherence: result.initialCoherence,
+            finalCoherence: result.finalCoherence,
+            finalBridgeRate: result.finalBridgeRate,
+            recoveryStep: result.recoveryStep,
+            acceptedSteps: result.acceptedSteps,
+            feedbackChangedWinnerSteps: result.feedbackChangedWinnerSteps,
+            finalSequence: result.finalSequence,
+          });
+          if (stable(v2.results.map(core)) !== stable(v21.results.map(core))) {
+            throw new Error('Trace instrumentation changed branch trajectories or outcomes.');
+          }
+          console.log('Trace neutrality verified: v2 and v2.1 causal outputs are byte-equivalent after projection.');
+          NODE
+
+      - name: Display trajectory-audit result
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json'); console.log(JSON.stringify({gamma:r.gamma,gamma95:r.gamma95,interpretation:r.interpretation,checkpoints:r.checkpoints,cells:r.cells,pairSummaries:r.pairSummaries,manifest:m}, null, 2));"
+
+      - name: Upload V2.1 trajectory receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-KO-001-v2.1-results
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-summary.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.1-manifest.json
+          if-no-files-found: error
+
+      - name: Freeze V2.2 matched panel and wounds
+        run: |
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Run V2.2 equal-wound needle repair test
+        run: |
+          npx tsx experiments/emerge-ko-001/run-v2-2.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json
+
+      - name: Display V2.2 causal result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json'); console.log(JSON.stringify({selectorSha256:r.selectorSha256,gamma:r.gamma,gammaStandardError:r.gammaStandardError,gamma95:r.gamma95,interpretation:r.interpretation,cells:r.cells,pairEffects:r.pairEffects.map(p=>({pairId:p.pairId,matchTier:p.matchTier,meanGamma:p.meanGamma}))}, null, 2));"
+          fi
+
+      - name: Upload V2.2 frozen panel and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-KO-001-v2.2-results
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-result.json
+          if-no-files-found: error
+
+      - name: Run EMERGE-CARRIER-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Display carrier-null result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,twinComparisons:r.twinComparisons,byteIdenticalComparisons:r.byteIdenticalComparisons,mismatchCount:r.mismatchCount,cells:r.cells,carrierInteraction:r.carrierInteraction,comparisonReceiptSha256:r.comparisonReceiptSha256,interpretation:r.interpretation,nextExperiment:r.nextExperiment}, null, 2));"
+          fi
+
+      - name: Upload carrier-null receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-001-results
+          path: experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+          if-no-files-found: error
+
+      - name: Freeze EMERGE-CARRIER-002 state capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Align Carrier-002A legacy telemetry projection
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('experiments/emerge-ko-001/run-carrier-002.ts')
+          source = path.read_text()
+          old = """    const rawWinner = deterministicWinner(\n      ranked.map(candidate => ({ ...candidate, carrierAdjustment: 0 })),\n      tieBreakContext,\n    );\n    const feedbackWinner = deterministicWinner(baselineAugmented, tieBreakContext);"""
+          new = """    const rawWinner = [...ranked].sort((a, b) => b.score - a.score)[0];\n    const feedbackWinner = [...baselineAugmented].sort((a, b) => b.score - a.score)[0];"""
+          if old not in source:
+              raise SystemExit('Carrier-002 legacy telemetry block was not found exactly once.')
+          path.write_text(source.replace(old, new, 1))
+          PY
+          npm run lint
+
+      - name: Run Carrier-002A neutrality and Carrier-002B native continuity
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json
+
+      - name: Display Carrier-002 result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json'); console.log(JSON.stringify({sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256,carrier002A:r.carrier002A,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+          fi
+
+      - name: Upload Carrier-002 capsules, executed source, trace and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-002-results
+          path: |
+            experiments/emerge-ko-001/run-carrier-002.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-manifest.json
+          if-no-files-found: error

@@ -10,7 +10,7 @@ export function AgentCard({ icon, name, role, mission, strategy, color }: { icon
   };
 
   return (
-    <motion.div 
+    <motion.div
       whileHover={{ y: -5 }}
       className={cn("glass-panel p-8 space-y-6 border transition-all", colors[color])}
     >
@@ -23,7 +23,7 @@ export function AgentCard({ icon, name, role, mission, strategy, color }: { icon
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-40">{role}</span>
         </div>
       </div>
-      
+
       <div className="space-y-4">
         <div className="space-y-1">
           <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60">Mission</h4>

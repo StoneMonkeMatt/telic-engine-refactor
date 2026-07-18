@@ -1,7 +1,7 @@
 import { BridgeDefinition } from "../manual.types";
 
 /**
- * Example canonical bridges between domains.
+ * Example reference bridges between domains.
  */
 export const BRIDGE_EXAMPLES: BridgeDefinition[] = [
   { from: 'Environmental', to: 'Social_Dynamics', symbol: '🌿', function: 'Sustainability_to_Community' },

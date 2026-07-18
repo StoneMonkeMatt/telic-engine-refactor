@@ -1,14 +1,14 @@
 import { ParameterMapping } from "../manual.types";
 
 /**
- * Mapping of Compass engine parameters from UI labels to canonical keys and descriptions.
+ * Mapping of Compass engine parameters from UI labels to reference keys and descriptions.
  */
 export const PARAMETERS_MAPPING: ParameterMapping[] = [
   // Evaluation Parameters
   {
     key: "information_weight",
     label: "Information Weight",
-    canonicalName: "alpha (α)",
+    referenceName: "alpha (α)",
     family: "Evaluation",
     description: "Rewards informational richness or signal-bearing symbolic structure in the current state.",
     range: "0-1.0 (typical)",
@@ -20,7 +20,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "coherence_weight",
     label: "Coherence Weight",
-    canonicalName: "gamma (γ)",
+    referenceName: "gamma (γ)",
     family: "Evaluation",
     description: "Rewards internal structural fit, integration, and compositional harmony across the sequence.",
     range: "0-1.0 (typical)",
@@ -32,7 +32,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "energy_weight",
     label: "Energy Weight",
-    canonicalName: "delta (δ)",
+    referenceName: "delta (δ)",
     family: "Evaluation",
     description: "Rewards energetic viability, structural capacity, or state strength as defined by the engine’s scoring term.",
     range: "0-1.0 (typical)",
@@ -44,7 +44,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "complexity_penalty",
     label: "Complexity Penalty",
-    canonicalName: "beta (β)",
+    referenceName: "beta (β)",
     family: "Evaluation",
     description: "Penalises excessive symbolic growth, unresolved expansion, or non-productive complexity.",
     range: "0-1.0 (typical)",
@@ -56,7 +56,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "coupling_factor",
     label: "Coupling Factor",
-    canonicalName: "lambda (λ)",
+    referenceName: "lambda (λ)",
     family: "Relational Dynamics",
     description: "Controls how strongly symbolic elements are treated as mutually coupled in evaluation or transition dynamics.",
     range: "0-1.0 (typical)",
@@ -70,7 +70,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "binding_strength",
     label: "Binding Strength",
-    canonicalName: "eta (η)",
+    referenceName: "eta (η)",
     family: "Relational Dynamics",
     description: "Controls how strongly neighbouring or related symbols stabilize into persistent structured relations.",
     range: "0-1.0 (typical)",
@@ -84,7 +84,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "noise_level",
     label: "Noise Level",
-    canonicalName: "epsilon (ε)",
+    referenceName: "epsilon (ε)",
     family: "Search Dynamics",
     description: "Controls the probability of random symbolic mutations or noise injection in the search process.",
     range: "0-0.5 (typical)",
@@ -96,7 +96,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "simulation_temperature",
     label: "Simulation Temperature",
-    canonicalName: "temperature",
+    referenceName: "temperature",
     family: "Search Dynamics",
     description: "Governs the acceptance probability of non-improving proposals in the simulated annealing process.",
     range: "0.1-5.0 (typical)",
@@ -108,7 +108,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "experiment_seed",
     label: "Experiment Seed",
-    canonicalName: "seed",
+    referenceName: "seed",
     family: "Search Dynamics",
     description: "Fixes stochastic initialization and proposal trajectory for reproducibility.",
     range: "integer",
@@ -122,7 +122,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "observer_threshold",
     label: "Observer Threshold",
-    canonicalName: "threshold",
+    referenceName: "threshold",
     family: "Thresholds",
     description: "The minimum telic score required for a state to qualify as an 'observer' or meaningful structure.",
     range: "0-1.0",
@@ -136,7 +136,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "max_sequence_length",
     label: "Max Sequence Length",
-    canonicalName: "maxSequenceLength",
+    referenceName: "maxSequenceLength",
     family: "Structural Constraints",
     description: "The maximum number of symbols allowed in a single sequence.",
     range: "5-50",
@@ -148,7 +148,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "simulation_depth",
     label: "Simulation Depth",
-    canonicalName: "maxSteps",
+    referenceName: "maxSteps",
     family: "Structural Constraints",
     description: "The maximum number of iterations the simulation is allowed to run.",
     range: "100-5000",
@@ -160,7 +160,7 @@ export const PARAMETERS_MAPPING: ParameterMapping[] = [
   {
     key: "architecture_mode",
     label: "Architecture Mode",
-    canonicalName: "architectureMode",
+    referenceName: "architectureMode",
     family: "Structural Constraints",
     description: "Selects the structural regime of the engine, such as stratified or flat evaluation.",
     range: "categorical",

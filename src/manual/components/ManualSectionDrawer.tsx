@@ -5,20 +5,20 @@ import { cn } from '../../lib/utils';
 import { SearchContext } from './SearchContext';
 import { Highlight } from './Highlight';
 
-export function ManualSectionDrawer({ 
-  icon: Icon, 
-  title, 
-  subtitle, 
-  children, 
-  keywords = "", 
-  defaultOpen = false 
-}: { 
-  icon: any, 
-  title: string, 
-  subtitle: string, 
-  children: React.ReactNode, 
-  keywords?: string, 
-  defaultOpen?: boolean 
+export function ManualSectionDrawer({
+  icon: Icon,
+  title,
+  subtitle,
+  children,
+  keywords = "",
+  defaultOpen = false
+}: {
+  icon: any,
+  title: string,
+  subtitle: string,
+  children: React.ReactNode,
+  keywords?: string,
+  defaultOpen?: boolean
 }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const searchQuery = React.useContext(SearchContext);
@@ -27,7 +27,7 @@ export function ManualSectionDrawer({
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase();
       if (
-        title.toLowerCase().includes(searchLower) || 
+        title.toLowerCase().includes(searchLower) ||
         subtitle.toLowerCase().includes(searchLower) ||
         keywords.toLowerCase().includes(searchLower)
       ) {
@@ -38,7 +38,7 @@ export function ManualSectionDrawer({
 
   return (
     <section className="glass-panel overflow-hidden border-cyan-500/20">
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-8 flex items-center justify-between hover:bg-white/5 transition-colors text-left"
       >

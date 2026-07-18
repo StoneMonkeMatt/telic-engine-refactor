@@ -4,7 +4,7 @@ export * from './bridge-activation-status';
 export * from './bridge-event-types';
 export * from './bridge-examples';
 export * from './bridge-function-semantics';
-export * from './canonical-symbol-record';
+export * from './reference-symbol-record';
 export * from './compass-alignment';
 export * from './compass-poles';
 export * from './compass-symbol-lists';

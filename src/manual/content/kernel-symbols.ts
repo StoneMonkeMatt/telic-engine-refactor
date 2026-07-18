@@ -1,7 +1,7 @@
 import { SymbolRecord } from "../manual.types";
 
 /**
- * Canonical symbols belonging to the Core_Kernel domain.
+ * Reference symbols belonging to the Core_Kernel domain.
  */
 export const KERNEL_SYMBOLS: SymbolRecord[] = [
   { glyph: '⚓', meaning: 'Stability Anchor Foundation', domain: 'Core_Kernel', weight: 100 },

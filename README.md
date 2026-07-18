@@ -31,6 +31,10 @@ The result is:
 - **Telos Engine**  
   A step-based simulation that evolves symbolic sequences over time.
 
+## Mathematics Records
+
+The repository's mathematical source material is indexed in [`docs/mathematics-recovery/`](docs/mathematics-recovery/README.md). This includes the recovered **Blue Whale / Intelligent Notes — Mathematics and Algorithms V3**, its integrity record, and the active provenance audit.
+
 ---
 
 ## Features

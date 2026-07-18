@@ -1,0 +1,23 @@
+{
+  "experimentId": "EMERGE-KO-001",
+  "initialSequence": ["🌪️", "🐋", "🎯", "⚓", "💀"],
+  "seed": 4,
+  "replicates": 32,
+  "checkpointSearchSeeds": 256,
+  "baselineSteps": 100,
+  "horizon": 100,
+  "rho": 0.2,
+  "maxPermutationAttempts": 10000,
+  "theta": 0.6,
+  "observerPersistence": 2,
+  "kappa": 0.25,
+  "recoveryWeights": {
+    "coherenceDelta": 0.4,
+    "bridgeDelta": 0.4,
+    "structuralLoss": 0.2
+  },
+  "recoveryThresholds": {
+    "bridgeOverlap": 0.9,
+    "coherenceTolerance": 0.05
+  }
+}

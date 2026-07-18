@@ -1,0 +1,232 @@
+name: EMERGE-CARRIER-003B
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-CARRIER-003B-PREREGISTRATION-17JUL2026.md'
+      - 'experiments/emerge-ko-001/carrier-003b-*'
+      - '.github/workflows/emerge-carrier-003b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: freeze-and-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Assemble sealed Carrier-003B sources
+        run: |
+          cat experiments/emerge-ko-001/carrier-003b-runner.part00 \
+              experiments/emerge-ko-001/carrier-003b-runner.part01 \
+              experiments/emerge-ko-001/carrier-003b-runner.part02 \
+              experiments/emerge-ko-001/carrier-003b-runner.part03 \
+              experiments/emerge-ko-001/carrier-003b-runner.part04 \
+              experiments/emerge-ko-001/carrier-003b-runner.part05 \
+              > experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts
+          cat experiments/emerge-ko-001/carrier-003b-aggregate.part00 \
+              experiments/emerge-ko-001/carrier-003b-aggregate.part01 \
+              experiments/emerge-ko-001/carrier-003b-aggregate.part02 \
+              > experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts
+          echo '5c1f2fe37979ed500db7eb482d30a43b0a6121b791df051db7e42a73e55689ea  experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts' | sha256sum -c -
+          echo 'df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6  experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts' | sha256sum -c -
+          npm run lint
+
+      - name: Rebuild frozen V2.2 substrate
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Reproduce Carrier-002C active reference
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json
+
+      - name: Run schedule neutrality and complete-rotation validation
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            1 neutrality \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-manifest.json
+
+      - name: Display setup gate
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-summary.json'); console.log(JSON.stringify({neutrality:r.neutrality,scheduleValidation:r.scheduleValidation,sourceSelectorSha256:r.sourceSelectorSha256,capsuleSelectorSha256:r.capsuleSelectorSha256}, null, 2));"
+
+      - name: Upload frozen inputs and sealed sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003B-inputs
+          path: |
+            docs/EMERGE-CARRIER-003B-PREREGISTRATION-17JUL2026.md
+            experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts
+            experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-manifest.json
+          if-no-files-found: error
+
+  rotation-sweep:
+    name: rotation-${{ matrix.rotation }}
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 14
+      matrix:
+        rotation: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs and sealed sources
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003B-inputs
+          path: .
+
+      - name: Verify rotation runner
+        run: |
+          echo '5c1f2fe37979ed500db7eb482d30a43b0a6121b791df051db7e42a73e55689ea  experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts' | sha256sum -c -
+
+      - name: Run active real versus rotation sham
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            ${{ matrix.rotation }} active \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-manifest.json
+
+      - name: Display rotation result
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-summary.json'); console.log(JSON.stringify({rotation:r.rotation,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,realProjectionReceiptSha256:r.realProjectionReceiptSha256,shamProjectionReceiptSha256:r.shamProjectionReceiptSha256}, null, 2));"
+
+      - name: Upload rotation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-${{ matrix.rotation }}-manifest.json
+          if-no-files-found: error
+
+  aggregate:
+    name: rotation-complete-aggregate
+    needs: rotation-sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003B-inputs
+          path: .
+
+      - name: Download all rotation receipts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: EMERGE-CARRIER-003B-rotation-*
+          path: experiments/emerge-ko-001/results
+          merge-multiple: true
+
+      - name: Verify aggregate analyser
+        run: |
+          echo 'df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6  experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts' | sha256sum -c -
+          npm run lint
+
+      - name: Aggregate all 14 rotations
+        run: |
+          npx tsx experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts \
+            experiments/emerge-ko-001/results \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-manifest.json
+
+      - name: Display aggregate result
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-manifest.json'); console.log(JSON.stringify({scale:r.scale,rotation7Replication:r.rotation7Replication,ensembleEstimators:r.ensembleEstimators,ensembleUncertainty:r.ensembleUncertainty,dynamics:r.dynamics,conclusions:r.conclusions,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+
+      - name: Upload complete Carrier-003B evidence pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003B-results
+          path: |
+            docs/EMERGE-CARRIER-003B-PREREGISTRATION-17JUL2026.md
+            experiments/emerge-ko-001/run-carrier-003b-rotation.generated.ts
+            experiments/emerge-ko-001/aggregate-carrier-003b.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-neutrality-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-*-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-*-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-rotation-*-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003B-aggregate-manifest.json
+          if-no-files-found: error

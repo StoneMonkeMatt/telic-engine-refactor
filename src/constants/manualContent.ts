@@ -5,16 +5,16 @@ export const COMPASS_MANUAL_CONTENT = `
 
 ## Structural Guidance for the Manual Expert
 When interpreting this manual or answering builder queries, observe the following hierarchy of coherence:
-1. **Canonical Understanding (Parts I–VIII):** These are primary. They define the stable contract and the "Telos" that the engine strives toward.
+1. **Reference Understanding (Parts I–VIII):** These are primary. They define the stable contract and the "Telos" that the engine strives toward.
 2. **Live-Engine Interpretation (Part IX):** This is essential for understanding current behavior, implementation status, and technical constraints of the Telos v0.9 kernel.
 3. **Research Framing (Part X):** Provides the theoretical "why" and the speculative seams where the engine may evolve.
 4. **Active Builder Context (Part XI):** Adds the dated implementation roadmap and development notes. This is the "builder's layer" on top of the canon and current truth.
 
-**Verdict:** Part XI is coherent with the manual as a whole. It acts as the dated record of ongoing implementation work, following the canonical contract, the current engine reference, and the research framing.
+**Summary:** Part XI is coherent with the manual as a whole. It acts as the dated record of ongoing implementation work, following the reference contract, the current engine reference, and the research framing.
 
 ---
 
-## Parts I–VIII: The Canonical Contract
+## Parts I–VIII: The Reference Contract
 This section defines the stable identity, lexicon, and logic of the Compass engine.
 
 ### 1. Engine Identity & Overview
@@ -23,7 +23,7 @@ This section defines the stable identity, lexicon, and logic of the Compass engi
 - **Ontology Version:** ${Content.ENGINE_IDENTITY.ontologyVersion}
 - **Architecture:** ${Content.ENGINE_IDENTITY.architecture}
 - **Default Mode:** ${Content.ENGINE_IDENTITY.defaultMode}
-- **Canonical Sequence Length:** ${Content.ENGINE_IDENTITY.canonicalSeqLength}
+- **Reference Sequence Length:** ${Content.ENGINE_IDENTITY.referenceSeqLength}
 - **Observer Persistence:** ${Content.ENGINE_IDENTITY.observerPersistence} Steps
 
 ### 2. Core Lexicon: Parameters (Inputs)
@@ -53,7 +53,7 @@ ${Content.IMPLEMENTATION_STATUS.map(s => `- **${s.label}:** ${s.status}`).join('
 ### 2. Live Ontology Usage
 - **Active Symbols:** ${Content.ACTIVE_SYMBOL_SET_CONFIG.totalSymbolCount} symbols (Prioritized: ${Content.ACTIVE_SYMBOL_SET_CONFIG.prioritizedDomains.join(', ')})
 - **Bridge Activation:** ${Content.BRIDGE_ACTIVATION_STATUS.totalBridges} bridges (Active Families: ${Content.BRIDGE_ACTIVATION_STATUS.activeFamilies.join(', ')})
-- **Compass Alignment:** ${Content.COMPASS_ALIGNMENT_RULES.operationalStatus} (Method: ${Content.COMPASS_ALIGNMENT_RULES.canonicalCheck})
+- **Compass Alignment:** ${Content.COMPASS_ALIGNMENT_RULES.operationalStatus} (Method: ${Content.COMPASS_ALIGNMENT_RULES.referenceCheck})
 
 ### 3. Technical Specifications
 \`\`\`typescript

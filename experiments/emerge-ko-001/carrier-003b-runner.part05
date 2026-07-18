@@ -1,0 +1,81 @@
+      deltaRealMinusShamZ1: deltaZ1,
+      timingFeedbackInteraction,
+      stateSpecificTimingZ0: thetaZ0,
+      stateSpecificTimingZ1: thetaZ1,
+      stateTimingFeedbackInteraction,
+    },
+    uncertainty,
+    pairEffects,
+    dynamics: {
+      comparablePreStateSteps: sumPaired('comparablePreStateSteps'),
+      changedWinnerSteps,
+      changedAdmissionSteps,
+      acceptedTimingInducedActions,
+      shamHoldToRealSwap: sumPaired('holdToSwap'),
+      shamSwapToRealHold: sumPaired('swapToHold'),
+      shamSwapToDifferentRealSwap: sumPaired('swapToSwap'),
+      otherWinnerChanges: sumPaired('otherWinnerChanges'),
+      realStateDivergenceCount: paired.filter(
+        entry => entry.firstStateDivergenceStep !== null,
+      ).length,
+      realReconvergenceCount: paired.filter(entry => entry.everReconverged).length,
+      reconvergenceEvents: sumPaired('reconvergenceEvents'),
+      mechanisticTimingEndpointMet,
+    },
+    interpretation,
+    nextExperiment: trueTimelineImproves
+      ? 'Aggregate all 14 preregistered Carrier-003B rotation summaries before selecting the next experiment.'
+      : mechanisticTimingEndpointMet
+        ? 'Aggregate all 14 preregistered Carrier-003B rotation summaries before selecting the next experiment. preregister a timing-resolution audit on the same coefficient, testing alternative non-adaptive sham permutations and exposure windows before held-out generalisation.'
+        : 'Aggregate all 14 preregistered Carrier-003B rotation summaries before selecting the next experiment. verify schedule exposure magnitude and whether any bounded-history ordering can alter the reachable carrier without tuning the confirmatory result.',
+    branches,
+  };
+
+  const manifest = {
+    schemaVersion: 'emerge-carrier-003b-rotation-manifest-v1',
+    experimentId: summary.experimentId,
+    sourceSelectorSha256: summary.sourceSelectorSha256,
+    capsuleSelectorSha256: summary.capsuleSelectorSha256,
+    carrier002CReferenceSha256: summary.carrier002CReferenceSha256,
+    rotation,
+    realProjectionReceiptSha256: summary.realProjectionReceiptSha256,
+    shamProjectionReceiptSha256: summary.shamProjectionReceiptSha256,
+    summarySha256: stableHash(summary),
+    traceSha256: createHash('sha256').update(traceGzip).digest('hex'),
+    traceRecords: traceLines.length,
+    traceUncompressedBytes: Buffer.byteLength(traceText),
+    traceCompressedBytes: traceGzip.byteLength,
+    neutralityPassed: summary.neutrality.passed,
+    mechanisticTimingEndpointMet,
+    primaryDirectionalInterval: directionalInterval,
+  };
+
+  mkdirSync(dirname(summaryPath), { recursive: true });
+  mkdirSync(dirname(tracePath), { recursive: true });
+  mkdirSync(dirname(manifestPath), { recursive: true });
+  writeFileSync(summaryPath, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+  writeFileSync(tracePath, traceGzip);
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+
+  console.log(
+    JSON.stringify(
+      {
+        experimentId: summary.experimentId,
+        rotation,
+        sourceSelectorSha256: summary.sourceSelectorSha256,
+        capsuleSelectorSha256: summary.capsuleSelectorSha256,
+        neutrality: summary.neutrality,
+        estimators: summary.estimators,
+        uncertainty: summary.uncertainty,
+        dynamics: summary.dynamics,
+        interpretation: summary.interpretation,
+        nextExperiment: summary.nextExperiment,
+        manifest,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+main();

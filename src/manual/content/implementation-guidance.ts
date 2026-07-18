@@ -1,5 +1,5 @@
 /**
- * Canonical field guidance for data persistence.
+ * Reference field guidance for data persistence.
  */
 export const FIELD_GUIDANCE = [
   { label: "Raw Parameter Values", desc: "Save exact numerical or symbolic inputs for bit-perfect reproducibility." },
@@ -48,6 +48,6 @@ export const IMPLEMENTATION_NOTES = [
   "Use CompassRunRecord as the export JSON contract",
   "Use CompassRunSummaryRow as the ingestion target for D1 / SQL-style storage",
   "Keep debugTrace out of default archive exports when storage size matters",
-  "Treat eventLog as the canonical compressed research history",
+  "Treat eventLog as the reference compressed research history",
   "Keep lexicon versions in every saved run so meaning stays stable over time"
 ];

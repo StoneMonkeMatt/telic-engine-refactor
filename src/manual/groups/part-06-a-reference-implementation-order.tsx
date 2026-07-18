@@ -5,11 +5,11 @@ import { ManualDrawer } from '../components/ManualDrawer';
 
 import { IMPLEMENTATION_SEQUENCE, RUN_RECORD_SECTIONS } from '../content/implementation-order';
 
-export const Part06ACanonicalImplementationOrder: React.FC = () => {
+export const Part06AReferenceImplementationOrder: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Workflow} 
-      title="Part VI-A. Canonical Implementation Order" 
+    <ManualSectionDrawer
+      icon={Workflow}
+      title="Part VI-A. Reference Implementation Order"
       subtitle="The Compass Data Contract Implementation Pathway"
     >
       <div className="space-y-6">
@@ -21,7 +21,7 @@ export const Part06ACanonicalImplementationOrder: React.FC = () => {
 
         <ManualDrawer title="1. Implementation Rule">
           <div className="space-y-4 text-[10px] text-white/50 leading-relaxed">
-            <p>The canonical run record is defined first as a TypeScript contract. JSON Schema is derived from that contract. Validation utilities are then built against the schema. Engine logic maps into the contract, but does not define it.</p>
+            <p>The reference run record is defined first as a TypeScript contract. JSON Schema is derived from that contract. Validation utilities are then built against the schema. Engine logic maps into the contract, but does not define it.</p>
             <p>This order prevents semantic drift and avoids coupling storage structure to transient engine details.</p>
           </div>
         </ManualDrawer>
@@ -30,7 +30,7 @@ export const Part06ACanonicalImplementationOrder: React.FC = () => {
           <div className="space-y-6">
             <div className="space-y-2">
               <h5 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Step 1. Lock the top-level run record</h5>
-              <p className="text-[10px] text-white/50 leading-relaxed">The first implementation task is to define the canonical <code className="text-cyan-300">CompassRunRecord</code> shape and its top-level sections:</p>
+              <p className="text-[10px] text-white/50 leading-relaxed">The first implementation task is to define the reference <code className="text-cyan-300">CompassRunRecord</code> shape and its top-level sections:</p>
               <ul className="list-disc list-inside text-[10px] text-white/40 space-y-1 ml-2">
                 {RUN_RECORD_SECTIONS.map((section, i) => (
                   <li key={i}>{section}</li>
@@ -41,12 +41,12 @@ export const Part06ACanonicalImplementationOrder: React.FC = () => {
             <div className="space-y-2">
               <h5 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Step 2. Define subtype contracts</h5>
               <p className="text-[10px] text-white/50 leading-relaxed">Once the top-level record is fixed, subtype interfaces are defined for parameter families, terminal metrics, run summaries, structural summaries, event log entries, debug trace entries, and persistence views.</p>
-              <p className="text-[10px] text-white/40 italic">Subtypes must refine the canonical vocabulary established in the lexicon rather than introduce alternative terminology.</p>
+              <p className="text-[10px] text-white/40 italic">Subtypes must refine the reference vocabulary established in the lexicon rather than introduce alternative terminology.</p>
             </div>
 
             <div className="space-y-2">
               <h5 className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">Step 3. Derive JSON Schema from the contract</h5>
-              <p className="text-[10px] text-white/50 leading-relaxed">The JSON Schema must reflect the canonical TypeScript model. Schema design should describe what was configured, what happened, what was measured, and what was concluded.</p>
+              <p className="text-[10px] text-white/50 leading-relaxed">The JSON Schema must reflect the reference TypeScript model. Schema design should describe what was configured, what happened, what was measured, and what was concluded.</p>
               <p className="text-[10px] text-white/40 italic">The schema must not encode engine reasoning, observer logic, kernel protection logic, or scoring logic.</p>
             </div>
 
@@ -64,7 +64,7 @@ export const Part06ACanonicalImplementationOrder: React.FC = () => {
           </div>
         </ManualDrawer>
 
-        <ManualDrawer title="4. Canonical Reference Shape">
+        <ManualDrawer title="4. Reference Reference Shape">
           <div className="space-y-4">
             <div className="p-4 bg-black/40 rounded-xl border border-white/5 font-mono text-[10px] text-cyan-300/80 overflow-x-auto">
               <pre>{`interface CompassRunRecord {
@@ -100,7 +100,7 @@ export const Part06ACanonicalImplementationOrder: React.FC = () => {
         <div className="pt-8 border-t border-white/5">
           <div className="p-6 bg-cyan-500/5 rounded-2xl border border-cyan-500/10">
             <p className="text-[11px] text-cyan-400/80 leading-relaxed font-medium italic text-center">
-              "The canonical implementation order protects the builder from inventing a schema too early. The contract must come first, and everything else should follow it."
+              "The reference implementation order protects the builder from inventing a schema too early. The contract must come first, and everything else should follow it."
             </p>
           </div>
         </div>

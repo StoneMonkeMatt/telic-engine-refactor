@@ -7,11 +7,11 @@ import { PROFILE_FIELDS_MAPPING } from '../content/profile-fields-mapping';
 import { FIELD_GUIDANCE } from '../content/implementation-guidance';
 import { PARAMETER_REGIME_PROFILES } from '../content/parameter-regime-profiles';
 
-export const Part04CanonicalFieldGuidance: React.FC = () => {
+export const Part04ReferenceFieldGuidance: React.FC = () => {
   return (
-    <ManualSectionDrawer 
-      icon={Database} 
-      title="Part IV. Canonical Field Guidance" 
+    <ManualSectionDrawer
+      icon={Database}
+      title="Part IV. Reference Field Guidance"
       subtitle="Best Practices for Data Persistence"
     >
       <div className="space-y-4 text-sm text-white/60 leading-relaxed">
@@ -68,7 +68,7 @@ export const Part04CanonicalFieldGuidance: React.FC = () => {
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
               <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">**Design Rule**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
-                The research trace should preserve meaningful state changes, interpretable structural events, and summary-relevant transitions. The execution trace may be more verbose, but should remain optional and non-canonical for long-term archive use.
+                The research trace should preserve meaningful state changes, interpretable structural events, and summary-relevant transitions. The execution trace may be more verbose, but should remain optional and non-reference for long-term archive use.
               </p>
             </div>
 
@@ -84,7 +84,7 @@ export const Part04CanonicalFieldGuidance: React.FC = () => {
         <ManualDrawer title="C. Parameter Regime Profiles">
           <div className="space-y-6">
             <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-              <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+              <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
               <p className="text-[10px] text-white/40 leading-relaxed">
                 The schema should support categorical labels for common parameter configurations (e.g., "Standard Search", "Aggressive Exploration"). This allows for high-level filtering of runs.
               </p>

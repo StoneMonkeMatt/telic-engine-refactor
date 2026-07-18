@@ -1,0 +1,317 @@
+name: EMERGE-CARRIER-003D
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md'
+      - '.github/scripts/emerge-carrier-003d-*.ts'
+      - '.github/workflows/emerge-carrier-003d.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: freeze-assemble-and-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Assemble sealed base sources
+        run: |
+          cat experiments/emerge-ko-001/carrier-003b-runner.part00 \
+              experiments/emerge-ko-001/carrier-003b-runner.part01 \
+              experiments/emerge-ko-001/carrier-003b-runner.part02 \
+              experiments/emerge-ko-001/carrier-003b-runner.part03 \
+              experiments/emerge-ko-001/carrier-003b-runner.part04 \
+              experiments/emerge-ko-001/carrier-003b-runner.part05 \
+              > experiments/emerge-ko-001/run-carrier-003b-base.generated.ts
+          cat experiments/emerge-ko-001/carrier-003b-aggregate.part00 \
+              experiments/emerge-ko-001/carrier-003b-aggregate.part01 \
+              experiments/emerge-ko-001/carrier-003b-aggregate.part02 \
+              > experiments/emerge-ko-001/aggregate-carrier-003b-base.generated.ts
+          echo '5c1f2fe37979ed500db7eb482d30a43b0a6121b791df051db7e42a73e55689ea  experiments/emerge-ko-001/run-carrier-003b-base.generated.ts' | sha256sum -c -
+          echo 'df10a6501be5156fa6466f96e778388ece75f4b49b23ad2a79bdb76e6c8413b6  experiments/emerge-ko-001/aggregate-carrier-003b-base.generated.ts' | sha256sum -c -
+
+      - name: Verify Carrier-003D committed source receipts
+        run: |
+          test "$(git hash-object .github/scripts/emerge-carrier-003d-runner.ts)" = 'dca6a31d4271b40982f29cf985dd9fd490ae73cd'
+          test "$(git hash-object .github/scripts/emerge-carrier-003d-aggregate.ts)" = '9c18198e2639d85aec13c863d18bda3dff969925'
+          test "$(git hash-object src/logic/dualityProjection.ts)" = '2e92f8018678c5f838fbfe717a58c7605a83bf7c'
+
+      - name: Assemble and verify Carrier-003C reference runner
+        run: |
+          npx tsx experiments/emerge-ko-001/assemble-carrier-003c.ts \
+            experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts
+          echo 'b4d0ff5407735b2f01c7c0dd1d15a27b8dcb93342359cb787147741858764c0a  experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts' | sha256sum -c -
+
+      - name: Assemble Carrier-003D runner and aggregate
+        run: |
+          npx tsx .github/scripts/emerge-carrier-003d-runner.ts \
+            experiments/emerge-ko-001/run-carrier-003b-base.generated.ts \
+            experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts \
+            | tee /tmp/carrier-003d-runner-receipt.json
+          npx tsx .github/scripts/emerge-carrier-003d-aggregate.ts \
+            experiments/emerge-ko-001/aggregate-carrier-003b-base.generated.ts \
+            experiments/emerge-ko-001/aggregate-carrier-003d.generated.ts \
+            | tee /tmp/carrier-003d-aggregate-receipt.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const runner = JSON.parse(fs.readFileSync('/tmp/carrier-003d-runner-receipt.json', 'utf8'));
+          const aggregate = JSON.parse(fs.readFileSync('/tmp/carrier-003d-aggregate-receipt.json', 'utf8'));
+          fs.mkdirSync('experiments/emerge-ko-001/results', { recursive: true });
+          fs.writeFileSync(
+            'experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json',
+            JSON.stringify({
+              schemaVersion: 'emerge-carrier-003d-source-receipts-v1',
+              runner,
+              aggregate,
+              preregistration: 'docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md',
+            }, null, 2) + '\n',
+          );
+          NODE
+          npm run lint
+
+      - name: Verify pure projection equals native engine update
+        run: npx tsx experiments/emerge-ko-001/verify-duality-projection.ts
+
+      - name: Rebuild frozen V2.2 substrate
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Reproduce Carrier-003C active reference
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-manifest.json
+
+      - name: Run schedule neutrality and complete-rotation validation
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-summary.json \
+            1 neutrality \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-manifest.json
+
+      - name: Create independent rotation-7 reference
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-summary.json \
+            7 active \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-manifest.json
+
+      - name: Display setup gates
+        run: |
+          node -e "const n=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-summary.json'); const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-summary.json'); const s=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json'); console.log(JSON.stringify({neutrality:n.neutrality,scheduleValidation:n.scheduleValidation,rotation7:{estimators:r.estimators,dynamics:r.dynamics},sourceReceipts:s}, null, 2));"
+
+      - name: Upload frozen inputs and sealed sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003D-inputs
+          path: |
+            docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md
+            .github/scripts/emerge-carrier-003d-runner.ts
+            .github/scripts/emerge-carrier-003d-aggregate.ts
+            experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts
+            experiments/emerge-ko-001/aggregate-carrier-003d.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-manifest.json
+          if-no-files-found: error
+
+  rotation-sweep:
+    name: rotation-${{ matrix.rotation }}
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 14
+      matrix:
+        rotation: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs and sealed sources
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003D-inputs
+          path: .
+
+      - name: Verify generated runner receipt
+        run: |
+          expected="$(node -p "require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json').runner.generatedSha256")"
+          echo "$expected  experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts" | sha256sum -c -
+
+      - name: Run active true slope versus rotation sham
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003C-reference-summary.json \
+            ${{ matrix.rotation }} active \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-manifest.json
+
+      - name: Display rotation result
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-summary.json'); console.log(JSON.stringify({rotation:r.rotation,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,realProjectionReceiptSha256:r.realProjectionReceiptSha256,shamProjectionReceiptSha256:r.shamProjectionReceiptSha256}, null, 2));"
+
+      - name: Upload rotation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-${{ matrix.rotation }}-manifest.json
+          if-no-files-found: error
+
+  aggregate:
+    name: complete-sham-slope-aggregate
+    needs: rotation-sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003D-inputs
+          path: .
+
+      - name: Download all rotation receipts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: EMERGE-CARRIER-003D-rotation-*
+          path: experiments/emerge-ko-001/results
+          merge-multiple: true
+
+      - name: Verify aggregate analyser receipt
+        run: |
+          expected="$(node -p "require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json').aggregate.generatedSha256")"
+          echo "$expected  experiments/emerge-ko-001/aggregate-carrier-003d.generated.ts" | sha256sum -c -
+          npm run lint
+
+      - name: Aggregate all 14 rotations
+        run: |
+          npx tsx experiments/emerge-ko-001/aggregate-carrier-003d.generated.ts \
+            experiments/emerge-ko-001/results \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-manifest.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-summary.json
+
+      - name: Enforce primary and receipt gates
+        run: |
+          node - <<'NODE'
+          const r = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-summary.json');
+          if (!r.neutrality.passed) throw new Error('Neutrality failed.');
+          if (!r.rotation7Replication.passed) throw new Error('Rotation-7 reproduction failed.');
+          if (!r.conclusions.mechanisticTimingAcrossAllRotations) {
+            throw new Error('Signed-slope timing was not mechanistically expressed in all rotations.');
+          }
+          console.log(JSON.stringify({
+            primary: r.ensembleUncertainty.deltaRealMinusShamZ1,
+            conclusions: r.conclusions,
+            interpretation: r.interpretation,
+            nextExperiment: r.nextExperiment,
+          }, null, 2));
+          NODE
+
+      - name: Display aggregate result
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-manifest.json'); console.log(JSON.stringify({scale:r.scale,rotation7Replication:r.rotation7Replication,ensembleEstimators:r.ensembleEstimators,ensembleUncertainty:r.ensembleUncertainty,rotationSensitivity:r.rotationSensitivity,dynamics:r.dynamics,conclusions:r.conclusions,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+
+      - name: Upload complete Carrier-003D evidence pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003D-results
+          path: |
+            docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md
+            .github/scripts/emerge-carrier-003d-runner.ts
+            .github/scripts/emerge-carrier-003d-aggregate.ts
+            experiments/emerge-ko-001/run-carrier-003d-rotation.generated.ts
+            experiments/emerge-ko-001/aggregate-carrier-003d.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-source-receipts.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-neutrality-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-7-reference-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-*-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-*-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-rotation-*-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003D-aggregate-manifest.json
+          if-no-files-found: error

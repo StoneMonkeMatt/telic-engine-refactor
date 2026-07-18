@@ -2,7 +2,7 @@ import React from "react";
 import { FileJson, Shield } from "lucide-react";
 import { ManualDrawer } from "../components/ManualDrawer";
 import { ManualSectionDrawer } from "../components/ManualSectionDrawer";
-import { CANONICAL_JSON_SHAPE } from "../examples/canonical-json-shape";
+import { REFERENCE_JSON_SHAPE } from "../examples/reference-json-shape";
 import { JSON_SCHEMA_DEFINITION } from "../examples/json-schema-definition";
 import { TYPES_IMPLEMENTATION } from "../examples/types-implementation";
 import { JSON_SCHEMA_TYPES_IMPLEMENTATION } from "../examples/json-schema-types-implementation";
@@ -16,10 +16,10 @@ export function Part08JsonSchemaValidation() {
       <ManualSectionDrawer
         icon={FileJson}
         title="Part VIII. JSON Schema & Validation"
-        subtitle="Canonical Run Record Contract"
+        subtitle="Reference Run Record Contract"
       >
         <div className="space-y-4">
-          <ManualDrawer title="A. Canonical JSON Shape (Example)">
+          <ManualDrawer title="A. Reference JSON Shape (Example)">
             <div className="space-y-6">
               <div className="space-y-4 text-[10px] text-white/40 leading-relaxed">
                 <p>
@@ -27,7 +27,7 @@ export function Part08JsonSchemaValidation() {
                 </p>
               </div>
               <pre className="p-4 bg-black/40 rounded-xl border border-white/5 text-[9px] font-mono text-cyan-400 overflow-x-auto max-h-[400px]">
-                {CANONICAL_JSON_SHAPE}
+                {REFERENCE_JSON_SHAPE}
               </pre>
             </div>
           </ManualDrawer>
@@ -36,7 +36,7 @@ export function Part08JsonSchemaValidation() {
             <div className="space-y-6">
               <div className="space-y-4 text-[10px] text-white/40 leading-relaxed">
                 <p>
-                  The canonical CompassRunRecord is governed by a Draft 2020-12 JSON Schema. This ensures that any exported data can be validated by standard tooling.
+                  The reference CompassRunRecord is defined by a Draft 2020-12 JSON Schema. This ensures that any exported data can be validated by standard tooling.
                 </p>
               </div>
               <pre className="p-4 bg-black/40 rounded-xl border border-white/5 text-[9px] font-mono text-cyan-400 overflow-x-auto max-h-[300px]">
@@ -91,7 +91,7 @@ export function Part08JsonSchemaValidation() {
             <div className="space-y-6">
               <div className="space-y-4 text-[10px] text-white/40 leading-relaxed">
                 <p>
-                  This is the core TypeScript contract that governs the Compass simulation. It is designed to be shared between the simulation engine, the database ingestion layer, and the research export tools.
+                  This is the core TypeScript contract that defines the Compass simulation. It is designed to be shared between the simulation engine, the database ingestion layer, and the research export tools.
                 </p>
               </div>
               <div className="space-y-2">
@@ -167,7 +167,7 @@ export function Part08JsonSchemaValidation() {
         <div className="pt-8 border-t border-white/5">
           <div className="p-6 bg-cyan-500/5 rounded-2xl border border-cyan-500/10">
             <p className="text-[11px] text-cyan-400/80 leading-relaxed font-medium italic text-center">
-              "The canonical CompassRunRecord is the single source of truth for simulation data. By defining it piece-by-piece and governing it with JSON Schema, we ensure that research observations remain valid across engine versions and storage backends."
+              "The reference CompassRunRecord is the single source of truth for simulation data. By defining it piece-by-piece and defining it with JSON Schema, we ensure that research observations remain valid across engine versions and storage backends."
             </p>
           </div>
         </div>

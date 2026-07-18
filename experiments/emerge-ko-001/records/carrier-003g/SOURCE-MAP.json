@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "emerge-carrier-003g-source-map-v1",
+  "experimentId": "EMERGE-CARRIER-003G-DARK-PERSISTENCE",
+  "sources": [
+    {
+      "repository": "Observer-Fix",
+      "commit": "9bfea17183309756a1f33a0ec5c4e514f8b2959a",
+      "path": "src/logic/telos.ts",
+      "blob": "3296955e8032b7717e79482657d332cc5b9541a4",
+      "use": ["six-condition diagnostic", "integer persistence count", "increment", "reset", "declaration timing"]
+    },
+    {
+      "repository": "Compass-Observer-V1",
+      "commit": "49814c179a7349e19949ee498e9683a8590bcedb",
+      "path": "src/logic/telos.ts",
+      "blob": "3296955e8032b7717e79482657d332cc5b9541a4",
+      "use": ["independent propagation of the Observer-Fix implementation"]
+    },
+    {
+      "repository": "The-Compass-V4-Current-State-",
+      "commit": "8c39278470353d8400aa7962a6bb608dd1eac6b8",
+      "path": "src/logic/telos.ts",
+      "blob": "853478e505f5933202445ce26953fa1aefc8a2dd",
+      "use": ["later six-condition diagnostic", "expanded observer-symbol set", "diagnostic-before-declaration order"]
+    },
+    {
+      "repository": "blue-whale-sim",
+      "commit": "d568dcab12a2efecbb577f54961e91b75bfe4908",
+      "path": "src/logic/telos.ts",
+      "blob": "2cbc6c64d0df69ab3264d4e04dbec1f908462110",
+      "use": ["earlier one-step threshold-latch comparison generation"]
+    },
+    {
+      "repository": "telic-engine-refactor",
+      "commit": "faa614a5a7b00c38b35edf11affeca5ad654a1bb",
+      "path": "experiments/emerge-ko-001/run-carrier-002c.ts",
+      "blob": "ffe28e5c453831688ee86f8d5a4e63cf7a5e1023",
+      "use": ["frozen threshold-plus-inventory capsule transition"]
+    },
+    {
+      "repository": "telic-engine-refactor",
+      "commit": "faa614a5a7b00c38b35edf11affeca5ad654a1bb",
+      "path": "src/logic/dualityProjection.ts",
+      "blob": "f6e3e4220144f1727a00beb81959cff5cf0817c3",
+      "use": ["candidate duality projection"]
+    },
+    {
+      "repository": "telic-engine-refactor",
+      "commit": "faa614a5a7b00c38b35edf11affeca5ad654a1bb",
+      "path": "src/logic/telos.ts",
+      "blob": "8884af02c6e7fa2343a23852ad81e147d76db143",
+      "use": ["frozen Carrier engine metrics and accepted-transition behaviour"]
+    }
+  ],
+  "separations": {
+    "carrierCapsule": "threshold plus prior qualifying inventory change",
+    "observerFix": "six simultaneous candidate-state conditions",
+    "v4": "six simultaneous conditions with expanded observer-symbol set",
+    "oneStepLatch": "threshold crossing without persistence"
+  }
+}

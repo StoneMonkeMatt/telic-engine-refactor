@@ -1,0 +1,323 @@
+--- /mnt/data/carrier002c/run-carrier-002c.ts	2026-07-17 10:13:20.000000000 +0000
++++ /mnt/data/carrier002c/run-carrier-003.ts	2026-07-17 10:53:54.053642637 +0000
+@@ -69,7 +69,8 @@
+ 
+ type CapsuleId = 'M0-unlatched' | 'M1-latched';
+ type MicrostateSource = 'nonEmergent' | 'emergent';
+-type CarrierActive = 0 | 1;
++type TimingMode = 'real' | 'sham';
++type TimingActive = 0 | 1;
+ 
+ interface MacroHistoryCapsule {
+   schemaVersion: 'emerge-carrier-capsule-v1';
+@@ -109,17 +110,20 @@
+   };
+ }
+ 
+-interface Carrier001Receipt {
++interface Carrier002CReferenceBranch {
+   pairId: string;
+   microstateSource: MicrostateSource;
+   replicate: number;
+   feedback: 0 | 1;
+-  projectedTrajectorySha256: string;
++  capsuleId: CapsuleId;
++  active: 0 | 1;
++  projectionSha256: string;
+ }
+ 
+-interface Carrier001Result {
++interface Carrier002CReference {
+   sourceSelectorSha256: string;
+-  comparisonReceipts: Carrier001Receipt[];
++  capsuleSelectorSha256: string;
++  branches: Carrier002CReferenceBranch[];
+ }
+ 
+ interface CapsuleState {
+@@ -156,6 +160,8 @@
+   carrierAdjustmentSum: number;
+   maxAbsCarrierAdjustment: number;
+   acceptedTransitions: number;
++  timingExposureSteps: number;
++  timingScheduleSha256: string;
+   finalCapsule: CapsuleState;
+ }
+ 
+@@ -188,7 +194,8 @@
+   replicate: number;
+   feedback: 0 | 1;
+   capsuleId: CapsuleId;
+-  active: CarrierActive;
++  timingMode: TimingMode;
++  timingActive: TimingActive;
+   branchSeed: number;
+   projection: KernelProjection;
+   diagnostics: BranchDiagnostics;
+@@ -201,6 +208,7 @@
+   carrierAdjustment: number;
+   carriedDualityLoss: number;
+   candidateDema: number;
++  historyAnchor: number;
+ };
+ 
+ function stableHash(value: unknown): string {
+@@ -296,21 +304,71 @@
+   return capsules;
+ }
+ 
+-function loadCarrier001(path: string, sourceSelectorSha256: string): Carrier001Result {
+-  const result = JSON.parse(readFileSync(path, 'utf8')) as Carrier001Result;
++function loadCarrier002C(
++  path: string,
++  sourceSelectorSha256: string,
++  capsuleSelectorSha256: string,
++): Carrier002CReference {
++  const result = JSON.parse(readFileSync(path, 'utf8')) as Carrier002CReference;
+   if (result.sourceSelectorSha256 !== sourceSelectorSha256) {
+-    throw new Error('Carrier-001 result and V2.2 panel have different selector receipts.');
++    throw new Error('Carrier-002C result and V2.2 panel have different selector receipts.');
++  }
++  if (result.capsuleSelectorSha256 !== capsuleSelectorSha256) {
++    throw new Error('Carrier-002C result and frozen capsules have different selector receipts.');
+   }
+   return result;
+ }
+ 
+-function receiptKey(
++function referenceKey(
+   pairId: string,
+   microstateSource: MicrostateSource,
+   replicate: number,
+   feedback: 0 | 1,
++  capsuleId: CapsuleId,
+ ): string {
+-  return `${pairId}|${microstateSource}|${replicate}|${feedback}`;
++  return `${pairId}|${microstateSource}|${replicate}|${feedback}|${capsuleId}`;
++}
++
++function normalizedHistory(capsule: MacroHistoryCapsule, length = 16): number[] {
++  const source = capsule.boundedDualityHistory.slice(-length);
++  if (source.length === 0) throw new Error(`Capsule ${capsule.capsuleId} has no history.`);
++  const padded = [...Array(Math.max(0, length - source.length)).fill(source[0]), ...source];
++  const schedule = padded.slice(-length);
++  if (Math.abs(schedule[schedule.length - 1] - capsule.dEma) > 1e-12) {
++    throw new Error(`Capsule ${capsule.capsuleId} history does not terminate at dEma.`);
++  }
++  return schedule;
++}
++
++function rotatePreterminal(values: number[], offset: number): number[] {
++  if (values.length < 3) throw new Error('Timing schedule must contain at least three values.');
++  const terminal = values[values.length - 1];
++  const prefixValues = values.slice(0, -1);
++  const shift = ((offset % prefixValues.length) + prefixValues.length) % prefixValues.length;
++  if (shift === 0) throw new Error('Sham rotation must be non-zero.');
++  return [...prefixValues.slice(shift), ...prefixValues.slice(0, shift), terminal];
++}
++
++function sortedNumeric(values: number[]): number[] {
++  return [...values].sort((a, b) => a - b);
++}
++
++function buildTimingSchedules(capsule: MacroHistoryCapsule) {
++  const real = normalizedHistory(capsule, 16);
++  const sham = rotatePreterminal(real, 7);
++  if (JSON.stringify(sortedNumeric(real)) !== JSON.stringify(sortedNumeric(sham))) {
++    throw new Error('Real and sham timing schedules do not preserve the same value multiset.');
++  }
++  if (real[real.length - 1] !== sham[sham.length - 1]) {
++    throw new Error('Real and sham timing schedules do not preserve the terminal anchor.');
++  }
++  return {
++    real,
++    sham,
++    realSha256: stableHash(real),
++    shamSha256: stableHash(sham),
++    rotation: 7,
++  };
+ }
+ 
+ function deterministicWinner(
+@@ -364,7 +422,9 @@
+   lesion: FrozenLesion,
+   feedback: 0 | 1,
+   capsule: MacroHistoryCapsule,
+-  active: CarrierActive,
++  timingMode: TimingMode,
++  timingActive: TimingActive,
++  timingSchedule: number[],
+   emaAlpha: number,
+   historyWindow: number,
+ ): BranchRun {
+@@ -382,6 +442,8 @@
+   let carrierAdjustedCandidates = 0;
+   let carrierAdjustmentSum = 0;
+   let maxAbsCarrierAdjustment = 0;
++  let timingExposureSteps = 0;
++  const timingScheduleSha256 = stableHash(timingSchedule);
+   const candidateExposures: Record<string, number> = {};
+   const carrierAdjustedByAction: Record<string, number> = {};
+   const trajectoryKeys = [current.join('|')];
+@@ -408,6 +470,11 @@
+     const currentCoherence = telos.coherence(current);
+     const currentBridgeRate = bridgeRate(codex, current);
+     const tieBreakContext = createTieBreakContext(lesion.branchSeed, step, current);
++    const historyAnchor =
++      timingActive === 1 && step <= timingSchedule.length
++        ? timingSchedule[step - 1]
++        : capsuleState.dEma;
++    if (timingActive === 1 && step <= timingSchedule.length) timingExposureSteps++;
+ 
+     const carrierRanked: CarrierCandidate[] = ranked.map(candidate => {
+       increment(candidateExposures, actionLabel(candidate.type));
+@@ -416,9 +483,9 @@
+         ? Math.max(0, currentRawDuality - candidate.rawDuality)
+         : 0;
+       const candidateDema =
+-        capsuleState.dEma + emaAlpha * (candidate.rawDuality - capsuleState.dEma);
+-      const carriedDualityLoss = Math.max(0, capsuleState.dEma - candidateDema);
+-      const carrierAdjustment = active * 0.5 * (rawDualityLoss - carriedDualityLoss);
++        historyAnchor + emaAlpha * (candidate.rawDuality - historyAnchor);
++      const carriedDualityLoss = Math.max(0, historyAnchor - candidateDema);
++      const carrierAdjustment = 0.5 * (rawDualityLoss - carriedDualityLoss);
+ 
+       if (Math.abs(carrierAdjustment) > 1e-15) {
+         carrierAdjustedCandidates++;
+@@ -437,6 +504,7 @@
+         carrierAdjustment,
+         carriedDualityLoss,
+         candidateDema,
++        historyAnchor,
+       };
+     });
+ 
+@@ -467,6 +535,7 @@
+       carrierAdjustment: 0,
+       carriedDualityLoss: 0,
+       candidateDema: capsuleState.dEma,
++      historyAnchor: capsuleState.dEma,
+     })) as CarrierCandidate[];
+     const baselineAugmented = augmentFeedback(zeroCarrier);
+     const activeAugmented = augmentFeedback(carrierRanked);
+@@ -511,7 +580,7 @@
+         historyWindow,
+       );
+ 
+-      if (active === 1) {
++      {
+         const selected = selection.selected as CarrierCandidate;
+         acceptedTrace.push({
+           pairId,
+@@ -519,11 +588,14 @@
+           replicate: lesion.replicate,
+           feedback,
+           capsuleId: capsule.capsuleId,
++          timingMode,
++          timingActive,
+           step,
+           action: actionLabel(selected.type),
+           carrierAdjustment: selected.carrierAdjustment,
+           carriedDualityLoss: selected.carriedDualityLoss,
+           candidateDema: selected.candidateDema,
++          historyAnchor: selected.historyAnchor,
+           beforeSequenceSha256,
+           afterSequenceSha256: stableHash(current),
+           beforeCapsule,
+@@ -568,6 +640,8 @@
+       carrierAdjustmentSum,
+       maxAbsCarrierAdjustment,
+       acceptedTransitions: acceptedSteps,
++      timingExposureSteps,
++      timingScheduleSha256,
+       finalCapsule: capsuleState,
+     },
+   };
+@@ -668,46 +742,55 @@
+     process.argv[3] ??
+       'experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json',
+   );
+-  const carrier001Path = resolve(
++  const carrier002CPath = resolve(
+     process.argv[4] ??
+-      'experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json',
++      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json',
+   );
+   const summaryPath = resolve(
+     process.argv[5] ??
+-      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json',
++      'experiments/emerge-ko-001/results/EMERGE-CARRIER-003-summary.json',
+   );
+   const tracePath = resolve(
+     process.argv[6] ??
+-      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-trace.jsonl.gz',
++      'experiments/emerge-ko-001/results/EMERGE-CARRIER-003-trace.jsonl.gz',
+   );
+   const manifestPath = resolve(
+     process.argv[7] ??
+-      'experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json',
++      'experiments/emerge-ko-001/results/EMERGE-CARRIER-003-manifest.json',
+   );
+ 
+   const panel = loadPanel(panelPath);
+   const capsules = loadCapsules(capsulePath, panel.selectorSha256);
+-  const carrier001 = loadCarrier001(carrier001Path, panel.selectorSha256);
++  const carrier002C = loadCarrier002C(
++    carrier002CPath,
++    panel.selectorSha256,
++    capsules.capsuleSelectorSha256,
++  );
+   const config = panel.frozen.config;
+   const emaAlpha = capsules.frozen.emaAlpha;
+   const historyWindow = capsules.frozen.historyWindow;
+   const codex = new Codex();
+-  const legacyReceiptMap = new Map(
+-    carrier001.comparisonReceipts.map(receipt => [
+-      receiptKey(
+-        receipt.pairId,
+-        receipt.microstateSource,
+-        receipt.replicate,
+-        receipt.feedback,
+-      ),
+-      receipt.projectedTrajectorySha256,
+-    ]),
++
++  const referenceMap = new Map(
++    carrier002C.branches
++      .filter(branch => branch.active === 1)
++      .map(branch => [
++        referenceKey(
++          branch.pairId,
++          branch.microstateSource,
++          branch.replicate,
++          branch.feedback,
++          branch.capsuleId,
++        ),
++        branch.projectionSha256,
++      ]),
+   );
+ 
+   const branches: BranchSummary[] = [];
+   const traceLines: string[] = [];
+   let neutralityComparisons = 0;
+   let neutralityMismatches = 0;
++  const scheduleReceipts: Record<string, unknown>[] = [];
+ 
+   for (const pair of panel.frozen.pairs) {
+     const carrierPair = capsules.frozen.pairs.find(
+@@ -719,17 +802,78 @@
+       const checkpoint = pair[microstateSource];
+       for (const lesion of checkpoint.lesions) {
+         for (const feedback of [0, 1] as const) {
+-          const legacyHash = legacyReceiptMap.get(
+-            receiptKey(pair.pairId, microstateSource, lesion.replicate, feedback),
+-          );
+-          if (!legacyHash) {
+-            throw new Error(
+-              `Missing Carrier-001 receipt for ${pair.pairId}/${microstateSource}/replicate=${lesion.replicate}/Z=${feedback}.`,
++          for (const capsule of [carrierPair.m0, carrierPair.m1]) {
++            const schedules = buildTimingSchedules(capsule);
++            if (lesion.replicate === 0 && microstateSource === 'nonEmergent' && feedback === 0) {
++              scheduleReceipts.push({
++                pairId: pair.pairId,
++

@@ -1,4 +1,4 @@
-export const CANONICAL_JSON_SHAPE = `{
+export const REFERENCE_JSON_SHAPE = `{
   "metadata": {
     "schemaVersion": "compass-run-v1",
     "parameterLexiconVersion": "compass-v1",
@@ -32,7 +32,7 @@ export const CANONICAL_JSON_SHAPE = `{
     "relationalProfile": "moderate_binding",
     "searchProfile": "moderate_exploration",
     "thresholdProfile": "standard_observer",
-    "constraintProfile": "canonical_10x60"
+    "constraintProfile": "reference_10x60"
   },
   "initialState": {
     "initialSequence": ["⚓", "⛓️", "🕸️"],
@@ -73,5 +73,5 @@ export const CANONICAL_JSON_SHAPE = `{
     "adversarialTestVersion": "v1",
     "adversarialFailureReason": "coherence collapse under perturbation"
   },
-  "tags": ["baseline", "canonical", "paper-probe"]
+  "tags": ["baseline", "reference", "paper-probe"]
 }`;

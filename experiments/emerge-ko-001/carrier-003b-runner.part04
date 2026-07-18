@@ -1,0 +1,216 @@
+  const deltaZ1 = deltaForFeedback(1);
+  const timingFeedbackInteraction = deltaZ1 - deltaZ0;
+  const thetaZ0 = thetaForFeedback(0);
+  const thetaZ1 = thetaForFeedback(1);
+  const stateTimingFeedbackInteraction = thetaZ1 - thetaZ0;
+
+  const branchValue = (
+    pairId: string,
+    microstateSource: MicrostateSource,
+    replicate: number,
+    capsuleId: CapsuleId,
+    timingMode: TimingMode,
+    feedback: 0 | 1,
+  ): number => {
+    const branch = branches.find(
+      entry =>
+        entry.pairId === pairId &&
+        entry.microstateSource === microstateSource &&
+        entry.replicate === replicate &&
+        entry.capsuleId === capsuleId &&
+        entry.timingMode === timingMode &&
+        entry.timingActive === 1 &&
+        entry.feedback === feedback,
+    );
+    if (!branch) throw new Error('Missing branch while calculating timing effects.');
+    return branch.projection.finalTargetRecovery;
+  };
+
+  const pairEffects = panel.frozen.pairs.map(pair => {
+    const delta = (feedback: 0 | 1) => {
+      const effects: number[] = [];
+      for (const microstateSource of ['nonEmergent', 'emergent'] as const) {
+        for (let replicate = 0; replicate < config.replicates; replicate++) {
+          for (const capsuleId of ['M0-unlatched', 'M1-latched'] as const) {
+            effects.push(
+              branchValue(pair.pairId, microstateSource, replicate, capsuleId, 'real', feedback) -
+                branchValue(pair.pairId, microstateSource, replicate, capsuleId, 'sham', feedback),
+            );
+          }
+        }
+      }
+      return mean(effects);
+    };
+    const theta = (feedback: 0 | 1) => {
+      const effects: number[] = [];
+      for (const microstateSource of ['nonEmergent', 'emergent'] as const) {
+        for (let replicate = 0; replicate < config.replicates; replicate++) {
+          effects.push(
+            (branchValue(pair.pairId, microstateSource, replicate, 'M1-latched', 'real', feedback) -
+              branchValue(pair.pairId, microstateSource, replicate, 'M1-latched', 'sham', feedback)) -
+              (branchValue(pair.pairId, microstateSource, replicate, 'M0-unlatched', 'real', feedback) -
+                branchValue(pair.pairId, microstateSource, replicate, 'M0-unlatched', 'sham', feedback)),
+          );
+        }
+      }
+      return mean(effects);
+    };
+    const delta0 = delta(0);
+    const delta1 = delta(1);
+    const theta0 = theta(0);
+    const theta1 = theta(1);
+    return {
+      pairId: pair.pairId,
+      deltaRealMinusShamZ0: delta0,
+      deltaRealMinusShamZ1: delta1,
+      timingFeedbackInteraction: delta1 - delta0,
+      stateSpecificTimingZ0: theta0,
+      stateSpecificTimingZ1: theta1,
+      stateTimingFeedbackInteraction: theta1 - theta0,
+    };
+  });
+
+  const interval = (values: number[]) => {
+    const center = mean(values);
+    const standardError =
+      sampleStandardDeviation(values) / Math.sqrt(Math.max(values.length, 1));
+    const critical = tCritical95(values.length - 1);
+    return {
+      mean: center,
+      standardError,
+      degreesOfFreedom: Math.max(values.length - 1, 0),
+      interval95: [center - critical * standardError, center + critical * standardError],
+    };
+  };
+
+  const uncertainty = {
+    deltaRealMinusShamZ0: interval(pairEffects.map(pair => pair.deltaRealMinusShamZ0)),
+    deltaRealMinusShamZ1: interval(pairEffects.map(pair => pair.deltaRealMinusShamZ1)),
+    timingFeedbackInteraction: interval(pairEffects.map(pair => pair.timingFeedbackInteraction)),
+    stateSpecificTimingZ0: interval(pairEffects.map(pair => pair.stateSpecificTimingZ0)),
+    stateSpecificTimingZ1: interval(pairEffects.map(pair => pair.stateSpecificTimingZ1)),
+    stateTimingFeedbackInteraction: interval(
+      pairEffects.map(pair => pair.stateTimingFeedbackInteraction),
+    ),
+  };
+
+  const realActiveBranches = branches.filter(
+    branch => branch.timingMode === 'real' && branch.timingActive === 1,
+  );
+  const paired = realActiveBranches
+    .map(branch => branch.pairedDiagnostics)
+    .filter((entry): entry is PairedDiagnostics => entry !== null);
+
+  const sumPaired = (
+    key: keyof Pick<
+      PairedDiagnostics,
+      | 'comparablePreStateSteps'
+      | 'changedWinnerSteps'
+      | 'changedAdmissionSteps'
+      | 'acceptedCarrierInducedActions'
+      | 'holdToSwap'
+      | 'swapToHold'
+      | 'swapToSwap'
+      | 'otherWinnerChanges'
+      | 'reconvergenceEvents'
+    >,
+  ): number => paired.reduce((sum, entry) => sum + entry[key], 0);
+
+  const changedWinnerSteps = sumPaired('changedWinnerSteps');
+  const changedAdmissionSteps = sumPaired('changedAdmissionSteps');
+  const acceptedTimingInducedActions = sumPaired('acceptedCarrierInducedActions');
+  const mechanisticTimingEndpointMet =
+    changedWinnerSteps > 0 || changedAdmissionSteps > 0 || acceptedTimingInducedActions > 0;
+
+  const directionalInterval = uncertainty.deltaRealMinusShamZ1.interval95;
+  const trueTimelineImproves = directionalInterval[0] > 0;
+  const trueTimelineHarms = directionalInterval[1] < 0;
+
+  const interpretation = !mechanisticTimingEndpointMet
+    ? 'The real and equal-distribution sham schedules produced no exact decision or trajectory differences. Temporal ordering was not functionally expressed at this resolution.'
+    : trueTimelineImproves
+      ? 'Temporal ordering was functionally causal and the true ordered history improved pair-generalised target recovery under feedback relative to the equal-distribution sham.'
+      : trueTimelineHarms
+        ? 'Temporal ordering was functionally causal, but the true ordered history reduced pair-generalised target recovery under feedback relative to the equal-distribution sham.'
+        : 'Temporal ordering changed reachable decisions and trajectories, but the pair-level recovery interval crosses zero. Timing is influential; useful control information is not established.';
+
+  const traceText = traceLines.length ? `${traceLines.join('\n')}\n` : '';
+  const traceGzip = gzipSync(traceText, { level: 9 });
+
+  const summary = {
+    schemaVersion: 'emerge-carrier-003b-rotation-v1',
+    experimentId: 'EMERGE-CARRIER-003B',
+    generatedAt: new Date().toISOString(),
+    sourceSelectorSha256: panel.selectorSha256,
+    capsuleSelectorSha256: capsules.capsuleSelectorSha256,
+    carrier002CReferenceSha256: stableHash(carrier002C.branches),
+    rotation,
+    runMode,
+    realProjectionReceiptSha256: stableHash(
+      branches
+        .filter(branch => branch.timingMode === 'real')
+        .map(branch => ({
+          pairId: branch.pairId,
+          microstateSource: branch.microstateSource,
+          replicate: branch.replicate,
+          feedback: branch.feedback,
+          capsuleId: branch.capsuleId,
+          projectionSha256: branch.projectionSha256,
+        })),
+    ),
+    shamProjectionReceiptSha256: stableHash(
+      branches
+        .filter(branch => branch.timingMode === 'sham')
+        .map(branch => ({
+          pairId: branch.pairId,
+          microstateSource: branch.microstateSource,
+          replicate: branch.replicate,
+          feedback: branch.feedback,
+          capsuleId: branch.capsuleId,
+          projectionSha256: branch.projectionSha256,
+        })),
+    ),
+    preregistration: {
+      primaryDirectionalEndpoint:
+        'Pair-level mean target recovery difference under feedback: Delta_Z1 = Y(real ordered history)-Y(equal-distribution sham history), preregistered positive.',
+      mechanisticEndpoint:
+        'At least one exact paired winner or admission decision changes while real and sham branches share the same pre-state.',
+      scheduleLength: 16,
+      exposureSteps: 16,
+      rotation,
+      runMode,
+      shamConstruction:
+        `Left-pad each capsule EMA history to 16 with its earliest value; rotate the first 15 positions left by ${rotation}; preserve the terminal dEma exactly.`,
+      marginalEquality:
+        'Real and sham schedules have the exact same value multiset, duration, total exposure and terminal anchor.',
+      postExposureDynamics:
+        'After step 16, both branches continue with the endogenous Carrier-002C capsule update.',
+      coefficient: 0.5,
+      emaAlpha,
+      kappa: config.kappa,
+      declarationGate: false,
+      feedbackStrengthChange: false,
+      forcedMutation: false,
+      coefficientSweep: false,
+      targetWound:
+        'exactly two uniquely identified bridges inherited from frozen V2.2',
+    },
+    scale: {
+      panelPairs: panel.frozen.pairs.length,
+      microstates: panel.frozen.pairs.length * 2,
+      frozenLesions: panel.frozen.pairs.length * 2 * config.replicates,
+      neutralityComparisons: 0,
+      totalBranchRuns: branches.length,
+      activeTimingBranchRuns: branches.filter(branch => branch.timingActive === 1).length,
+      acceptedTraceRecords: traceLines.length,
+    },
+    neutrality: {
+      comparisons: 0,
+      mismatches: 0,
+      passed: true,
+      inheritedFromSetupGate: true,
+    },
+    scheduleReceipts,
+    cells,
+    estimators: {
+      deltaRealMinusShamZ0: deltaZ0,

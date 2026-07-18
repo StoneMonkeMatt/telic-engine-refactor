@@ -10,15 +10,15 @@ import { EVENT_VOCABULARY } from '../content/event-vocabulary';
 import { DIVERGENCE_REGISTRY } from '../content/divergence-registry';
 import { EXPORT_MAPPING } from '../content/export-mapping';
 import { IMPLEMENTATION_STATUS } from '../content/implementation-status';
-import { 
-  STRUCTURAL_LOGIC_SUMMARIES, 
-  INITIALIZATION_LOGIC, 
-  AGENT_PROPOSAL_STRATEGIES, 
-  EVALUATION_WEIGHTS, 
-  ENVIRONMENTAL_FACTORS, 
-  ACCEPTANCE_CRITERIA, 
-  STRUCTURAL_CHECKS, 
-  SUMMARY_LOGIC_COMPONENTS 
+import {
+  STRUCTURAL_LOGIC_SUMMARIES,
+  INITIALIZATION_LOGIC,
+  AGENT_PROPOSAL_STRATEGIES,
+  EVALUATION_WEIGHTS,
+  ENVIRONMENTAL_FACTORS,
+  ACCEPTANCE_CRITERIA,
+  STRUCTURAL_CHECKS,
+  SUMMARY_LOGIC_COMPONENTS
 } from '../content/engine-logic';
 import { ACTIVE_SYMBOL_SET_CONFIG } from '../content/active-symbol-set';
 import { BRIDGE_ACTIVATION_STATUS } from '../content/bridge-activation-status';
@@ -33,15 +33,15 @@ import { MOD93_ALIGNMENT_STATUS } from '../content/mod93-alignment';
 export const Part09CurrentEngineReference: React.FC = () => {
   return (
     <>
-      <ManualSectionDrawer 
-        icon={Cpu} 
-        title="Part IX. Current Engine Reference (V9)" 
+      <ManualSectionDrawer
+        icon={Cpu}
+        title="Part IX. Current Engine Reference (V9)"
         subtitle="Implementation Profile of the Telos Kernel"
       >
         <div className="space-y-8">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <p>
-              This section provides a direct mapping between the canonical Compass lexicon and the current implementation in the <strong>Telos v0.9</strong> engine. It serves as both the technical contract and the live reference for the current simulation state.
+              This section provides a direct mapping between the reference Compass lexicon and the current implementation in the <strong>Telos v0.9</strong> engine. It serves as both the technical contract and the live reference for the current simulation state.
             </p>
           </div>
 
@@ -49,7 +49,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="1. Engine Identity" defaultOpen={true}>
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should have a unique <code>name</code> and <code>version</code> string. This allows researchers to identify which version of the Telos kernel was used for a specific run.
                   </p>
@@ -67,7 +67,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                     { label: "Ontology Version", value: ENGINE_IDENTITY.ontologyVersion },
                     { label: "Architecture Modes", value: ENGINE_IDENTITY.architecture },
                     { label: "Default Mode", value: ENGINE_IDENTITY.defaultMode },
-                    { label: "Canonical Seq Length", value: ENGINE_IDENTITY.canonicalSeqLength },
+                    { label: "Reference Seq Length", value: ENGINE_IDENTITY.referenceSeqLength },
                     { label: "Observer Persistence", value: ENGINE_IDENTITY.observerPersistence }
                   ].map((item, i) => (
                     <div key={i} className="p-3 bg-white/5 rounded-lg border border-white/5 flex justify-between items-center">
@@ -82,9 +82,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="2. Current Parameter Map">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The engine should expose a set of tunable parameters that govern the simulation regime. These parameters should be documented with their default values and expected ranges.
+                    The engine exposes tunable parameters that define the simulation regime. Their default values and expected ranges are recorded here.
                   </p>
                 </div>
                 <div className="p-4 bg-ocean-900/50 rounded-xl border border-cyan-500/20 space-y-2">
@@ -94,7 +94,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                   </p>
                 </div>
                 <div className="space-y-4">
-                  <p className="text-[10px] text-white/40 italic mb-4">Live input parameters governing the simulation regime.</p>
+                  <p className="text-[10px] text-white/40 italic mb-4">Live input parameters defining the simulation regime.</p>
                   <div className="space-y-2 mb-6">
                     <div className="text-[8px] font-bold text-white/30 uppercase tracking-widest">Technical Specification</div>
                     <pre className="p-4 bg-black/40 rounded-xl border border-white/5 text-[10px] font-mono text-cyan-400 overflow-x-auto">
@@ -170,7 +170,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="4. Event Vocabulary in Use">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should emit a set of named events during execution. These events should be documented with their triggers and descriptions.
                   </p>
@@ -210,7 +210,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               </div>
             </ManualDrawer>
 
-            <ManualDrawer title="6. Known Divergences from Canonical Lexicon">
+            <ManualDrawer title="6. Known Divergences from Reference Lexicon">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-[10px]">
                   <thead>
@@ -243,7 +243,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
 
             <ManualDrawer title="7. Export Mapping">
               <div className="space-y-4">
-                <p className="text-[10px] text-white/40 italic mb-4">How live engine values populate the canonical run record.</p>
+                <p className="text-[10px] text-white/40 italic mb-4">How live engine values populate the reference run record.</p>
                 <div className="space-y-2 mb-6">
                   <div className="text-[8px] font-bold text-white/30 uppercase tracking-widest">Export Record Contract</div>
                   <pre className="p-4 bg-black/40 rounded-xl border border-white/5 text-[10px] font-mono text-cyan-400 overflow-x-auto">
@@ -269,8 +269,8 @@ export const Part09CurrentEngineReference: React.FC = () => {
                   <div key={i} className="p-3 bg-white/5 rounded-lg border border-white/5 flex flex-col gap-1">
                     <div className="text-[9px] font-bold text-white/80 uppercase tracking-wider">{item.label}</div>
                     <div className={`text-[8px] font-bold uppercase tracking-tighter ${
-                      item.status === 'implemented' ? 'text-cyan-400' : 
-                      item.status === 'partially implemented' ? 'text-yellow-400' : 
+                      item.status === 'implemented' ? 'text-cyan-400' :
+                      item.status === 'partially implemented' ? 'text-yellow-400' :
                       'text-white/20'
                     }`}>
                       {item.status}
@@ -283,16 +283,16 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Activity} 
-        title="Part IX-A. Engine Logic Overview" 
-        subtitle="Governing Logic of the Telos Kernel"
+      <ManualSectionDrawer
+        icon={Activity}
+        title="Part IX-A. Engine Logic Overview"
+        subtitle="Current Computation in the Telos Kernel"
         keywords="engine, logic, initialization, proposal, evaluation, acceptance, structural, observer, summary, kernel, purity, bridge, duality"
       >
         <div className="space-y-8">
           <div className="space-y-4 text-sm text-white/60 leading-relaxed">
             <p>
-              This section documents the governing logic of the current engine so that parameters, metrics, events, and exported records can be understood in relation to the actual simulation process that produces them.
+              This section documents the defining logic of the current engine so that parameters, metrics, events, and exported records can be understood in relation to the actual simulation process that produces them.
             </p>
           </div>
 
@@ -300,7 +300,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="1. Initialization Logic" defaultOpen={true}>
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should initialize its state based on the provided parameters and symbolic prompt. This includes setting up the PRNG with the provided seed.
                   </p>
@@ -324,7 +324,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -333,7 +333,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="2. Proposal Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should propose candidate modifications to the symbolic sequence. These proposals should be driven by specialized agents with distinct structural goals.
                   </p>
@@ -369,7 +369,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -378,7 +378,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="3. Evaluation Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should evaluate candidate symbolic states based on their structural and informational properties to determine their telic fitness.
                   </p>
@@ -418,7 +418,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -427,7 +427,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="4. Acceptance Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should decide whether to commit to a proposed change based on a set of criteria, including score improvement and stochastic acceptance.
                   </p>
@@ -449,7 +449,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -458,7 +458,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="5. Structural Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should monitor the structural integrity and evolution of the symbolic sequence, identifying key transitions and stability points.
                   </p>
@@ -483,7 +483,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -492,7 +492,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="6. Observer Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     Observer emergence should be treated as a non-linear phase transition triggered by sustained symbolic duality.
                   </p>
@@ -514,7 +514,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -523,7 +523,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
             <ManualDrawer title="7. Summary Logic">
               <div className="space-y-6">
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                  <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
                     The engine should produce a comprehensive summary of the simulation run, capturing terminal states, structural evolution, and diagnostic metadata.
                   </p>
@@ -548,7 +548,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                   <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                   <p className="text-[10px] text-white/40 leading-relaxed">
-                    The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                    The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                   </p>
                 </div>
               </div>
@@ -557,9 +557,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Activity} 
-        title="Part IX-B. Live Ontology Usage in Telos v0.9" 
+      <ManualSectionDrawer
+        icon={Activity}
+        title="Part IX-B. Live Ontology Usage in Telos v0.9"
         subtitle="Operational Status of the Symbolic Library"
         keywords="ontology, library, symbol, domain, connectivity, bridge, compass, mod97"
       >
@@ -573,9 +573,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="1. Active Symbol Set">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The simulation should draw from a subset of the canonical symbolic library. This subset should be prioritized based on domain relevance and symbolic weight.
+                  The simulation should draw from a subset of the reference symbolic library. This subset should be prioritized based on domain relevance and symbolic weight.
                 </p>
               </div>
               <div className="p-4 bg-ocean-900/50 rounded-xl border border-cyan-500/20 space-y-2">
@@ -597,7 +597,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -606,7 +606,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="2. Domain Connectivity">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should reward symbolic states that exhibit high domain connectivity and coherence.
                 </p>
@@ -640,7 +640,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -649,7 +649,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="3. Bridge Activation Status">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should support a wide range of symbolic bridges that facilitate transitions between different domains.
                 </p>
@@ -657,7 +657,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-ocean-900/50 rounded-xl border border-cyan-500/20 space-y-2">
                 <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**current engine reference**</div>
                 <p className="text-[10px] text-cyan-400/60 leading-relaxed">
-                  The Telos v0.9 engine activates a subset of the canonical bridge library based on current research priorities.
+                  The Telos v0.9 engine activates a subset of the reference bridge library based on current research priorities.
                 </p>
               </div>
               <div className="space-y-4 text-xs text-white/60 leading-relaxed">
@@ -680,7 +680,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -689,9 +689,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="4. Compass Alignment">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The engine should align symbolic states with a canonical 7-point compass to provide directional orientation.
+                  The engine should align symbolic states with a reference 7-point compass to provide directional orientation.
                 </p>
               </div>
               <div className="p-4 bg-ocean-900/50 rounded-xl border border-cyan-500/20 space-y-2">
@@ -701,12 +701,12 @@ export const Part09CurrentEngineReference: React.FC = () => {
                 </p>
               </div>
               <div className="space-y-4 text-xs text-white/60 leading-relaxed">
-                <p>The 7-point compass is <strong>{COMPASS_ALIGNMENT_RULES.operationalStatus}</strong>. The <code>{COMPASS_ALIGNMENT_RULES.canonicalCheck}</code> calculation is used {COMPASS_ALIGNMENT_RULES.calculationFrequency.toLowerCase()} to find the closest directional pole, providing the "{COMPASS_ALIGNMENT_RULES.metricLabel}" metric.</p>
+                <p>The 7-point compass is <strong>{COMPASS_ALIGNMENT_RULES.operationalStatus}</strong>. The <code>{COMPASS_ALIGNMENT_RULES.referenceCheck}</code> calculation is used {COMPASS_ALIGNMENT_RULES.calculationFrequency.toLowerCase()} to find the closest directional pole, providing the "{COMPASS_ALIGNMENT_RULES.metricLabel}" metric.</p>
               </div>
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -714,9 +714,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Layers} 
-        title="Part IX-C. Legacy Alignment Implementation" 
+      <ManualSectionDrawer
+        icon={Layers}
+        title="Part IX-C. Legacy Alignment Implementation"
         subtitle="Legacy vs. Modern Calculation Methods"
         keywords="mapping, functional, descriptive, metadata, library, implementation, mod93"
       >
@@ -730,7 +730,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="1. Mod93 Alignment">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should support legacy alignment methods for backward compatibility and historical analysis.
                 </p>
@@ -748,7 +748,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -756,23 +756,23 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Cpu} 
-        title="Part IX-D. Algebraic Core & Mathematical Formalisms" 
+      <ManualSectionDrawer
+        icon={Cpu}
+        title="Part IX-D. Algebraic Core & Mathematical Formalisms"
         subtitle="The Mathematical Foundation of Telos V9"
         keywords="formula, equation, math, telic, duality, resilience, mod97, harmonic, curvature"
       >
         <div className="space-y-6">
           <div className="p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-xl mb-6">
             <p className="text-[11px] text-cyan-400 leading-relaxed font-medium italic">
-              Parts IX-D through IX-F document only mechanisms that are functionally active in the current Telos v0.9 engine. 
+              Parts IX-D through IX-F document only mechanisms that are functionally active in the current Telos v0.9 engine.
               Conceptual, interpretive, and future-facing formalisms are documented separately in Part X.
             </p>
           </div>
           <ManualDrawer title="1. The Unified Telic Equation">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should utilize a unified equation to calculate the telic fitness of a symbolic state, balancing information, coherence, and energy against complexity.
                 </p>
@@ -792,13 +792,13 @@ export const Part09CurrentEngineReference: React.FC = () => {
                   <li><strong>I (Information):</strong> 70% Unigram Entropy + 30% Bigram (Transition) Entropy. Controlled by <code>alpha</code> (α).</li>
                   <li><strong>Φ (Coherence):</strong> 40% Inventory Coherence + 60% Transition Coherence (Domain/Bridge matching). Controlled by <code>gamma</code> (γ).</li>
                   <li><strong>E (Energy):</strong> Sum of symbol weights with a 0.8^n diminishing return for repeated symbols. Controlled by <code>delta</code> (δ).</li>
-                  <li><strong>K (Complexity):</strong> Sequence length, with a quadratic penalty (K-L)^2 applied for lengths exceeding the canonical sequence length <code>L</code> (currently 10). Controlled by <code>beta</code> (β).</li>
+                  <li><strong>K (Complexity):</strong> Sequence length, with a quadratic penalty (K-L)^2 applied for lengths exceeding the reference sequence length <code>L</code> (currently 10). Controlled by <code>beta</code> (β).</li>
                 </ul>
               </div>
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -807,7 +807,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="2. Telic Curvature (κ)">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should measure the rate of change of symbolic meaning relative to structural coherence.
                 </p>
@@ -828,7 +828,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -837,7 +837,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="3. Duality Update Force">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should model the dynamic force driving the balance between awareness and structure.
                 </p>
@@ -858,7 +858,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -867,7 +867,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="4. Mod97 Harmonic Alignment">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should calculate a harmonic signature for the symbolic sequence to determine its alignment with the 7-point compass.
                 </p>
@@ -888,7 +888,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -896,9 +896,9 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Shield} 
-        title="Part IX-E. Adversarial Resilience Framework" 
+      <ManualSectionDrawer
+        icon={Shield}
+        title="Part IX-E. Adversarial Resilience Framework"
         subtitle="The Void Interaction & State Survival"
         keywords="void, risk, security, adversarial, resilience, entropy, stability, light, witness"
       >
@@ -906,7 +906,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="1. The Void (🕳️) Interaction">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should model the interaction of the Void symbol as a destructive force that must be balanced by Light.
                 </p>
@@ -926,7 +926,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -935,7 +935,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="2. Adversarial Test Logic">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should perform adversarial stress tests to evaluate the resilience of symbolic states against entropy injection.
                 </p>
@@ -958,7 +958,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -967,7 +967,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="3. Resilience Metric (R)">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The engine should calculate a resilience metric to quantify a state's ability to withstand symbolic entropy.
                 </p>
@@ -988,7 +988,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -996,23 +996,23 @@ export const Part09CurrentEngineReference: React.FC = () => {
         </div>
       </ManualSectionDrawer>
 
-      <ManualSectionDrawer 
-        icon={Workflow} 
-        title="Part IX-F. Agent-Specific Decision Logic" 
+      <ManualSectionDrawer
+        icon={Workflow}
+        title="Part IX-F. Agent-Specific Decision Logic"
         subtitle="Stratified Proposal Strategies"
         keywords="agent, preserver, catalyst, synthesizer, behavior, strategy, logic, stability, innovation, integration"
       >
         <div className="space-y-6">
           <div className="p-4 bg-cyan-500/10 border border-cyan-500/20 rounded-xl mb-6">
             <p className="text-[11px] text-cyan-400 leading-relaxed font-medium italic">
-              The manual may describe agent-zone associations conceptually, but the current engine does not enforce zone-specific positional constraints. 
+              The manual may describe agent-zone associations conceptually, but the current engine does not enforce zone-specific positional constraints.
               Agents operate over random positions across the full sequence.
             </p>
           </div>
           <ManualDrawer title="1. The Preserver (Stability)">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The Preserver agent should focus on maintaining structural stability and kernel purity. It should prioritize the preservation of foundational symbolic anchors.
                 </p>
@@ -1030,7 +1030,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -1039,7 +1039,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="2. The Catalyst (Innovation)">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The Catalyst agent should focus on introducing symbolic innovation and increasing information density by bridging disparate domains.
                 </p>
@@ -1057,7 +1057,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>
@@ -1066,7 +1066,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
           <ManualDrawer title="3. The Synthesizer (Integration)">
             <div className="space-y-6">
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
-                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**canonical target**</div>
+                <div className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest">**reference target**</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
                   The Synthesizer agent should focus on integrating symbolic elements into a coherent whole, optimizing for compression and structural alignment.
                 </p>
@@ -1084,7 +1084,7 @@ export const Part09CurrentEngineReference: React.FC = () => {
               <div className="p-4 bg-white/5 rounded-xl border border-white/5 space-y-2">
                 <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest">Interpretation</div>
                 <p className="text-[10px] text-white/40 leading-relaxed">
-                  The canonical manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the canonical role of the fields.
+                  The reference manual defines the parameter and metric vocabulary. The live engine supplies the present computational realization of that vocabulary. Future engine versions may refine implementation without changing the reference role of the fields.
                 </p>
               </div>
             </div>

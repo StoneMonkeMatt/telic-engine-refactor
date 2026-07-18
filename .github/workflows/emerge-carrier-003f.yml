@@ -1,0 +1,441 @@
+name: EMERGE-CARRIER-003F
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-CARRIER-003F-*.md'
+      - 'src/logic/dualityProjection.ts'
+      - 'experiments/emerge-ko-001/MATHEMATICS.md'
+      - 'experiments/emerge-ko-001/verify-duality-boundary-transition.ts'
+      - 'experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts'
+      - 'experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts'
+      - '.github/scripts/emerge-carrier-003f-*.ts'
+      - '.github/workflows/emerge-carrier-003f.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: freeze-dark-audit-and-seal-runner
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify committed source receipts
+        run: |
+          echo 'f2169f7a1f03ef599cdbfffd0f99d8dae3f532bea80fcb842ec60240beb46592  experiments/emerge-ko-001/run-carrier-002c.ts' | sha256sum -c -
+          echo 'af09a2cd969d78cd2a0e5c1b1fbbaeac14a0bf9aa2fad958ecebfeaa156ddbaa  experiments/emerge-ko-001/assemble-carrier-003c.ts' | sha256sum -c -
+          echo 'a947df45d5c5777e4226b2e5e6fffd4fd5bed44c61512497e8e98219752a2270  src/logic/dualityProjection.ts' | sha256sum -c -
+          echo 'd575cea7f655b86d1f1cb5613821e006e1632d9f78feb9161f4179f9c62b2819  experiments/emerge-ko-001/verify-duality-boundary-transition.ts' | sha256sum -c -
+          echo '4e03d609b3c94c8067e161fee354c2630488b7ad30e0562728c51765fd8ff0f6  experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts' | sha256sum -c -
+          echo '4f84004a144b40c5d3793d227b0fe645640d33751385c90f2bfce5ed49cc7e47  experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts' | sha256sum -c -
+          echo '1d9b218ca4b5ffd3550594400aadcfd65716085d8c7ed46d12189fb2096d93d0  .github/scripts/emerge-carrier-003f-dark-runner.ts' | sha256sum -c -
+          echo 'eaf17fdb0e34042b2d7c7377760b9357280b2576ad0e95634dec3205e17dd046  .github/scripts/emerge-carrier-003f-runner.ts' | sha256sum -c -
+          echo '9abffcdb28925bace495d188e70a4f64e087d796af56a0d5e95663d2e0abd471  .github/scripts/emerge-carrier-003f-aggregate.ts' | sha256sum -c -
+          echo '596718bb1c23c8d1cd9aeeee999565f7c2a487de09496b02941665322c6ee515  docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md' | sha256sum -c -
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Rebuild frozen V2.2 substrate
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          node --import tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          node --import tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          node --import tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Audit proposed and frozen boundary algebra
+        run: |
+          node --import tsx experiments/emerge-ko-001/verify-duality-boundary-transition.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-065.json \
+            0.65
+          node --import tsx experiments/emerge-ko-001/verify-duality-boundary-transition.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-060.json \
+            0.6
+
+      - name: Assemble and reproduce Carrier-003C reference
+        run: |
+          node --import tsx experiments/emerge-ko-001/assemble-carrier-003c.ts \
+            experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts
+          echo 'b4d0ff5407735b2f01c7c0dd1d15a27b8dcb93342359cb787147741858764c0a  experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts' | sha256sum -c -
+          node --import tsx experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-manifest.json
+
+      - name: Assemble and run dark dynamic projector
+        run: |
+          node --import tsx .github/scripts/emerge-carrier-003f-dark-runner.ts \
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts \
+            experiments/emerge-ko-001/run-carrier-003f.dark-dynamic.generated.ts \
+            | tee /tmp/carrier-003f-dark-runner-receipt.json
+          echo 'edf72cbdba0a07b842edde47a9a4b05dd715c56706212749c0e1f9640fb855f1  experiments/emerge-ko-001/run-carrier-003f.dark-dynamic.generated.ts' | sha256sum -c -
+          node --import tsx experiments/emerge-ko-001/run-carrier-003f.dark-dynamic.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-accepted-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-manifest.json
+
+      - name: Audit accepted crossings and finalize dark result
+        run: |
+          node --import tsx experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts
+          node --import tsx experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts
+
+      - name: Enforce dark-projector gates
+        run: |
+          node - <<'NODE'
+          const dead = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-065.json');
+          const native = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-060.json');
+          const dark = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-boundary-dynamic-result.json');
+          if (!dead.algebra.exact || dead.candidateControlDensity.candidateDivergentFrontiers !== 0) {
+            throw new Error('The rejected theta=0.65 channel did not reproduce as dark.');
+          }
+          if (!native.requestedThresholdMatchesFrozen || !native.algebra.exact) {
+            throw new Error('The theta=0.6 native boundary algebra failed.');
+          }
+          if (native.algebra.directions['1'] !== 102 || native.algebra.directions['-1'] !== 1212) {
+            throw new Error('Frozen boundary exposure counts drifted.');
+          }
+          if (native.candidateControlDensity.candidateDivergentFrontiers !== 252) {
+            throw new Error('Frozen candidate divergence drifted.');
+          }
+          if (!dark.integrity.baselineReplayExact || !dark.integrity.acceptedTraceExact) {
+            throw new Error('Dark instrumentation changed the Carrier-003C replay.');
+          }
+          if (dark.dynamicFrontier.frontiers !== 204800 ||
+              dark.dynamicFrontier.candidates !== 819200 ||
+              dark.dynamicFrontier.candidateDivergentFrontiers !== 28359 ||
+              dark.dynamicFrontier.exitOptionsAfterStepOne !== 13423) {
+            throw new Error('Dynamic boundary control density drifted.');
+          }
+          if (dark.acceptedCooccurrence.directions.exit !== 1716 ||
+              dark.acceptedCooccurrence.directions.entry !== 1509 ||
+              dark.acceptedCooccurrence.inventoryByDirection.exit.false !== 1716 ||
+              dark.acceptedCooccurrence.inventoryByDirection.entry.false !== 1509) {
+            throw new Error('Accepted crossing co-occurrence drifted.');
+          }
+          console.log(JSON.stringify({dead: dead.candidateControlDensity, native: native.candidateControlDensity, integrity: dark.integrity, dynamic: dark.dynamicFrontier, accepted: dark.acceptedCooccurrence}, null, 2));
+          NODE
+
+      - name: Assemble sealed active runner
+        run: |
+          node --import tsx .github/scripts/emerge-carrier-003f-runner.ts \
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts \
+            experiments/emerge-ko-001/run-carrier-003f.active.generated.ts \
+            docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md \
+            | tee /tmp/carrier-003f-runner-receipt.json
+          echo '936310ac26f75510095c9f2a000a3e34ce2ba132f9fc51de2fbfe56537767d6b  experiments/emerge-ko-001/run-carrier-003f.active.generated.ts' | sha256sum -c -
+
+      - name: Create independent schedule-7 reference
+        run: |
+          node --import tsx experiments/emerge-ko-001/run-carrier-003f.active.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-manifest.json \
+            7 \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-summary.json
+
+      - name: Enforce active setup gates
+        run: |
+          node - <<'NODE'
+          const crypto = require('crypto');
+          const fs = require('fs');
+          const r = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-summary.json');
+          const stableHash = value => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex');
+          if (!r.neutrality.passed || !r.needle.carrier003cReference.passed) {
+            throw new Error('Carrier-003F setup neutrality failed.');
+          }
+          if (!r.needle.shamIntegrity.exactExposurePreserved ||
+              r.needle.shamIntegrity.perFrontierMultisetMismatches !== 0) {
+            throw new Error('Schedule-7 sham exposure was not exact.');
+          }
+          if (!r.needle.boundaryReachabilityMet || !r.needle.assignmentMechanismMet) {
+            throw new Error('Schedule-7 boundary mechanism was silent.');
+          }
+          if (stableHash(r.needle) !== '1dd48e6f46fb671be9137b443eaac25f4f3780e6228e9e75e08ccc74fe03af5b') {
+            throw new Error('Schedule-7 nested Needle receipt drifted.');
+          }
+          const sourceReceipts = {
+            schemaVersion: 'emerge-carrier-003f-source-receipts-v1',
+            darkRunner: JSON.parse(fs.readFileSync('/tmp/carrier-003f-dark-runner-receipt.json', 'utf8')),
+            activeRunner: JSON.parse(fs.readFileSync('/tmp/carrier-003f-runner-receipt.json', 'utf8')),
+            preregistration: 'docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md',
+          };
+          fs.writeFileSync(
+            'experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-source-receipts.json',
+            JSON.stringify(sourceReceipts, null, 2) + '\n',
+          );
+          console.log(JSON.stringify({neutrality: r.neutrality, needle: r.needle}, null, 2));
+          NODE
+
+      - name: Upload frozen inputs and sealed sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003F-inputs
+          path: |
+            docs/EMERGE-CARRIER-003F-DARK-BOUNDARY-TRANSITION-AUDIT-18JUL2026.md
+            docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md
+            src/logic/dualityProjection.ts
+            experiments/emerge-ko-001/verify-duality-boundary-transition.ts
+            experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts
+            experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts
+            .github/scripts/emerge-carrier-003f-dark-runner.ts
+            .github/scripts/emerge-carrier-003f-runner.ts
+            .github/scripts/emerge-carrier-003f-aggregate.ts
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts
+            experiments/emerge-ko-001/run-carrier-003f.dark-dynamic.generated.ts
+            experiments/emerge-ko-001/run-carrier-003f.active.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-source-receipts.json
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-065.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-060.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-accepted-boundary-cooccurrence.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-accepted-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-boundary-dynamic-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-manifest.json
+          if-no-files-found: error
+
+  schedule-sweep:
+    name: schedule-${{ matrix.padded }}
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 14
+      matrix:
+        include:
+          - { rotation: 1, padded: '01' }
+          - { rotation: 2, padded: '02' }
+          - { rotation: 3, padded: '03' }
+          - { rotation: 4, padded: '04' }
+          - { rotation: 5, padded: '05' }
+          - { rotation: 6, padded: '06' }
+          - { rotation: 7, padded: '07' }
+          - { rotation: 8, padded: '08' }
+          - { rotation: 9, padded: '09' }
+          - { rotation: 10, padded: '10' }
+          - { rotation: 11, padded: '11' }
+          - { rotation: 12, padded: '12' }
+          - { rotation: 13, padded: '13' }
+          - { rotation: 14, padded: '14' }
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs and sealed sources
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003F-inputs
+          path: .
+
+      - name: Verify generated runner receipt
+        run: |
+          expected="$(node -p "require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-source-receipts.json').activeRunner.generatedSha256")"
+          echo "$expected  experiments/emerge-ko-001/run-carrier-003f.active.generated.ts" | sha256sum -c -
+
+      - name: Run true boundary assignment versus equal-exposure sham
+        run: |
+          node --import tsx experiments/emerge-ko-001/run-carrier-003f.active.generated.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-manifest.json \
+            '${{ matrix.rotation }}' \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-carrier-003c-dark-reference-summary.json
+
+      - name: Enforce schedule gates
+        run: |
+          node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-summary.json'); if(!r.neutrality.passed||!r.needle.carrier003cReference.passed||!r.needle.shamIntegrity.exactExposurePreserved||!r.needle.boundaryReachabilityMet||!r.needle.assignmentMechanismMet) throw new Error('Carrier-003F schedule gate failed.'); console.log(JSON.stringify({rotation:r.needle.rotation,estimators:r.needle.estimators,reachability:r.needle.reachability,assignmentMechanism:r.needle.assignmentMechanism,shamIntegrity:r.needle.shamIntegrity},null,2));"
+
+      - name: Upload schedule receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}
+          path: |
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-${{ matrix.padded }}-manifest.json
+          if-no-files-found: error
+
+  aggregate:
+    name: complete-sham-boundary-aggregate
+    needs: schedule-sweep
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download frozen inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003F-inputs
+          path: .
+
+      - name: Download all schedule receipts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: EMERGE-CARRIER-003F-schedule-*
+          path: experiments/emerge-ko-001/results
+          merge-multiple: true
+
+      - name: Verify analyser and runner receipts
+        run: |
+          expected="$(node -p "require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-source-receipts.json').activeRunner.generatedSha256")"
+          echo "$expected  experiments/emerge-ko-001/run-carrier-003f.active.generated.ts" | sha256sum -c -
+          echo '9abffcdb28925bace495d188e70a4f64e087d796af56a0d5e95663d2e0abd471  .github/scripts/emerge-carrier-003f-aggregate.ts' | sha256sum -c -
+          npm run lint
+
+      - name: Aggregate all fourteen schedules
+        run: |
+          node --import tsx .github/scripts/emerge-carrier-003f-aggregate.ts \
+            experiments/emerge-ko-001/results \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-complete-sham-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-complete-sham-manifest.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-summary.json \
+            docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md \
+            experiments/emerge-ko-001/run-carrier-003f.active.generated.ts
+
+      - name: Enforce complete-sham gates and frozen verdict
+        run: |
+          node - <<'NODE'
+          const r = require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-complete-sham-result.json');
+          const i = r.integrity;
+          if (!i.allScheduleProcessesCompleted || !i.allCarrier001NeutralityPassed ||
+              !i.allCarrier003cReferencesPassed || !i.allPerFrontierShamMultisetsExact ||
+              !i.schedule7IndependentReplication.passed ||
+              !i.allTrueReachabilityReceiptsExact || !i.allSchedulesMechanisticallyActive ||
+              !i.allFourteenAssignmentReceiptsDistinct) {
+            throw new Error('One or more complete-sham integrity gates failed.');
+          }
+          if (i.shamIntegrityTotals.perFrontierMultisetComparisons !== 2867200 ||
+              i.shamIntegrityTotals.perFrontierMultisetMismatches !== 0 ||
+              i.shamIntegrityTotals.candidateAssignmentsChanged !== 624370) {
+            throw new Error('Equal-exposure sham totals drifted.');
+          }
+          if (r.fixedTrueLawReachability.changedWinnerSteps !== 501 ||
+              r.fixedTrueLawReachability.changedAdmissionSteps !== 407 ||
+              r.fixedTrueLawReachability.acceptedBoundaryInducedActions !== 399) {
+            throw new Error('Fixed true-law reachability drifted.');
+          }
+          if (r.assignmentMechanismTotals.changedWinnerSteps !== 10504 ||
+              r.assignmentMechanismTotals.changedAdmissionSteps !== 14905 ||
+              r.assignmentMechanismTotals.acceptedAssignmentInducedActions !== 8232) {
+            throw new Error('Assignment-mechanism totals drifted.');
+          }
+          const expected = [0.0018833705357142857, -0.005489800554498615, 0.009256541625927187];
+          if (r.primary.mean !== expected[0] || r.primary.interval95[0] !== expected[1] || r.primary.interval95[1] !== expected[2]) {
+            throw new Error('Primary eight-pair estimate drifted.');
+          }
+          if (r.primary.positiveUsefulnessEstablished || r.primary.negativeUsefulnessEstablished) {
+            throw new Error('Frozen zero-crossing verdict drifted.');
+          }
+          console.log(JSON.stringify({integrity:i,fixedTrueLawReachability:r.fixedTrueLawReachability,assignmentMechanismTotals:r.assignmentMechanismTotals,primaryRotationSigns:r.primaryRotationSigns,pairEnsembleEffects:r.pairEnsembleEffects,primary:r.primary,verdict:r.verdict,nextExperiment:r.nextExperiment},null,2));
+          NODE
+
+      - name: Upload complete Carrier-003F evidence pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-003F-results
+          path: |
+            docs/EMERGE-CARRIER-003F-DARK-BOUNDARY-TRANSITION-AUDIT-18JUL2026.md
+            docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md
+            docs/EMERGE-CARRIER-003F-COMPLETE-SHAM-NATIVE-BOUNDARY-RESULT-18JUL2026.md
+            src/logic/dualityProjection.ts
+            experiments/emerge-ko-001/verify-duality-boundary-transition.ts
+            experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts
+            experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts
+            .github/scripts/emerge-carrier-003f-dark-runner.ts
+            .github/scripts/emerge-carrier-003f-runner.ts
+            .github/scripts/emerge-carrier-003f-aggregate.ts
+            experiments/emerge-ko-001/run-carrier-003c.reference.generated.ts
+            experiments/emerge-ko-001/run-carrier-003f.dark-dynamic.generated.ts
+            experiments/emerge-ko-001/run-carrier-003f.active.generated.ts
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-source-receipts.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-065.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-boundary-transition-theta-060.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-accepted-boundary-cooccurrence.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-accepted-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-dynamic-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-dark-boundary-dynamic-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-07-reference-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-*-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-*-manifest.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-schedule-*-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-complete-sham-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-003F-complete-sham-manifest.json
+          if-no-files-found: error

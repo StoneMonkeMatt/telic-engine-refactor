@@ -2,7 +2,7 @@ import { GlossaryEntry } from "./manual.types";
 
 /**
  * Glossary of terms for the Compass Build Manual.
- * Sourced from App.tsx and canonical manual content.
+ * Sourced from App.tsx and reference manual content.
  */
 export const manualGlossary: GlossaryEntry[] = [
   {
@@ -11,28 +11,28 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["core symbols", "foundational symbols"],
     relatedTerms: ["invariant kernel", "kernel purity"],
     sourceSectionIds: ["part-01-c", "part-01-d"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "invariant kernel",
     definition: "The Core_Kernel domain, representing the symbolic anchor that remains stable across simulation runs and against which preservation is measured.",
     relatedTerms: ["kernel", "kernel purity", "leakage"],
     sourceSectionIds: ["part-01-d"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "observer",
     definition: "An emergent property or entity that manifests when the simulation's duality score exceeds a specific threshold for a sustained period.",
     relatedTerms: ["observer emergence", "duality", "observer threshold"],
     sourceSectionIds: ["part-09"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "observer emergence",
     definition: "The process where an observer is officially registered after the duality score remains above the threshold for the required persistence duration.",
     relatedTerms: ["observer", "observer persistence", "observer threshold"],
     sourceSectionIds: ["part-09"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "duality",
@@ -40,7 +40,7 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["awareness weight"],
     relatedTerms: ["observer", "resilience"],
     sourceSectionIds: ["part-02", "part-09-d"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "telic score",
@@ -48,22 +48,22 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["objective fitness", "T"],
     relatedTerms: ["information", "coherence", "energy", "complexity"],
     sourceSectionIds: ["part-02", "part-09-d"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "bridge",
-    definition: "A canonical symbolic transition between two different domains, explicitly defined in the Codex/library.",
+    definition: "A reference symbolic transition between two different domains, explicitly defined in the Codex/library.",
     aliases: ["cross-domain bridge"],
     relatedTerms: ["bridge event", "codex"],
     sourceSectionIds: ["part-01-f"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "bridge event",
     definition: "A significant transition in the simulation where adjacent symbols from different domains activate a valid bridge from the Codex.",
     relatedTerms: ["bridge", "coherence"],
     sourceSectionIds: ["part-03", "part-09-c"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "resilience",
@@ -71,7 +71,7 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["stability against void"],
     relatedTerms: ["duality", "adversarial status"],
     sourceSectionIds: ["part-02", "part-09-e"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "mod97",
@@ -79,14 +79,14 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["harmonic signature", "symbolic fingerprint"],
     relatedTerms: ["compass orientation", "alignment"],
     sourceSectionIds: ["part-01-e", "part-02"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "canon",
-    definition: "The authoritative, theoretical specification of the Compass system, as defined in Parts I-IV of the manual.",
+    definition: "The reference specification of the Compass system described in Parts I-IV of the manual.",
     forbiddenMeanings: ["current engine implementation"],
-    relatedTerms: ["lexicon", "doctrine"],
-    authority: "canonical"
+    relatedTerms: ["lexicon", "definition"],
+    sourceType: "reference"
   },
   {
     term: "current engine",
@@ -94,41 +94,41 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["implementation", "Telos"],
     relatedTerms: ["canon", "divergence"],
     sourceSectionIds: ["part-09"],
-    authority: "current-engine"
+    sourceType: "current-engine"
   },
   {
     term: "schema boundary",
     definition: "The strict separation between the persistence/validation contract (the record) and the execution/simulation logic (the engine).",
     relatedTerms: ["validation", "run record"],
     sourceSectionIds: ["part-08-a"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "lexicon",
     definition: "The controlled vocabulary of parameters, metrics, and symbols used across the Compass ecosystem to ensure semantic stability.",
     relatedTerms: ["ontology", "controlled vocabulary"],
     sourceSectionIds: ["part-05"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "narrative",
     definition: "The symbolic sequence evolved by the simulation, representing a compressed transformation of distilled meaning.",
     aliases: ["symbolic sequence", "run narrative"],
     relatedTerms: ["distillation", "proposal"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "distillation",
     definition: "The process of compressing human or AI-generated text into a symbolic narrative suitable for simulation input.",
     relatedTerms: ["narrative", "input sequence"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "proposal",
     definition: "A modification to the symbolic sequence suggested by a simulation agent (Preserver, Catalyst, or Synthesizer).",
     relatedTerms: ["agent", "acceptance", "stratified proposal"],
     sourceSectionIds: ["part-09-f"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "plateau",
@@ -136,70 +136,70 @@ export const manualGlossary: GlossaryEntry[] = [
     aliases: ["convergence phase"],
     relatedTerms: ["plateau start step", "convergence"],
     sourceSectionIds: ["part-03"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "compass orientation",
     definition: "The directional alignment of the simulation state (North, East, South, West, etc.), calculated via mod97 harmonic values.",
     relatedTerms: ["compass", "mod97"],
     sourceSectionIds: ["part-01-e", "part-02"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "event vocabulary",
     definition: "The set of standard event types (e.g., new_best, bridge_event) used to record the history of a simulation run.",
     relatedTerms: ["event log", "run record"],
     sourceSectionIds: ["part-03"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "debug trace",
     definition: "A detailed, step-by-step history of the simulation engine's internal state, including rejected proposals and raw metrics.",
     relatedTerms: ["event log", "run record"],
     sourceSectionIds: ["part-03", "part-06"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "research archive",
     definition: "A collection of validated simulation runs used for academic, engineering, or comparative analysis.",
     relatedTerms: ["run record", "validation"],
     sourceSectionIds: ["part-07"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "run record",
-    definition: "The complete, canonical data object (CompassRunRecord) representing a single simulation execution.",
+    definition: "The complete, reference data object (CompassRunRecord) representing a single simulation execution.",
     aliases: ["run object", "simulation record"],
     relatedTerms: ["schema", "validation"],
     sourceSectionIds: ["part-06", "part-08"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "validation",
-    definition: "The process of verifying that a run record conforms to the canonical JSON Schema and TypeScript contract.",
+    definition: "The process of verifying that a run record conforms to the reference JSON Schema and TypeScript contract.",
     relatedTerms: ["schema", "run record"],
     sourceSectionIds: ["part-08"],
-    authority: "canonical"
+    sourceType: "reference"
   },
   {
     term: "current parameter map",
-    definition: "The set of live input parameters governing the current engine's behavior (e.g., alpha, gamma, threshold).",
+    definition: "The set of live input parameters defining the current engine's behavior (e.g., alpha, gamma, threshold).",
     relatedTerms: ["parameter ontology", "current engine"],
     sourceSectionIds: ["part-09"],
-    authority: "current-engine"
+    sourceType: "current-engine"
   },
   {
     term: "current metric map",
     definition: "The set of live output metrics produced by the current engine (e.g., telic_score, resilience).",
     relatedTerms: ["metrics ontology", "current engine"],
     sourceSectionIds: ["part-09"],
-    authority: "current-engine"
+    sourceType: "current-engine"
   },
   {
     term: "export mapping",
-    definition: "The logic that populates the canonical run record from the live engine's internal data structures.",
+    definition: "The logic that populates the reference run record from the live engine's internal data structures.",
     relatedTerms: ["run record", "current engine"],
     sourceSectionIds: ["part-09-c"],
-    authority: "current-engine"
+    sourceType: "current-engine"
   }
 ];

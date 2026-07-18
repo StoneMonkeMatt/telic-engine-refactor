@@ -1,0 +1,84 @@
+name: EMERGE-CARRIER-002C
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'experiments/emerge-ko-001/**'
+      - '.github/workflows/emerge-carrier-002c.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reachable-hold-swap-carrier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check repository
+        run: npm run lint
+
+      - name: Freeze V2.2 matched panel and wounds
+        run: |
+          mkdir -p experiments/emerge-ko-001/results
+          npx tsx experiments/emerge-ko-001/select-v2-2.ts \
+            experiments/emerge-ko-001/config-v2-2.json \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+
+      - name: Reproduce Carrier-001 architectural null
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-null.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+
+      - name: Freeze macro-history capsules
+        run: |
+          npx tsx experiments/emerge-ko-001/freeze-carrier-002.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+
+      - name: Run Carrier-002C reachable hold swap continuity test
+        run: |
+          npx tsx experiments/emerge-ko-001/run-carrier-002c.ts \
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-trace.jsonl.gz \
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json
+
+      - name: Display Carrier-002C result
+        if: always()
+        run: |
+          if [ -f experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json ]; then
+            node -e "const r=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json'); const m=require('./experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json'); console.log(JSON.stringify({neutrality:r.neutrality,estimators:r.estimators,uncertainty:r.uncertainty,dynamics:r.dynamics,interpretation:r.interpretation,nextExperiment:r.nextExperiment,manifest:m}, null, 2));"
+          fi
+
+      - name: Upload Carrier-002C source traces and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: EMERGE-CARRIER-002C-results
+          path: |
+            experiments/emerge-ko-001/run-carrier-002c.ts
+            experiments/emerge-ko-001/results/EMERGE-KO-001-v2.2-panel.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-001-result.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002-capsules.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-summary.json
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-trace.jsonl.gz
+            experiments/emerge-ko-001/results/EMERGE-CARRIER-002C-manifest.json
+          if-no-files-found: error

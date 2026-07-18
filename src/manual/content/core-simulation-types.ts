@@ -10,7 +10,7 @@ interface SimulationState {
   history: StateDelta[];     // Trace of changes leading to this state
 }
 
-type SymbolID = string;      // Canonical key from library.ts (e.g., "whale")
+type SymbolID = string;      // Reference key from library.ts (e.g., "whale")
 
 interface StateDelta {
   step: number;
