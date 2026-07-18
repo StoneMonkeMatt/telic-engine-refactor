@@ -38,7 +38,7 @@ This matrix links the most consequential executable mathematics in Part II of th
 
 ## Experimental descendants
 
-The `experiments/emerge-ko-001/` bench and its separate `MATHEMATICS.md` ledger test candidate controls built around smoothed-duality history. Those files are downstream experimental evidence, not source evidence for the historical V3 corpus. In particular, `src/logic/dualityProjection.ts` contains later projection utilities created for Carrier experiments and must not be backdated into the recovered V3 implementation lineage.
+The `experiments/emerge-ko-001/` bench and its separate `MATHEMATICS.md` ledger test candidate controls built around smoothed-duality history. Those files are downstream experimental evidence rather than source evidence for the historical V3 corpus. In particular, `src/logic/dualityProjection.ts` contains later projection utilities created for Carrier experiments and is dated separately from the recovered V3 implementation lineage.
 
 ## Remaining source gaps
 

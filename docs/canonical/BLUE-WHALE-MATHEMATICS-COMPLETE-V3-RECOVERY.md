@@ -22,13 +22,13 @@ The source calls itself the sealed canonical V3 document, but the recovered file
 It first appears with `c
 ```
 
-It therefore must not yet be represented as a structurally complete export. The words **sealed canonical** describe the recovered source filename and internal authority claim; they do not override the observable incomplete ending.
+It is therefore recorded as an incomplete export. The words **sealed canonical** describe the recovered source filename and internal authority claim; the observable ending remains incomplete.
 
 ## Repository relationship
 
 This document is distinct from `experiments/emerge-ko-001/MATHEMATICS.md`. The latter is the experiment-specific *Mathematics Ledger: The Compass of Emergent Causality*, first committed on 17 July 2026. It is not a copy of this 7,666-line system-wide mathematical corpus.
 
-## Recovery rules
+## Recovery method
 
 1. Preserve the recovered canonical content unchanged while provenance is investigated; retain both recorded hashes until an exact source export is recovered.
 2. Put corrections or recovered continuations in separately reviewable commits.

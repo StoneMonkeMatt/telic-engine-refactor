@@ -51,7 +51,7 @@ The recovered document explicitly names these repository families:
 - `StoneMonkeMatt/Consciousness-`
 - `StoneMonkeMatt/Unicode`
 
-Only `StoneMonkeMatt/telic-engine-refactor` is the configured remote of this clone. References belonging to the other repositories cannot be classified as missing merely because their objects are absent here.
+Only `StoneMonkeMatt/telic-engine-refactor` is the configured remote of this clone. References belonging to the other repositories remain unverified when their objects are absent here.
 
 ## 4. External or unavailable commit references
 
@@ -118,7 +118,7 @@ The recovered document itself already labels the last two items as named but ina
 
 `experiments/emerge-ko-001/MATHEMATICS.md` was first committed as an independent canonical experiment ledger in commit `d099a7e` on 17 July 2026. It records the Carrier evidence programme, including duality EMA, slope, acceleration, and native-boundary experiments. The recovered V3 corpus is broader and supplies the system-level mathematical and implementation archaeology from which parts of that bench derive.
 
-The documents must remain linked but must not be conflated:
+The documents are linked and recorded as distinct sources:
 
 - **V3 corpus:** discovery architecture, algorithms, implementation archaeology, statuses, and open questions across the wider Blue Whale / Intelligent Notes system.
 - **EMERGE ledger:** preregistered causal claims, experiment gates, receipts, and results for the `emerge-ko-001` bench.
@@ -130,7 +130,7 @@ The documents must remain linked but must not be conflated:
 3. [ ] Locate the CH20 draft, Key Formulas sources, UIA formula tree, V4 replay source, and named inaccessible files.
 4. [x] Build a core Part II section-to-source matrix instead of relying only on prose citations; expand it as external sources are recovered.
 5. [ ] Recover the missing tail without generating or inferring text.
-6. [x] Add a repository-level canonical-document index so this corpus cannot become detached again.
+6. [x] Add a repository-level canonical-document index for direct discovery of this corpus.
 
 Completed locally:
 

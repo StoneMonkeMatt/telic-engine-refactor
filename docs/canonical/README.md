@@ -1,6 +1,6 @@
 # Canonical Documents
 
-This directory holds protected mathematical source material and its provenance records.
+This directory holds mathematical source material and its provenance records.
 
 ## Blue Whale / Intelligent Notes mathematics
 
