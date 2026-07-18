@@ -929,9 +929,9 @@ No retrospective adjustment of \(w_v=0.5\) is admissible as a rescue of this res
 
 ## 13. Active Bench Queue
 
-### Active: EMERGE-CARRIER-003E — Candidate-Projected Duality Acceleration
+### Completed: EMERGE-CARRIER-003E — Candidate-Projected Duality Acceleration
 
-Status: **preregistered 18 July 2026; outcome execution pending**.
+Status: **completed 18 July 2026; acceleration causal, positive usefulness not established**.
 
 The first-order signed-slope carrier completed:
 
@@ -959,19 +959,40 @@ a_t(c)
 
 Carrier-003E freezes the Carrier-003C signed-slope coefficient at \(w_v=0.5\) and preregisters one additive acceleration coefficient \(w_a=0.5\). Fifteen realised slopes are derived from each normalized sixteen-value EMA history. The complete sham family cyclically rotates those same fifteen slopes before candidate acceleration is derived, preserving slope multiset, exposure, capsule, current EMA anchor, wounds, random streams, feedback and admission.
 
-The preregistered sequence is:
+The preregistered sequence passed its integrity and mechanism gates:
 
-1. projection validity;
-2. zero-coupling neutrality;
-3. reachable decision influence;
-4. complete-sham temporal control;
-5. positive pair-generalised usefulness.
+1. acceleration projection algebra was exact across 15,114 comparisons;
+2. 4,096 acceleration-off comparisons reproduced Carrier-003C with zero mismatches;
+3. acceleration changed 1,790 exact winners, 1,344 admissions and 1,388 accepted actions;
+4. prior-slope chronology changed reachable decisions in all fourteen rotations;
+5. positive pair-generalised usefulness did not pass.
 
-Permanent preregistration:
+The primary complete-sham estimate was:
+
+\[
+\overline{\Delta}_{Z=1}=-0.008963448660714,
+\qquad
+95\%=[-0.025605123673539,\ 0.007678226352111].
+\]
+
+The point estimate was negative, the interval crossed zero, and six of eight pair effects were negative. Candidate acceleration and its temporal ordering are causal inputs, but the true chronology was not established as a useful repair signal.
+
+One unadjusted secondary state-specific timing-by-feedback contrast was positive:
+
+\[
+\overline{\Theta}_{T\times Z}=0.036760602678571,
+\qquad
+95\%=[0.005759976944496,\ 0.067761228412647].
+\]
+
+It is recorded as a bounded secondary signal and cannot substitute for the failed direct usefulness endpoint.
+
+Permanent records:
 
 - `docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md`
+- `docs/EMERGE-CARRIER-003E-COMPLETE-SHAM-CANDIDATE-ACCELERATION-RESULT-18JUL2026.md`
 
-Carrier-004 remains gated until the complete Carrier-003E result earns positive sham-controlled usefulness.
+No retrospective adjustment of (w_v=0.5) or (w_a=0.5) is admissible as a rescue. The next architecture audit may examine persistence-transition direction, threshold-crossing direction or inventory-event timing. Carrier-004 remains gated.
 
 ### Carrier-004 — held-out generalisation
 
@@ -995,6 +1016,8 @@ Carrier-004 becomes admissible only after a higher-order model-native mechanism 
 - `docs/EMERGE-CARRIER-003C-NATIVE-PROJECTED-SLOPE-RESULT-17JUL2026.md`
 - `docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md`
 - `docs/EMERGE-CARRIER-003D-COMPLETE-SHAM-NATIVE-SLOPE-RESULT-17JUL2026.md`
+- `docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md`
+- `docs/EMERGE-CARRIER-003E-COMPLETE-SHAM-CANDIDATE-ACCELERATION-RESULT-18JUL2026.md`
 
 ### Executable experiment files
 
@@ -1162,6 +1185,42 @@ Carrier-003D artifact:
 f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c
 ~~~
 
+Carrier-003E aggregate summary:
+
+~~~text
+f928b05e70a562c6b6c1302537fda37c05621ec06e973cc1234859dd821c1758
+~~~
+
+Carrier-003E rotation-summary set:
+
+~~~text
+a82f906280f8a09b5864c2581d02963fef2f068ff0e9aaf4ce6bb8327181ee2a
+~~~
+
+Carrier-003E real projection receipt:
+
+~~~text
+b4bde416de4212a727ee13d5ede6d4bd2cc331398dea17346308e58fe5bb3e07
+~~~
+
+Carrier-003E acceleration mechanism receipt:
+
+~~~text
+34afb6aacf90cd2d1732e338a74ed1bd88643572c76c6ea465541ce46bc7b8cd
+~~~
+
+Carrier-003E sham projection receipt set:
+
+~~~text
+c9c972850b037c12dffba7d47e1d84d24cd1c9b16b785d38de9e2f29bf35fd2c
+~~~
+
+Carrier-003E artifact:
+
+~~~text
+ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711
+~~~
+
 ---
 
 ## 15. Change Log
@@ -1220,6 +1279,17 @@ f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c
 - Kept the signed-slope coefficient fixed at \(w_v=0.5\) and preregistered \(w_a=0.5\) without a sweep.
 - Defined fourteen cyclic shams over the same fifteen realised slope values, deriving acceleration only after the chronology intervention.
 - Required exact projection algebra, acceleration-off neutrality, reachable acceleration decisions, complete-sham timing causality and positive eight-pair usefulness before Carrier-004.
+
+### 18 July 2026 — Carrier-003E completed
+
+- Verified 15,114 candidate acceleration projections with zero error.
+- Verified 4,096 acceleration-off Carrier-003C comparisons with zero mismatches.
+- Established reachable acceleration through 1,790 changed winners, 1,344 changed admissions and 1,388 accepted acceleration-induced actions.
+- Completed all fourteen cyclic prior-slope sham rotations across 57,344 active branches.
+- Established prior-slope chronology causality in 14/14 rotations through 17,515 changed winners, 15,169 changed admissions and 13,710 accepted chronology-induced actions.
+- Recorded a primary true-minus-mean-sham estimate of \(-0.00896345\) with the eight-pair interval crossing zero.
+- Preserved one positive secondary state-specific timing-by-feedback contrast without promoting it into the failed direct usefulness claim.
+- Closed positive true-history usefulness for the fixed acceleration law and kept Carrier-004 gated.
 
 ---
 
