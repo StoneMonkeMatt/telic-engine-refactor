@@ -1,6 +1,6 @@
 # Blue Whale Mathematics V3 — Provenance and Association Index
 
-Status: active recovery audit  
+Status: active recovery audit — public lineages partially verified
 Opened: 18 July 2026  
 Recovered source: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
 Recovery commit: `76871da`
@@ -67,6 +67,34 @@ These cited identifiers do not resolve to commits in this clone:
 
 Their absence from this clone is unresolved provenance, not disproof.
 
+## 4A. Public repository verification — 18 July 2026
+
+Two named repositories were independently fetched as complete bare mirrors and inspected across all advertised refs.
+
+### `StoneMonkeMatt/blue-whale-sim`
+
+- Public repository HEAD: `b85a660bb929e8cbc718575cb6fa3e43517c5096`.
+- Cited commit `d568dcab1` resolves exactly to `d568dcab12a2efecbb577f54961e91b75bfe4908`, dated 19 March 2026 13:23:17 UTC, subject `feat: Initialize Blue Whale project structure`.
+- At that commit, `src/logic/telos.ts` contains defaults `alpha=0.5`, `gamma=0.3`, `delta=0.2`, `beta=0.1`, `lambda=0.618`, `eta=0.3`, `epsilon=0.05`, `threshold=0.8`, and `temperature=1.0`.
+- The executable telic score is the four-term base score plus the literal coupling `0.2 * (I * Phi)`.
+- The same source uses `lambda` in `dNew = D + lambda * C + eta * N + noise`, confirming that the configured `0.618` parameter has a distinct live role from the hardcoded `0.2` information–coherence coupling.
+- The source computes the first-step-cooled schedule as `temperature * 0.95^t` and uses the effective admission denominator `currentTemp + 1e-6`.
+
+These observations directly corroborate the principal `blue-whale-sim` claims in the recovered V3 corpus.
+
+### `StoneMonkeMatt/telic-engine`
+
+- Public repository HEAD: `966493b72a1219415f61cab2b050387f9f09fdaa`.
+- Complete history exposes one commit and one revision of `src/simulation/engine.ts`, matching the corpus's repository-local archaeology boundary.
+- The executable agent functional is `gamma * I + delta * Phi - alpha * K + beta * E`, confirming that it is a distinct four-term system from the sequence engine despite shared vocabulary.
+- The `MUTUAL_INFO` branch fixes the self symbol while iterating neighbour symbols. For every observed neighbour value, its `pJoint` equals its `pNei`, so every logarithmic ratio is `log2(1)` and the accumulated value is identically zero. This corroborates the corpus's rejection of that implementation as mutual information.
+
+Neither public repository contains the exact V3 title, the restored-source preamble, or the truncated-tail phrase. They corroborate cited implementation archaeology but do not provide the missing document continuation.
+
+### Access boundary
+
+At this checkpoint, unauthenticated Git access did not resolve `StoneMonkeMatt/blue-whale`, `StoneMonkeMatt/The-Compass-V4-Current-State-`, `StoneMonkeMatt/bluewhalememory`, `StoneMonkeMatt/Consciousness-`, or `StoneMonkeMatt/Unicode`. This is recorded only as an access boundary. It does not establish deletion or nonexistence.
+
 ## 5. Named source files
 
 Present in this clone:
@@ -97,7 +125,7 @@ The documents must remain linked but must not be conflated:
 
 ## 7. Open recovery actions
 
-1. Acquire or inspect the other named repositories and verify every external commit and blob.
+1. Acquire authenticated access to the unresolved named repositories and verify every remaining external commit and blob.
 2. Search their complete refs for this exact title, predecessor V2/V3 files, and a continuation after `It first appears with \`c`.
 3. Locate the CH20 draft, Key Formulas sources, UIA formula tree, V4 replay source, and named inaccessible files.
 4. Build a section-to-source matrix for Parts I and II instead of relying only on prose citations.
