@@ -1,5 +1,15 @@
 # Blue Whale Mathematics V3 — Recovery Record
 
+## Resolution
+
+The complete 9,401-line V3 source was recovered in commit `2bc1512` at:
+
+```text
+docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md
+```
+
+Its SHA-256 is `b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff`. It continues through Part III and section 37. The record below describes only the shorter uploaded copy and is retained to identify those exact bytes.
+
 Recovery date: 18 July 2026  
 Source filename: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL(1).md`  
 Canonical repository filename: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
@@ -12,7 +22,7 @@ Repository byte length: `200705`
 Repository line count: `7667`  
 Repository SHA-256: `ea0cd5dd0ceb749fef8def7b21754e881dd2208e117594b78b40fd1dd70172d6`
 
-## Integrity status
+## Uploaded-copy status
 
 The recovered content is preserved under the canonical repository filename. The repository copy differs from the uploaded Library bytes only by one normalized trailing newline: the uploaded file had no final newline, while the repository copy does. Both byte counts and hashes are recorded above so the source artifact remains independently identifiable.
 
@@ -22,7 +32,7 @@ The source calls itself the sealed canonical V3 document, but the recovered file
 It first appears with `c
 ```
 
-It is therefore recorded as an incomplete export. The words **sealed canonical** describe the recovered source filename and internal authority claim; the observable ending remains incomplete.
+It is therefore recorded as an incomplete copy, not as the complete V3 source. The complete source identified above replaces the earlier missing-continuation assumption.
 
 ## Repository relationship
 

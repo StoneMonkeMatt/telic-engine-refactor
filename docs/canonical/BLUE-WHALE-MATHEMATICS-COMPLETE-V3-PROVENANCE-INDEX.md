@@ -5,6 +5,8 @@ Opened: 18 July 2026
 Recovered source: `BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md`  
 Recovery commit: `76871da`
 
+Complete-source recovery: commit `2bc1512`, 9,401 lines, SHA-256 `b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff`
+
 This index records what is associated with the recovered system-wide mathematics document. The authenticated cross-repository findings are detailed in `BLUE-WHALE-V3-PUBLIC-PRIVATE-REPOSITORY-AUDIT-18JUL2026.md`.
 
 ## 1. Presence in this repository
@@ -15,7 +17,7 @@ Before recovery commit `76871da`, no reachable Git object in this clone had a pa
 - `Restored discovery source of truth`
 - `Preserve discovery. Correct error. Record implementation separately.`
 
-The full system-wide V3 corpus was therefore absent from all refs available in this clone. The similarly named `experiments/emerge-ko-001/MATHEMATICS.md` is a separate, experiment-specific ledger and is not a predecessor or copy of the recovered corpus.
+The full system-wide V3 corpus was absent from the original local ref set, but was subsequently recovered and committed under `docs/mathematics-lineage/` in commit `2bc1512`. The similarly named `experiments/emerge-ko-001/MATHEMATICS.md` is a separate experiment-specific ledger.
 
 ## 2. Directly verified `telic-engine-refactor` lineage
 
@@ -96,7 +98,7 @@ Neither public repository contains the exact V3 title, the restored-source pream
 
 ### Authenticated expansion
 
-The later authenticated audit added `blue-whale`, `The-Compass-V4-Current-State-`, `bluewhalememory`, `Consciousness-`, and `Unicode`. It recovered the missing cited commits, the V4 source blob, CH20 and formula sources, and the Needle–Action provenance. It did not find the exact sealed V3 artifact or its missing continuation.
+The later authenticated audit added `blue-whale`, `The-Compass-V4-Current-State-`, `bluewhalememory`, `Consciousness-`, and `Unicode`. It recovered the cited commits, the V4 source blob, CH20 and formula sources, and the Needle–Action provenance. Separately, commit `2bc1512` recovered the complete V3 source from stored evidence.
 
 ## 5. Named source files
 
@@ -128,7 +130,7 @@ The documents are linked and recorded as distinct sources:
 ## 7. Open recovery actions
 
 1. [x] Inspect all V3-named public and private repositories and verify the cited commits and blobs.
-2. [x] Search their complete refs for the exact title, predecessor files, and the truncated ending; no continuation was recovered.
+2. [x] Search complete refs and stored evidence; the complete V3 source was recovered in commit `2bc1512`.
 3. [x] Locate the CH20 draft, Key Formulas source, UIA formula tree, V4 source, and later purpose text.
 4. [x] Build a core Part II section-to-source matrix instead of relying only on prose citations; expand it as external sources are recovered.
 5. [ ] Recover the missing tail without generating or inferring text.

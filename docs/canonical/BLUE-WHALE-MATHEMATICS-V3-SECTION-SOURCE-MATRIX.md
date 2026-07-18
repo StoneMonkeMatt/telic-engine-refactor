@@ -18,7 +18,7 @@ This matrix links the most consequential executable mathematics in Part II of th
 | §31.6.9 | Winner restriction and tie resolution | `src/logic/proposals/select.ts`, `src/logic/selection/tiebreak.ts` | current selector boundary `cec3f7d02ab8aa7ecab34d4d5eb50deb1dfb17c3` | Winner membership is restricted to exact maximum raw score before tie resolution |
 | §31.6.9 | Admission | `src/logic/selection/eligibility.ts` — `checkEligibility` | helper introduced by `35675957f10d6c7c7f3818cf05c10ced8e2a775f` | Uses shaped `deltaScore`, effective denominator `currentTemp + 1e-6`, and rejects identity proposals |
 | §31.6.12 | Raw and smoothed duality | `src/logic/telos.ts` — `computeRawDuality`, `duality`, `evolveStep`, `run` | `ac3539bc053084324699899a4f111e0f0cb4014a` | Raw product, clamp, EMA update, history construction, persistence, and observer predicate must be distinguished |
-| §31.6.12A | Diversity offset and clamp | `src/logic/telos.ts` — `computeRawDuality` | `ac3539bc053084324699899a4f111e0f0cb4014a` | Verifies the executable `0.01` offset and clamp consumer; the recovered V3 prose ends during this provenance subsection |
+| §31.6.12A | Diversity offset and clamp | `src/logic/telos.ts` — `computeRawDuality` | `ac3539bc053084324699899a4f111e0f0cb4014a` | Verifies the executable `0.01` offset and clamp consumer; the shorter uploaded copy ends here, while the complete recovered V3 continues |
 
 ## Codex and invariant map
 
@@ -46,4 +46,4 @@ The `experiments/emerge-ko-001/` bench and its separate `MATHEMATICS.md` ledger 
 - The documentary nonlinear-coupling proposal at `blue-whale` commit `d97fa9e23`.
 - CH20 draft commits `4a5b0b4` and `69a826967`, plus their cited formula-tree source.
 - `codex-v9.1.ts` and the wider ontology data required for corpus-wide symbol and Compass claims.
-- Any source containing the continuation after the truncated §31.6.12A.3 ending.
+- The complete continuation is now present under `docs/mathematics-lineage/`; remaining gaps concern its cited external sources rather than the V3 document tail.

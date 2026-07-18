@@ -98,7 +98,7 @@ No private-repository source was recovered that names `EXP-006-THETA-INIT`, `EXP
 - Earlier statements that account-wide archaeology was closed before authenticated private-repository inspection were premature.
 - Public-only verification was insufficient for claims about the origin and completeness of V3.
 - The `EXP-001`–`EXP-008` mapping has no recovered repository evidence.
-- The recovered sealed V3 file remains unique to the supplied artifact and still ends mid-sentence; no continuation was found under its exact title or ending across the named repositories.
+- The supplied uploaded copy ends mid-sentence. A separate complete 9,401-line V3 source was recovered from stored evidence and committed in `2bc1512`; it continues through Part III and section 37.
 
 ## Scientific verdict
 
