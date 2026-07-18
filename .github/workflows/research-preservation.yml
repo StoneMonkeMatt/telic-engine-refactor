@@ -1,0 +1,37 @@
+name: Research preservation gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'docs/EMERGE-*.md'
+      - 'docs/mathematics-lineage/**'
+      - 'docs/research-preservation/**'
+      - 'experiments/emerge-ko-001/**'
+      - '.github/scripts/emerge-*'
+      - '.github/workflows/emerge-*.yml'
+      - 'src/logic/dualityProjection.ts'
+      - 'scripts/verify-research-preservation.mjs'
+      - '.github/workflows/research-preservation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify-research-preservation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify preservation inventory and receipts
+        run: node scripts/verify-research-preservation.mjs

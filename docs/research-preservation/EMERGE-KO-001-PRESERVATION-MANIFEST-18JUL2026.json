@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "checkpointDate": "2026-07-18",
+  "repository": "StoneMonkeMatt/telic-engine-refactor",
+  "branch": "agent/emerge-ko-001-sandbox",
+  "preCheckpointCommit": "574feb0f0e739d57c9301d70230b2020e54b58fc",
+  "sealedMathematics": {
+    "directory": "docs/mathematics-lineage",
+    "receipt": "docs/mathematics-lineage/V3-SEALED-SHA256SUMS.txt",
+    "canonical": "docs/mathematics-lineage/BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md",
+    "canonicalSha256": "b5e916465758a04a3e5ee63172b3b8b1530abfcf092ca9c088700c5e3f0c5dff",
+    "sealedAuditExtract": "docs/mathematics-lineage/V3-O2-COMPOUND-EMERGENCE-AUDIT-EXTRACT.md",
+    "sealedAuditExtractSha256": "34e68433d3a55b970d27687709d3d3ba9abcf2b1ea66952253df3da1c5f06a5e"
+  },
+  "phases": [
+    {
+      "id": "V1",
+      "classification": "tracked executable and ledger record; no separate original artifact located",
+      "records": [
+        "experiments/emerge-ko-001/README.md",
+        "experiments/emerge-ko-001/MATHEMATICS.md",
+        "experiments/emerge-ko-001/config.example.json",
+        "experiments/emerge-ko-001/criticalBridgePermutation.ts",
+        "experiments/emerge-ko-001/run.ts"
+      ]
+    },
+    {
+      "id": "V2",
+      "classification": "tracked executable and ledger record; no separate original artifact located",
+      "records": ["experiments/emerge-ko-001/run-v2.ts"]
+    },
+    {
+      "id": "V2.1",
+      "classification": "tracked executable and trajectory audit; no separate original artifact located",
+      "records": [
+        "experiments/emerge-ko-001/run-v2-1.ts",
+        "experiments/emerge-ko-001/TRAJECTORY-AUDIT-V2.1.md"
+      ]
+    },
+    {
+      "id": "V2.2",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "fd2a16ab36709307bc63867c0e746ace67335f54",
+      "artifact": "EMERGE-KO-001-v2.2-results.zip",
+      "records": [
+        ".github/workflows/emerge-ko-001.yml",
+        "docs/EMERGE-KO-001-V2.2-EQUAL-WOUND-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/config-v2-2.json",
+        "experiments/emerge-ko-001/run-v2-2.ts",
+        "experiments/emerge-ko-001/select-v2-2.ts"
+      ]
+    },
+    {
+      "id": "Carrier-001",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "36df7b2b621d566e76b4240dbae1c3aca1758bc9",
+      "artifact": "EMERGE-CARRIER-001-results.zip",
+      "records": [
+        "docs/EMERGE-CARRIER-001-ARCHITECTURAL-NULL-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/exactTargetBridgeLesion.ts",
+        "experiments/emerge-ko-001/run-carrier-null.ts"
+      ]
+    },
+    {
+      "id": "Carrier-002",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "4992a0d5f659da2c9a0775a18d2046cf759cfb79",
+      "artifact": "EMERGE-CARRIER-002-results.zip",
+      "records": [
+        "docs/EMERGE-CARRIER-002-NEUTRALITY-AND-REACHABILITY-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/freeze-carrier-002.ts",
+        "experiments/emerge-ko-001/run-carrier-002.ts"
+      ]
+    },
+    {
+      "id": "Carrier-002C",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "a43423dfc8fc8f7eb36d3b3c51175a7da1c494e7",
+      "artifact": "EMERGE-CARRIER-002C-results.zip",
+      "records": [
+        ".github/workflows/emerge-carrier-002c.yml",
+        "docs/EMERGE-CARRIER-002C-REACHABLE-HOLD-SWAP-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/run-carrier-002c.ts"
+      ]
+    },
+    {
+      "id": "Carrier-003",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "c2141e3861abadffbdc6cfe6844247f207a5cddb",
+      "artifact": "EMERGE-CARRIER-003-results.zip",
+      "records": [
+        ".github/workflows/emerge-carrier-003.yml",
+        "docs/EMERGE-CARRIER-003-PREREGISTRATION-17JUL2026.md",
+        "docs/EMERGE-CARRIER-003-REAL-VS-SHAM-TIMING-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/carrier-003.patch.boundary",
+        "experiments/emerge-ko-001/carrier-003.patch.part00",
+        "experiments/emerge-ko-001/carrier-003.patch.part01",
+        "experiments/emerge-ko-001/carrier-003.patch.part02",
+        "experiments/emerge-ko-001/carrier-003.patch.part03"
+      ]
+    },
+    {
+      "id": "Carrier-003B",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "36d2c39f2f0f66bcafedaa4148b026803060a75d",
+      "artifact": "EMERGE-CARRIER-003B-results.zip",
+      "records": [
+        ".github/workflows/emerge-carrier-003b.yml",
+        "docs/EMERGE-CARRIER-003B-PREREGISTRATION-17JUL2026.md",
+        "docs/EMERGE-CARRIER-003B-ROTATION-COMPLETE-SHAM-RESULT-17JUL2026.md",
+        "experiments/emerge-ko-001/carrier-003b-aggregate.part00",
+        "experiments/emerge-ko-001/carrier-003b-aggregate.part01",
+        "experiments/emerge-ko-001/carrier-003b-aggregate.part02",
+        "experiments/emerge-ko-001/carrier-003b-runner.part00",
+        "experiments/emerge-ko-001/carrier-003b-runner.part01",
+        "experiments/emerge-ko-001/carrier-003b-runner.part02",
+        "experiments/emerge-ko-001/carrier-003b-runner.part03",
+        "experiments/emerge-ko-001/carrier-003b-runner.part04",
+        "experiments/emerge-ko-001/carrier-003b-runner.part05"
+      ]
+    },
+    {
+      "id": "Carrier-003C",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "4271298973cdf2ed623d1bd65f80afe108babea4",
+      "artifact": "EMERGE-CARRIER-003C-results.zip",
+      "records": [
+        ".github/workflows/emerge-carrier-003c.yml",
+        "docs/EMERGE-CARRIER-003C-NATIVE-PROJECTED-SLOPE-RESULT-17JUL2026.md",
+        "docs/EMERGE-CARRIER-003C-PREREGISTRATION-17JUL2026.md",
+        "experiments/emerge-ko-001/assemble-carrier-003c.ts",
+        "experiments/emerge-ko-001/verify-duality-projection.ts",
+        "src/logic/dualityProjection.ts"
+      ]
+    },
+    {
+      "id": "Carrier-003D",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "619b2cfd4aa48802ff4e1a6cf8fe2ec3ea8a2aef",
+      "artifact": "EMERGE-CARRIER-003D-results.zip",
+      "records": [
+        ".github/scripts/emerge-carrier-003d-aggregate.ts",
+        ".github/scripts/emerge-carrier-003d-runner.ts",
+        ".github/workflows/emerge-carrier-003d.yml",
+        "docs/EMERGE-CARRIER-003D-COMPLETE-SHAM-NATIVE-SLOPE-RESULT-17JUL2026.md",
+        "docs/EMERGE-CARRIER-003D-PREREGISTRATION-17JUL2026.md"
+      ]
+    },
+    {
+      "id": "Carrier-003E",
+      "classification": "completed and artifact-backed",
+      "resultCommit": "90ec77cd18bc9183ef9131e8e7ebf56483e34436",
+      "artifact": "EMERGE-CARRIER-003E-results-authoritative.zip",
+      "records": [
+        ".github/scripts/emerge-carrier-003e-aggregate.ts",
+        ".github/scripts/emerge-carrier-003e-runner.ts",
+        ".github/workflows/emerge-carrier-003e.yml",
+        "docs/EMERGE-CARRIER-003E-COMPLETE-SHAM-CANDIDATE-ACCELERATION-RESULT-18JUL2026.md",
+        "docs/EMERGE-CARRIER-003E-PREREGISTRATION-18JUL2026.md",
+        "experiments/emerge-ko-001/verify-duality-acceleration.ts"
+      ]
+    },
+    {
+      "id": "Carrier-003F",
+      "classification": "completed locally, committed, and persistent-evidence-backed; official rerun was active at checkpoint",
+      "resultCommit": "574feb0f0e739d57c9301d70230b2020e54b58fc",
+      "artifact": "EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz",
+      "records": [
+        ".github/scripts/emerge-carrier-003f-aggregate.ts",
+        ".github/scripts/emerge-carrier-003f-dark-runner.ts",
+        ".github/scripts/emerge-carrier-003f-runner.ts",
+        ".github/workflows/emerge-carrier-003f.yml",
+        "docs/EMERGE-CARRIER-003F-COMPLETE-SHAM-NATIVE-BOUNDARY-RESULT-18JUL2026.md",
+        "docs/EMERGE-CARRIER-003F-DARK-BOUNDARY-TRANSITION-AUDIT-18JUL2026.md",
+        "docs/EMERGE-CARRIER-003F-PREREGISTRATION-18JUL2026.md",
+        "experiments/emerge-ko-001/audit-carrier-003f-accepted-boundary-cooccurrence.ts",
+        "experiments/emerge-ko-001/finalize-carrier-003f-dark-boundary-audit.ts",
+        "experiments/emerge-ko-001/verify-duality-boundary-transition.ts"
+      ]
+    }
+  ],
+  "artifacts": [
+    {"phase":"V2.2","workflowRun":29563428289,"file":"EMERGE-KO-001-v2.2-results.zip","bytes":67757,"sha256":"3431b6c0ec66846819ac73e410a8d2ad5878c3f3bf0ae43cc8a9e0fb0975d043","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-001","workflowRun":29565733958,"file":"EMERGE-CARRIER-001-results.zip","bytes":70621,"sha256":"cb9792a72f09ad0c8881b041fc66dfba05a9ae393c6a294ad7c684df87231865","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-002","workflowRun":29568090469,"file":"EMERGE-CARRIER-002-results.zip","bytes":2320207,"sha256":"f1dcbfd628ffc0e3a2f24c0324e0c37655c3dd66e9bd2ac03cf98a4b78e32ab3","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-002C","workflowRun":29572723082,"file":"EMERGE-CARRIER-002C-results.zip","bytes":3602096,"sha256":"4cf869f339b49822c61a4c2378f552dcbe8a7e5e2e54ff0052a0225098e44e49","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003","workflowRun":29575934765,"file":"EMERGE-CARRIER-003-results.zip","bytes":8017367,"sha256":"cc701497c87f5b0ec18b36593a1cbcd0c4bdad537c738c4ac736a8ffa835ba6e","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003B","workflowRun":29579962999,"file":"EMERGE-CARRIER-003B-results.zip","bytes":91136647,"sha256":"a86c473f5a17dbc53fa693662f9665f485c7b969159f6cf0ffb435210136ba88","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003C","workflowRun":29610229475,"file":"EMERGE-CARRIER-003C-results.zip","bytes":4104823,"sha256":"fd051cfcc4ca427ec6a043744eb1eb031cf50ea101f23a9f5a4a8abe5c8395b9","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003D","workflowRun":29614750232,"file":"EMERGE-CARRIER-003D-results.zip","bytes":94315403,"sha256":"f96822d106a73d510ad6a0e89343cee1492b982fe31ed2af9d8be689fa15155c","storage":"Library","verification":"byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003E","workflowRun":29621108507,"file":"EMERGE-CARRIER-003E-results-authoritative.zip","bytes":144468777,"sha256":"ce15b5a7d93e296d9c5a4975778ceeef94dd06baecf34966a6f1105838b70711","storage":"Library","verification":"downloaded from the authoritative run; byte hash and ZIP integrity verified 2026-07-18"},
+    {"phase":"Carrier-003F","workflowRun":29641237892,"file":"EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz","bytes":94533023,"sha256":"9e4aa92b72d514a71d3fa97f684ad8315dc4f20894df1e557bb6600038e3a593","storage":"Library","verification":"deterministic 77-file archive created, listed, hashed, and saved 2026-07-18"}
+  ],
+  "rawEvidence": {
+    "directory": "experiments/emerge-ko-001/results",
+    "fileCount": 77,
+    "totalBytes": 492444914,
+    "checksumRegister": "docs/research-preservation/EMERGE-KO-001-RAW-EVIDENCE-SHA256-18JUL2026.txt",
+    "archive": "EMERGE-KO-001-RAW-EVIDENCE-18JUL2026.tar.gz",
+    "archiveBytes": 94533023,
+    "archiveSha256": "9e4aa92b72d514a71d3fa97f684ad8315dc4f20894df1e557bb6600038e3a593",
+    "storage": "Library"
+  },
+  "artifactChecksumRegister": "docs/research-preservation/EMERGE-KO-001-ARTIFACT-SHA256SUMS-18JUL2026.txt",
+  "knownLimitations": [
+    "V1, V2 and V2.1 have committed executable and ledger records, but no separate original raw-output artifact was located.",
+    "The Carrier-003F official GitHub Actions rerun was still active at the checkpoint; the completed local evidence set is independently archived and registered.",
+    "Large evidence bytes are stored persistently outside ordinary Git to avoid repository bloat; their SHA-256 receipts and preservation inventory are committed in Git."
+  ]
+}
