@@ -7,6 +7,7 @@ This directory holds protected mathematical source material and its provenance r
 - [Mathematics and Algorithms V3 — recovered canonical source](BLUE-WHALE-MATHEMATICS-COMPLETE-V3-17JUL2026-SEALED-CANONICAL.md)
 - [Recovery and integrity record](BLUE-WHALE-MATHEMATICS-COMPLETE-V3-RECOVERY.md)
 - [Provenance and association index](BLUE-WHALE-MATHEMATICS-COMPLETE-V3-PROVENANCE-INDEX.md)
+- [Section-to-source matrix](BLUE-WHALE-MATHEMATICS-V3-SECTION-SOURCE-MATRIX.md)
 
 Integrity warning: the recovered V3 source ends mid-sentence in section `31.6.12A.3`. Preserve it as recovered and consult the recovery record before describing it as complete.
 

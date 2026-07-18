@@ -125,9 +125,14 @@ The documents must remain linked but must not be conflated:
 
 ## 7. Open recovery actions
 
-1. Acquire authenticated access to the unresolved named repositories and verify every remaining external commit and blob.
-2. Search their complete refs for this exact title, predecessor V2/V3 files, and a continuation after `It first appears with \`c`.
-3. Locate the CH20 draft, Key Formulas sources, UIA formula tree, V4 replay source, and named inaccessible files.
-4. Build a section-to-source matrix for Parts I and II instead of relying only on prose citations.
-5. Recover the missing tail without generating or inferring text.
-6. Add a repository-level canonical-document index so this corpus cannot become detached again.
+1. [ ] Acquire authenticated access to the unresolved named repositories and verify every remaining external commit and blob.
+2. [ ] Search their complete refs for this exact title, predecessor V2/V3 files, and a continuation after `It first appears with \`c`.
+3. [ ] Locate the CH20 draft, Key Formulas sources, UIA formula tree, V4 replay source, and named inaccessible files.
+4. [x] Build a core Part II section-to-source matrix instead of relying only on prose citations; expand it as external sources are recovered.
+5. [ ] Recover the missing tail without generating or inferring text.
+6. [x] Add a repository-level canonical-document index so this corpus cannot become detached again.
+
+Completed locally:
+
+- Core Part II section-to-source matrix: `BLUE-WHALE-MATHEMATICS-V3-SECTION-SOURCE-MATRIX.md`.
+- Repository-level canonical-document index: `docs/canonical/README.md`, linked from the root `README.md`.
